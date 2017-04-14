@@ -1,0 +1,25 @@
+﻿<weather:WeatherInfo xmlns:weather="clr-namespace:Weather;assembly=Weather" Aqi="45" City="上海"
+                     CurrentTemperature="25">
+    <weather:WeatherInfo.Forecast>
+        <weather:OneDayWeather Weather="中雨" Date="14日周四" 
+                               WindDirection="西风" WindForce="微风级" 
+                               HighTemperature="高温 30℃" LowTemperature="低温 23℃"/>
+        <weather:OneDayWeather Weather="中雨" Date="15日周五" 
+                               WindDirection="西风" WindForce="微风级" 
+                               HighTemperature="高温 30℃" LowTemperature="低温 23℃"/>
+        <weather:OneDayWeather Weather="中雨" Date="16日周六" 
+                               WindDirection="西风" WindForce="微风级" 
+                               HighTemperature="高温 30℃" LowTemperature="低温 23℃"/>
+        <weather:OneDayWeather Weather="中雨" Date="17日周日" 
+                               WindDirection="西风" WindForce="微风级" 
+                               HighTemperature="高温 30℃" LowTemperature="低温 23℃"/>
+        <weather:OneDayWeather Weather="中雨" Date="18日周一" 
+                               WindDirection="西风" WindForce="微风级" 
+                               HighTemperature="高温 30℃" LowTemperature="低温 23℃"/>
+    </weather:WeatherInfo.Forecast>
+    <weather:WeatherInfo.YesterdayWeather>
+        <weather:OneDayWeather Weather="中雨" Date="13日周三" 
+                               WindDirection="西风" WindForce="微风级" 
+                               HighTemperature="高温 30℃" LowTemperature="低温 23℃"/>
+    </weather:WeatherInfo.YesterdayWeather>
+</weather:WeatherInfo>

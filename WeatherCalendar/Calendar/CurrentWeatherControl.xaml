@@ -1,0 +1,36 @@
+﻿<UserControl x:Class="WeatherCalendar.CurrentWeatherControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WeatherCalendar"
+             mc:Ignorable="d" Margin="5"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid DataContext="{Binding Path=CurrentDayWeather, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Image Width="50" Height="50" HorizontalAlignment="Center" Source="{Binding Path=Image, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:CurrentWeatherControl}}}"/>
+        </StackPanel>
+        <StackPanel Grid.Column="1" Margin="15 0 0 0" VerticalAlignment="Center" HorizontalAlignment="Left"
+                    DataContext="{Binding Path=CurrentInfo, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}">
+            <TextBlock FontSize="12" Foreground="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0 2">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Text" Value="{Binding Path=CurrentDayWeather.DayWeather.Weather, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=PeriodOfDay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
+                                         Value="Night">
+                                <Setter Property="Text" Value="{Binding Path=CurrentDayWeather.NightWeather.Weather, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+            <TextBlock FontSize="12" Text="{Binding Humidity}" Foreground="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0 2"/>
+            <TextBlock FontSize="12" Text="{Binding WindInfo}" Foreground="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0 2"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

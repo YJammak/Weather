@@ -1,0 +1,14 @@
+D:\c#\Weather\Weather\bin\Debug\Weather.dll
+D:\c#\Weather\Weather\bin\Debug\Weather.pdb
+D:\c#\Weather\Weather\bin\Debug\Newtonsoft.Json.dll
+D:\c#\Weather\Weather\bin\Debug\Newtonsoft.Json.xml
+D:\c#\Weather\Weather\obj\Debug\Weather.dll
+D:\c#\Weather\Weather\obj\Debug\Weather.pdb
+C:\Users\金坤\Desktop\Weather\Weather\bin\Debug\Weather.dll
+C:\Users\金坤\Desktop\Weather\Weather\bin\Debug\Weather.pdb
+C:\Users\金坤\Desktop\Weather\Weather\bin\Debug\Newtonsoft.Json.dll
+C:\Users\金坤\Desktop\Weather\Weather\bin\Debug\Newtonsoft.Json.xml
+C:\Users\金坤\Desktop\Weather\Weather\obj\Debug\Weather.dll
+C:\Users\金坤\Desktop\Weather\Weather\obj\Debug\Weather.pdb
+D:\c#\Weather\Weather\obj\Debug\Weather.Properties.Resources.resources
+D:\c#\Weather\Weather\obj\Debug\Weather.csproj.GenerateResource.Cache

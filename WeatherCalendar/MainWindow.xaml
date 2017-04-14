@@ -1,0 +1,282 @@
+﻿<Window x:Class="WeatherCalendar.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WeatherCalendar"
+        xmlns:yui="clr-namespace:YUI.Controls;assembly=YUI"
+        mc:Ignorable="d" WindowStyle="None" AllowsTransparency="True"
+        Title="MainWindow" SizeToContent="WidthAndHeight" Background="Transparent"
+        MouseLeftButtonDown="MainWindow_OnMouseLeftButtonDown"
+        MouseLeftButtonUp="MainWindow_OnMouseLeftButtonUp"
+        Loaded="MainWindow_OnLoaded" SizeChanged="MainWindow_OnSizeChanged"
+        ShowInTaskbar="False" Opacity="0.7" StateChanged="MainWindow_OnStateChanged"
+        >
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <local:DateTimeToAnimalSignConverter x:Key="DateTimeToAnimalSignConverter"/>
+        <local:DateTimeToChineseEraConverter x:Key="DateTimeToChineseEraConverter"/>
+        <local:DateTimeToLunarDateConverter x:Key="DateTimeToLunarDateConverter"/>
+        <local:DateTimeToAnimalSignFontConverter x:Key="DateTimeToAnimalSignFontConverter"/>
+        <local:FloatToIntRateConverter x:Key="FloatToIntRateConverter"/>
+        <local:NetWorkSpeedConverter x:Key="NetWorkSpeedConverter"/>
+        <local:CountDownTimerConverter x:Key="CountDownTimerConverter"/>
+        <local:NumberConverter x:Key="NumberConverter"/>
+        
+        <DataTemplate x:Key="CountDownTemplate">
+            <StackPanel Orientation="Horizontal" Opacity="0.8">
+                <TextBlock VerticalAlignment="Bottom" FontSize="16" Foreground="GhostWhite" Text="距 "/>
+                <TextBlock Margin="0 0 0 -1" VerticalAlignment="Bottom" FontSize="20" Foreground="Brown" Text="{Binding Remarks}"/>
+                <TextBlock VerticalAlignment="Bottom" FontSize="16" Foreground="GhostWhite" Text=" 还有 "/>
+                <TextBlock Margin="0 0 0 -2" VerticalAlignment="Bottom" FontSize="20" Foreground="Crimson" Text="{Binding DaysTimeSpan, Converter={StaticResource CountDownTimerConverter}, ConverterParameter=D}"/>
+                <TextBlock VerticalAlignment="Bottom" FontSize="16" Foreground="GhostWhite" Text=" 天 "/>
+                <TextBlock Margin="0 0 0 -2" VerticalAlignment="Bottom" FontSize="20" Foreground="Firebrick"  Text="{Binding DaysTimeSpan, Converter={StaticResource CountDownTimerConverter}, ConverterParameter=H}"/>
+                <TextBlock VerticalAlignment="Bottom" FontSize="16" Foreground="GhostWhite" Text=" 小时"/>
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="NoteDataTemplate">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Width="50" Text="{Binding TypeInfo}" FontSize="16" Foreground="GhostWhite"
+                           Visibility="{Binding Text, RelativeSource={RelativeSource Self}, Converter={StaticResource YStringToVisibilitiyConverter}}"
+                           />
+                <TextBlock Text="{Binding Content}" FontSize="16" Foreground="GhostWhite"/>
+            </StackPanel>
+        </DataTemplate>
+    </Window.Resources>
+    <Border x:Name="mainBorder" CornerRadius="3">
+        <Grid Margin="10">
+            <Grid.Effect>
+                <DropShadowEffect ShadowDepth="2" Opacity="0.5"/>
+            </Grid.Effect>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <TextBlock VerticalAlignment="Top"
+                       DataContext="{Binding Path=UpdateDateTime, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:MainWindow}}}"
+                       d:DataContext="{d:DesignData Source=DesignData/SampleDateTime.xaml}"
+                       Foreground="White" Text="{Binding StringFormat=\{0:HH:mm:ss\}}"
+                       Visibility="{Binding Path=ShowUpdateTime,  RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:MainWindow}}, Converter={StaticResource BooleanToVisibilityConverter}}"
+            />
+            <Grid Grid.Row="0" Margin="10 0 0 0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid Margin="1 0 10 0" Grid.Column="0" VerticalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" VerticalAlignment="Center" Foreground="White" FontSize="14" Text="CPU"/>
+                    <TextBlock Margin="0 0 10 0" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="14" Foreground="White" Text="{Binding CpuLoad, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:MainWindow}}, Converter={StaticResource FloatToIntRateConverter}}"/>
+                </Grid>
+                <Grid Margin="0 0 10 0" Grid.Column="1" VerticalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" VerticalAlignment="Center" Foreground="White" FontSize="14" Text="内存"/>
+                    <TextBlock Margin="0 0 10 0" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="14" Foreground="White" Text="{Binding MemoryLoad, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:MainWindow}}, Converter={StaticResource FloatToIntRateConverter}}"/>
+                </Grid>
+                <Grid Margin="10 0 5 0" Grid.Column="2" VerticalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" VerticalAlignment="Center" Foreground="#2D93AD" FontFamily="Resources/Fonts/#fontawesome" FontSize="14" Text="&#xf176;"/>
+                    <TextBlock Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" FontSize="14" Foreground="White" Text="{Binding NetWorkSpeed.UpLoadSpeed, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:MainWindow}}, Converter={StaticResource NetWorkSpeedConverter}}"/>
+                </Grid>
+                <Grid Margin="10 0 5 0" Grid.Column="3" VerticalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" VerticalAlignment="Center" Foreground="#CC3300" FontFamily="Resources/Fonts/#fontawesome" FontSize="14" Text="&#xf175;"/>
+                    <TextBlock Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" FontSize="14" Foreground="White" Text="{Binding NetWorkSpeed.DownLoadSpeed, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:MainWindow}}, Converter={StaticResource NetWorkSpeedConverter}}"/>
+                </Grid>
+            </Grid>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Row="0" Grid.Column="0" Margin="10 0 0 0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                            DataContext="{Binding Path=CurrentWeatherInfo, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:MainWindow}}}"
+                >
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                        <TextBlock Text="{Binding Status.City}" VerticalAlignment="Center" FontSize="18" Foreground="White" Margin="0 0 15 0"/>
+                        <TextBlock Text="{Binding CurrentInfo.Temperature, StringFormat=\{0\} ℃}" FontSize="18" VerticalAlignment="Center" Foreground="White"/>
+                    </StackPanel>
+                    <Grid>
+                        <local:CurrentWeatherControl Foreground="White" Margin="-3 0 0 0"
+                                                     CurrentInfo="{Binding CurrentInfo}"
+                                                     HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                                                     PeriodOfDay="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=PeriodOfDay}">
+                            <local:CurrentWeatherControl.Style>
+                                <Style TargetType="local:CurrentWeatherControl">
+                                    <Setter Property="CurrentDayWeather" Value="{Binding ForecastFifteenDays[1]}"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=IsEarlyMorning}"
+                                                     Value="true">
+                                            <Setter Property="CurrentDayWeather" Value="{Binding ForecastFifteenDays[0]}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </local:CurrentWeatherControl.Style>
+                        </local:CurrentWeatherControl>
+                        <yui:YProgressRing
+                            DataContext="{Binding Path=IsUpdatingWeather, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:MainWindow}}}"
+                            Margin="-8 0 0 0" HorizontalAlignment="Left" Height="50" Width="50" Foreground="OrangeRed"
+                            Visibility="{Binding Converter={StaticResource BooleanToVisibilityConverter}}"
+                            IsActive="{Binding Mode=OneWay}"
+                        />
+                    </Grid>
+                </StackPanel>
+                <Viewport3D Grid.Column="1">
+                    <Viewport3D.Camera>
+                        <!-- Position属性指定3D空间中摄像机的位置，LookDirection属性为摄像机方向 -->
+                        <PerspectiveCamera Position="0 0 900" LookDirection="0 0 -1" />
+                    </Viewport3D.Camera>
+                    <Viewport3D.Children>
+                        <ContainerUIElement3D>
+                            <Viewport2DVisual3D>
+                                <Viewport2DVisual3D.Geometry>
+                                    <!-- Positions属性表示绘制对象的点集合，TriangleIndices属性表示对象的正反面（WPF通过逆时针环绕表示正面），TextureCoordinates属性表示2D纹理映射到3D对象 -->
+                                    <!-- 一般通过3D建模工具推导得出 -->
+                                    <MeshGeometry3D Positions="-200 200 0  -200 -200 0  200 -200 0  200 200 0" TriangleIndices="0 1 2  0 2 3" TextureCoordinates="0 0  0 1  1 1  1 0"/>
+                                </Viewport2DVisual3D.Geometry>
+                                <Viewport2DVisual3D.Material>
+                                    <DiffuseMaterial Viewport2DVisual3D.IsVisualHostMaterial="True"/>
+                                </Viewport2DVisual3D.Material>
+                                <Viewport2DVisual3D.Visual>
+                                    <!-- 放置正面自定义用户控件 -->
+                                    <TextBlock Grid.Column="1" FontFamily="/WeatherCalendar;component/Resources/Fonts/#animals" 
+                                               Text="{Binding Path=CurrentDateTime, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:MainWindow}}, Converter={StaticResource DateTimeToAnimalSignFontConverter}}"
+                                               FontSize="60" Opacity="0.35" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White"
+                                    />
+                                </Viewport2DVisual3D.Visual>
+                            </Viewport2DVisual3D>
+                            <Viewport2DVisual3D>
+                                <Viewport2DVisual3D.Geometry>
+                                    <MeshGeometry3D Positions="200 200 -0  200 -200 -0  -200 -200 -0  -200 200 -0" TriangleIndices="0 1 2  0 2 3" TextureCoordinates="1 0  1 1  0 1  0 0"/>
+                                </Viewport2DVisual3D.Geometry>
+                                <Viewport2DVisual3D.Material>
+                                    <DiffuseMaterial Viewport2DVisual3D.IsVisualHostMaterial="True"/>
+                                </Viewport2DVisual3D.Material>
+                                <Viewport2DVisual3D.Visual>
+                                    <!-- 放置反面自定义用户控件 -->
+                                    <TextBlock Grid.Column="1" FontFamily="/WeatherCalendar;component/Resources/Fonts/#animals" 
+                                               Text="{Binding Path=CurrentDateTime, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:MainWindow}}, Converter={StaticResource DateTimeToAnimalSignFontConverter}}"
+                                               FontSize="60" Opacity="0.35" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White"/>
+                                </Viewport2DVisual3D.Visual>
+                            </Viewport2DVisual3D>
+                            <ContainerUIElement3D.Transform>
+                                <RotateTransform3D>
+                                    <RotateTransform3D.Rotation>
+                                        <!-- 设置旋转轴为对齐坐标系统的Y轴 -->
+                                        <AxisAngleRotation3D x:Name="aar" Angle="0" Axis="0 1 0"/>
+                                    </RotateTransform3D.Rotation>
+                                </RotateTransform3D>
+                            </ContainerUIElement3D.Transform>
+                        </ContainerUIElement3D>
+                        <ModelVisual3D>
+                            <ModelVisual3D.Content>
+                                <!-- 设置指定方向传播的平行光线填充场景 -->
+                                <DirectionalLight Color="Transparent"/>
+                            </ModelVisual3D.Content>
+                        </ModelVisual3D>
+                    </Viewport3D.Children>
+                </Viewport3D>
+                <StackPanel Grid.Column="1" Margin="5 10 5 0"
+                            HorizontalAlignment="Center" VerticalAlignment="Bottom"
+                            DataContext="{Binding Path=CurrentDateTime, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:MainWindow}}}"
+                            d:DataContext="{d:DesignData Source=DesignData/SampleDateTime.xaml}">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <TextBlock Text="{Binding ConverterParameter=年, Converter={StaticResource DateTimeToChineseEraConverter}, StringFormat=\{0\}年}"
+                                   FontSize="12" Foreground="White"
+                        />
+                        <TextBlock Text="{Binding Converter={StaticResource DateTimeToAnimalSignConverter}, StringFormat=( \{0\}年 )}"
+                                   FontSize="12" Foreground="White" Margin="10 0 0 0"
+                        />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0 10 0 0" HorizontalAlignment="Center">
+                        <TextBlock Text="{Binding StringFormat=\{0\}月, Converter={StaticResource DateTimeToChineseEraConverter}, ConverterParameter=月}"
+                                   FontSize="12" Foreground="White"
+                        />
+                        <TextBlock Text="{Binding StringFormat=\{0\}日, Converter={StaticResource DateTimeToChineseEraConverter}, ConverterParameter=日}"
+                                   FontSize="12" Foreground="White" Margin="10 0 0 0"
+                        />
+                    </StackPanel>
+                    <TextBlock Text="{Binding Converter={StaticResource DateTimeToLunarDateConverter}, ConverterParameter=日}"
+                               FontSize="16" Foreground="White" Margin="0 10 0 3" HorizontalAlignment="Center"
+                    />
+                </StackPanel>
+                <StackPanel Grid.Column="2">
+                    <StackPanel  Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="0"
+                                 DataContext="{Binding Path=CurrentDateTime, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:MainWindow}}}"
+                                 d:DataContext="{d:DesignData Source=DesignData/SampleDateTime.xaml}">
+                        <TextBlock
+                            VerticalAlignment="Bottom" HorizontalAlignment="Center" FontSize="50" Foreground="White"
+                            Text="{Binding StringFormat=\{0:HH:mm\}, ConverterCulture=zh-CN}"/>
+                        <TextBlock Margin="6 0 0 13"
+                                   VerticalAlignment="Bottom" HorizontalAlignment="Center" FontSize="10" Foreground="White"
+                                   Text="{Binding StringFormat=\{0:ss\}, ConverterCulture=zh-CN}"/>
+                    </StackPanel>
+                    <TextBlock
+                        VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="21" Foreground="White"
+                        Text="{Binding StringFormat=\{0:M月dd日  ddd\}, ConverterCulture=zh-CN}"
+                        DataContext="{Binding Path=CurrentDateTime, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:MainWindow}}}"
+                        d:DataContext="{d:DesignData Source=DesignData/SampleDateTime.xaml}"
+                    />
+                </StackPanel>
+            </Grid>
+            <local:Calendar Grid.Row="2" Width="380" Height="380" x:Name="calendar" Margin="0 10 0 0" 
+                            AllowAnimation="{Binding Path=AllowAnimation, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:MainWindow}}}"
+                            DataContext="{Binding Path=CurrentWeatherInfo, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:MainWindow}}}"
+                            WeatherInfo="{Binding}"
+                            CurrentDate="{Binding Path=ShowDate, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:MainWindow}}}"
+            />
+            <StackPanel Grid.Row="3">
+                <StackPanel.Style>
+                    <Style TargetType="StackPanel">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=calendar,Path=IsExtendedMonth}" Value="True">
+                                <Setter Property="Margin" Value="12 0 0 0"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ElementName=calendar,Path=IsExtendedMonth}" Value="False">
+                                <Setter Property="Margin" Value="12 -55 0 0"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Style>
+                <ListView Background="Transparent" BorderThickness="0" ItemTemplate="{StaticResource CountDownTemplate}" Visibility="Collapsed"
+                          ItemsSource="{Binding Path=CountDowns, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:MainWindow}}}">
+                </ListView>
+                <StackPanel Orientation="Horizontal" Opacity="0.8" Margin="6 5 0 0"
+                            Visibility="{Binding Path=ShowWorkTime, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:MainWindow}}, Converter={StaticResource YBoolToVisibilityConverter}}">
+                    <TextBlock VerticalAlignment="Bottom" FontSize="16" Foreground="GhostWhite" Text="距 "/>
+                    <TextBlock Margin="0 0 0 -1" VerticalAlignment="Bottom" FontSize="20" Foreground="Brown" 
+                               Text="{Binding Path=WorkTimeSpanFlag, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:MainWindow}}}"/>
+                    <TextBlock VerticalAlignment="Bottom" FontSize="16" Foreground="GhostWhite" Text=" 还有 "/>
+                    <TextBlock Margin="0 0 0 -2" VerticalAlignment="Bottom" FontSize="20" Foreground="Crimson" 
+                               Text="{Binding Path=WorkTimeSpan.Hours, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:MainWindow}}}"/>
+                    <TextBlock VerticalAlignment="Bottom" FontSize="16" Foreground="GhostWhite" Text=" 小时 "/>
+                    <TextBlock Margin="0 0 0 -2" VerticalAlignment="Bottom" FontSize="20" Foreground="Firebrick"  
+                               Text="{Binding Path=WorkTimeSpan.Minutes, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:MainWindow}}}"/>
+                    <TextBlock VerticalAlignment="Bottom" FontSize="16" Foreground="GhostWhite" Text=" 分钟"/>
+                </StackPanel>
+                <ListView Background="Transparent" BorderThickness="0" Margin="0 5 0 0"
+                          ItemTemplate="{StaticResource NoteDataTemplate}"
+                          ItemsSource="{Binding Path=Notes, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:MainWindow}}}"/>
+
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>

@@ -1,0 +1,241 @@
+﻿<Window x:Class="WeatherCalendar.RestHolidaySetting"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WeatherCalendar"
+        xmlns:yui="clr-namespace:YUI.Controls;assembly=YUI"
+        mc:Ignorable="d"
+        Title="GetCityWindow" Height="460" Width="420" WindowState="Normal" WindowStyle="None" 
+        AllowsTransparency="True" Background="Transparent" WindowStartupLocation="CenterScreen" 
+        MouseLeftButtonDown="GetCityWindow_OnMouseLeftButtonDown"
+        Loaded="RestHolidaySetting_OnLoaded" ResizeMode="NoResize"
+        >
+    <Window.CommandBindings>
+        <CommandBinding Command="{x:Static SystemCommands.CloseWindowCommand}" CanExecute="CloseWindowCommand_CanExecute" Executed="CloseWindowCommand_Executed"/>
+    </Window.CommandBindings>
+    <Border Margin="5" Background="#222222" CornerRadius="5">
+        <Border.Effect>
+            <DropShadowEffect Color="Black" Direction="0" ShadowDepth="0" Opacity="0.8" BlurRadius="5"/>
+        </Border.Effect>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Horizontal" Margin="5">
+                    <Image Height="15" Width="15" Margin="0 0 5 0" VerticalAlignment="Center" Source="Resources/NotifyIcon.png"/>
+                    <TextBlock Text="日历详情" VerticalAlignment="Center" Foreground="White"/>
+                    <TextBlock Margin="10 0 0 0" Text="{Binding CurrentWeatherInfo.Status.Updatetime, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, StringFormat={}{0}更新}" 
+                               VerticalAlignment="Center" Foreground="#56A2D4" FontSize="10"/>
+                </StackPanel>
+                <Button Grid.Column="1" Focusable="False"
+                        Margin="0 -1 -1 0"
+                        BorderBrush="Transparent"
+                        Background="Transparent" 
+                        Height="25" Width="25" 
+                        yui:YAttachProperty.YIcon="&#xe682;" 
+                        yui:YAttachProperty.YIconFontFamily="Resources/Fonts/#iconfont"
+                        yui:YAttachProperty.YIconSize="10"
+                        yui:YAttachProperty.YCornerRadius="0 3 0 0"
+                        yui:YAttachProperty.YMouseOverBackground="#DD0000"
+                        yui:YAttachProperty.YPressedBackground="DarkRed"
+                        Foreground="#DDDDDD"
+                        Command="{x:Static SystemCommands.CloseWindowCommand}"
+                        VerticalAlignment="Top" 
+                        HorizontalAlignment="Right">
+                    <Button.ToolTip>
+                        <ToolTip Background="Transparent" Padding="0" BorderBrush="Transparent" BorderThickness="0">
+                            <Border Margin="5" Padding="5" BorderBrush="Transparent" BorderThickness="0" CornerRadius="2" Background="#EEEEEE">
+                                <Border.Effect>
+                                    <DropShadowEffect Color="Black" Direction="0" ShadowDepth="0" Opacity="0.8" BlurRadius="5"/>
+                                </Border.Effect>
+                                <Grid Effect="{x:Null}">
+                                    <TextBlock>关闭</TextBlock>
+                                </Grid>
+                            </Border>
+                        </ToolTip>
+                    </Button.ToolTip>
+                </Button>
+            </Grid>
+            <Grid Grid.Row="1" Margin="10">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <ComboBox FontSize="18" x:Name="yearComboBox" Width="100" Background="Transparent" BorderBrush="Transparent"
+                                  ItemsSource="{Binding Path=Years, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:RestHolidaySetting}}}"
+                                  SelectionChanged="YearComboBox_OnSelectionChanged" Focusable="False"
+                                  yui:YAttachProperty.YPopupBackground="#343434"
+                                  />
+                        <Button Width="30" FontSize="20" Background="Transparent" BorderBrush="Transparent" Content="&lt;"
+                                Click="LastButton_OnClick" Focusable="False"
+                                yui:YAttachProperty.YMouseOverForeground="#87CEFA"
+                                yui:YAttachProperty.YPressedForeground="SteelBlue"
+                                yui:YAttachProperty.YMouseOverBackground="Transparent" 
+                                yui:YAttachProperty.YPressedBackground="Transparent"/>
+                        <ComboBox FontSize="18" x:Name="mouthComboBox" Width="80" Background="Transparent" BorderBrush="Transparent"
+                                  ItemsSource="{Binding Path=Mouth, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:RestHolidaySetting}}}"
+                                  SelectionChanged="MouthComboBox_OnSelectionChanged" Focusable="False"
+                                  yui:YAttachProperty.YPopupBackground="#343434"/>
+                        <Button Width="30" FontSize="20" Background="Transparent" BorderBrush="Transparent" Content="&gt;"
+                                Click="NextButton_OnClick" Focusable="False"
+                                yui:YAttachProperty.YMouseOverForeground="#87CEFA"
+                                yui:YAttachProperty.YPressedForeground="SteelBlue"
+                                yui:YAttachProperty.YMouseOverBackground="Transparent" 
+                                yui:YAttachProperty.YPressedBackground="Transparent"/>
+                    </StackPanel>
+                    <local:Calendar Margin="0 10 0 0" Width="380" Height="380" x:Name="calendar" CalendarRowsChanged="Calendar_OnCalendarRowsChanged"
+                                    WeatherInfo="{Binding Path=CurrentWeatherInfo, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:RestHolidaySetting}}}"
+                                    AllowAnimation="False"/>
+                </StackPanel>
+            </Grid>
+            <StackPanel Grid.Row="0" Grid.RowSpan="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                
+                <Button
+                    FontSize="11"
+                    HorizontalContentAlignment="Right" Focusable="False"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    Background="Transparent" 
+                    BorderBrush="Transparent"
+                    yui:YAttachProperty.YMouseOverBackground="Transparent"
+                    yui:YAttachProperty.YMouseOverBorderBrush="Transparent"
+                    yui:YAttachProperty.YPressedBackground="Transparent"
+                    yui:YAttachProperty.YPressedBorderBrush="Transparent"
+                    Foreground="#4682B4"
+                    yui:YAttachProperty.YMouseOverForeground="#87CEFA"
+                    yui:YAttachProperty.YPressedForeground="#104E8B"
+                    Content="{Binding Path=CurrentWeatherInfo.Status.City, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:RestHolidaySetting}}}"
+                    Click="ChangeCityButton_OnClick"
+                    >
+                    <Button.ToolTip>
+                        <ToolTip Background="Transparent" Padding="0" BorderBrush="Transparent" BorderThickness="0">
+                            <Border Margin="5" Padding="5" BorderBrush="Transparent" BorderThickness="0" CornerRadius="2" Background="#EEEEEE">
+                                <Border.Effect>
+                                    <DropShadowEffect Color="Black" Direction="0" ShadowDepth="0" Opacity="0.8" BlurRadius="5"/>
+                                </Border.Effect>
+                                <Grid Effect="{x:Null}">
+                                    <TextBlock>更换城市</TextBlock>
+                                </Grid>
+                            </Border>
+                        </ToolTip>
+                    </Button.ToolTip>
+                </Button>
+                <Button Height="25" Width="25" Margin="0 1 0 0" Focusable="False"
+                    HorizontalAlignment="Right" 
+                    VerticalAlignment="Top"
+                    FontFamily="/WeatherCalendar;component/Resources/Fonts/#fontawesome"
+                    Content="&#xf01e;"
+                    Background="Transparent" 
+                    BorderBrush="Transparent"
+                    yui:YAttachProperty.YMouseOverBackground="Transparent"
+                    yui:YAttachProperty.YMouseOverBorderBrush="Transparent"
+                    yui:YAttachProperty.YPressedBackground="Transparent"
+                    yui:YAttachProperty.YPressedBorderBrush="Transparent"
+                    Foreground="#4682B4"
+                    yui:YAttachProperty.YMouseOverForeground="#87CEFA"
+                    yui:YAttachProperty.YPressedForeground="#104E8B"
+                    Click="UpdateWeatherButton_OnClick" FontSize="10"
+                    >
+                    <Button.ToolTip>
+                        <ToolTip Background="Transparent" Padding="0" BorderBrush="Transparent" BorderThickness="0">
+                            <Border Margin="5" Padding="5" BorderBrush="Transparent" BorderThickness="0" CornerRadius="2" Background="#EEEEEE">
+                                <Border.Effect>
+                                    <DropShadowEffect Color="Black" Direction="0" ShadowDepth="0" Opacity="0.8" BlurRadius="5"/>
+                                </Border.Effect>
+                                <Grid Effect="{x:Null}">
+                                    <TextBlock>更新天气</TextBlock>
+                                </Grid>
+                            </Border>
+                        </ToolTip>
+                    </Button.ToolTip>
+                </Button>
+                <Button 
+                        Margin="0 1 4 0" Focusable="False"
+                        Height="25" Width="25" 
+                        Content="&#xf017;" 
+                        FontFamily="Resources/Fonts/#fontawesome"
+                        Background="Transparent" 
+                        BorderBrush="Transparent"
+                        yui:YAttachProperty.YMouseOverBackground="Transparent"
+                        yui:YAttachProperty.YMouseOverBorderBrush="Transparent"
+                        yui:YAttachProperty.YPressedBackground="Transparent"
+                        yui:YAttachProperty.YPressedBorderBrush="Transparent"
+                        Foreground="#4682B4"
+                        yui:YAttachProperty.YMouseOverForeground="#87CEFA"
+                        yui:YAttachProperty.YPressedForeground="#104E8B"
+                        VerticalAlignment="Top" 
+                        HorizontalAlignment="Right" Click="StopWatchButton_OnClick">
+                    <Button.ToolTip>
+                        <ToolTip Background="Transparent" Padding="0" BorderBrush="Transparent" BorderThickness="0">
+                            <Border Margin="5" Padding="5" BorderBrush="Transparent" BorderThickness="0" CornerRadius="2" Background="#EEEEEE">
+                                <Border.Effect>
+                                    <DropShadowEffect Color="Black" Direction="0" ShadowDepth="0" Opacity="0.8" BlurRadius="5"/>
+                                </Border.Effect>
+                                <Grid Effect="{x:Null}">
+                                    <TextBlock>秒表</TextBlock>
+                                </Grid>
+                            </Border>
+                        </ToolTip>
+                    </Button.ToolTip>
+                </Button>
+                <Button FontSize="14" Height="60" Width="30"  Focusable="False"
+                    VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0 0 25 0"
+                    Background="#4682B4" BorderBrush="Transparent"
+                    Click="TodayButton_OnClick">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Grid>
+                                <Grid.Effect>
+                                    <DropShadowEffect ShadowDepth="5" Direction="-90" Opacity="0.3" Color="Black"></DropShadowEffect>
+                                </Grid.Effect>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition Height="10"/>
+                                </Grid.RowDefinitions>
+                                <Rectangle x:Name="rec" Fill="{TemplateBinding Background}"></Rectangle>
+                                <Polygon x:Name="p1" Grid.Row="1" Points="0,0 15,0, 0,10" StrokeThickness="0" Stroke="Transparent" Fill="{TemplateBinding Background}" />
+                                <Polygon x:Name="p2" Grid.Row="1" Points="15,0 30,0, 30,10"  StrokeThickness="0" Stroke="Transparent" Fill="{TemplateBinding Background}" />
+                                <TextBlock Grid.Row="0" Foreground="White" HorizontalAlignment="Center" FontSize="13" VerticalAlignment="Center">
+                                <Run>今</Run>
+                                <LineBreak></LineBreak>
+                                <Run>天</Run>
+                                </TextBlock>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <!--设置鼠标进入时的背景、前景样式-->
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Fill" Value="#87CEFA" TargetName="rec"/>
+                                    <Setter Property="Fill" Value="#87CEFA" TargetName="p1"/>
+                                    <Setter Property="Fill" Value="#87CEFA" TargetName="p2"/>
+                                </Trigger>
+                                <!--鼠标按下时的前景、背景样式-->
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Fill" Value="#104E8B" TargetName="rec"/>
+                                    <Setter Property="Fill" Value="#104E8B" TargetName="p1"/>
+                                    <Setter Property="Fill" Value="#104E8B" TargetName="p2"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                    <Button.ToolTip>
+                        <ToolTip Background="Transparent" Padding="0" BorderBrush="Transparent" BorderThickness="0">
+                            <Border Margin="5" Padding="5" BorderBrush="Transparent" BorderThickness="0" CornerRadius="2" Background="#EEEEEE">
+                                <Border.Effect>
+                                    <DropShadowEffect Color="Black" Direction="0" ShadowDepth="0" Opacity="0.8" BlurRadius="5"/>
+                                </Border.Effect>
+                                <Grid Effect="{x:Null}">
+                                    <TextBlock>转到今天</TextBlock>
+                                </Grid>
+                            </Border>
+                        </ToolTip>
+                    </Button.ToolTip>
+                </Button>
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>

@@ -1,0 +1,12 @@
+C:\Users\19012\Desktop\SharpSxwnl\SharpSxwnl\bin\Debug\SharpSxwnl.xml
+C:\Users\19012\Desktop\SharpSxwnl\SharpSxwnl\bin\Debug\SharpSxwnl.dll
+C:\Users\19012\Desktop\SharpSxwnl\SharpSxwnl\bin\Debug\SharpSxwnl.pdb
+C:\Users\19012\Desktop\SharpSxwnl\SharpSxwnl\obj\Debug\SharpSxwnl.csprojResolveAssemblyReference.cache
+C:\Users\19012\Desktop\SharpSxwnl\SharpSxwnl\obj\Debug\SharpSxwnl.dll
+C:\Users\19012\Desktop\SharpSxwnl\SharpSxwnl\obj\Debug\SharpSxwnl.pdb
+D:\c#\Weather\SharpSxwnl\bin\Debug\SharpSxwnl.xml
+D:\c#\Weather\SharpSxwnl\bin\Debug\SharpSxwnl.dll
+D:\c#\Weather\SharpSxwnl\bin\Debug\SharpSxwnl.pdb
+D:\c#\Weather\SharpSxwnl\obj\Debug\SharpSxwnl.csprojResolveAssemblyReference.cache
+D:\c#\Weather\SharpSxwnl\obj\Debug\SharpSxwnl.dll
+D:\c#\Weather\SharpSxwnl\obj\Debug\SharpSxwnl.pdb

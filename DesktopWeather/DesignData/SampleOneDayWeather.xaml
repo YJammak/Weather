@@ -1,0 +1,4 @@
+﻿<weather:OneDayWeather  xmlns:weather="clr-namespace:Weather;assembly=Weather"
+                        Weather="中雨" Date="14日周四" 
+                        WindDirection="西风" WindForce="微风级" 
+                        HighTemperature="高温 30℃" LowTemperature="低温 23℃"/>

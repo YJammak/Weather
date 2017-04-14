@@ -1,0 +1,323 @@
+﻿<UserControl x:Class="WeatherCalendar.CalendarDay"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WeatherCalendar"
+             xmlns:yui="clr-namespace:YUI.Controls;assembly=YUI"
+             mc:Ignorable="d" Loaded="CalendarDay_OnLoaded"
+             d:DesignHeight="300" d:DesignWidth="300" IsEnabled="False"
+             >
+    <UserControl.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="18"/>
+        </Style>
+
+        <Style TargetType="MenuItem" BasedOn="{StaticResource YMenuItemNoBorderStyle}" x:Key="MenuItemStyle">
+            <Setter Property="Background" Value="#444444"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="yui:YAttachProperty.YCornerRadius" Value="2"/>
+            <Setter Property="yui:YAttachProperty.YMouseOverBackground" Value="#4682B4"/>
+            <Setter Property="yui:YAttachProperty.YMouseOverForeground" Value="OrangeRed"/>
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="#444444"/>
+                    <Setter Property="Foreground" Value="#55FFFFFF"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        
+        <Style TargetType="ContextMenu" BasedOn="{StaticResource YContextMenuNoBorderStyle}" x:Key="ContextMenuStyle">
+            <Setter Property="Background" Value="#444444"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="yui:YAttachProperty.YCornerRadius" Value="2"/>
+        </Style>
+
+        <local:DateInfoToBrushConverter x:Key="DateInfoToBrushConverter"/>
+        <local:DateInfoToBackgroundConverter x:Key="DateInfoToBackgroundConverter"/>
+        <local:DateInfoToLunisolarDayConverter x:Key="DateInfoToLunisolarDayConverter"/>
+        <local:DateInfoToDivisionConverter x:Key="DateInfoToDivisionConverter"/>
+        <local:DateInfoToHolidayConverter x:Key="DateInfoToHolidayConverter"/>
+        <local:DateInfoToDayBrushConverter x:Key="DateInfoToDayBrushConverter"/>
+        <local:DateInfoToDivisionFontBrushConverter x:Key="DateInfoToDivisionFontBrushConverter"/>
+        <local:DateInfoToHolidayFontBrushConverter x:Key="DateInfoToHolidayFontBrushConverter"/>
+        <local:DateInfoToRestHolidayConverter x:Key="DateInfoToRestHolidayConverter"/>
+        <local:DateInfoToHolidayBrushConverter x:Key="DateInfoToHolidayBrushConverter"/>
+        <local:DateInfoToDateInfoConverter x:Key="DateInfoToDateInfoConverter"/>
+        <local:DateInfoToDaysConverter x:Key="DateInfoToDaysConverter"/>
+        <local:DateInfoToDaysInfoOfYearConverter x:Key="DateInfoToDaysInfoOfYearConverter"/>
+        <local:DateInfoToChineseDateInfoConverter x:Key="DateInfoToChineseDateInfoConverter"/>
+        <local:DateInfoToVisibilityConverter x:Key="DateInfoToVisibilityConverter"/>
+        <local:DateTimeToAnimalSignFontConverter x:Key="DateTimeToAnimalSignFontConverter"/>
+        <local:HasMarkToSetingTextConverter x:Key="HasMarkToSetingTextConverter"/>
+        <local:NotesToStringConverter x:Key="NotesToStringConverter"/>
+    </UserControl.Resources>
+    <Border Background="{Binding DateInfo, Converter={StaticResource DateInfoToBackgroundConverter}}"
+            BorderBrush="Transparent" BorderThickness="0" CornerRadius="3"
+            d:DataContext="{d:DesignData Source=../DesignData/SampleDateTime.xaml}"
+            DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:CalendarDay}}}"
+            ToolTipService.HasDropShadow="False" ToolTipService.ShowDuration="100000" 
+            MouseEnter="UIElement_OnMouseEnter" MouseLeave="UIElement_OnMouseLeave">
+        <Border.ToolTip>
+            <ToolTip Background="Transparent" Padding="0" BorderBrush="Transparent" BorderThickness="0">
+                <Border Margin="5" Padding="15" BorderBrush="Transparent" BorderThickness="0" CornerRadius="3" Background="#EEEEEE">
+                    <Border.Effect>
+                        <DropShadowEffect Color="Black" Direction="0" ShadowDepth="0" Opacity="0.8" BlurRadius="5"/>
+                    </Border.Effect>
+                    <Grid Effect="{x:Null}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Margin="0 0 10 0">
+                            <TextBlock HorizontalAlignment="Center" FontSize="30" 
+                                       Text="{Binding DateInfo, Converter={StaticResource DateInfoToDaysConverter}}"/>
+                            <TextBlock HorizontalAlignment="Center" FontSize="15" 
+                                       DataContext="{Binding DateInfo, Converter={StaticResource DateInfoToRestHolidayConverter}, ConverterParameter=D}" 
+                                       Text="{Binding}" 
+                                       Visibility="{Binding DateInfo, Converter={StaticResource YStringToVisibilitiyConverter}}"/>
+                        </StackPanel>
+                        <Grid Grid.Row="0" Grid.Column="1" VerticalAlignment="Center">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Grid.RowSpan="3" FontFamily="/WeatherCalendar;component/Resources/Fonts/#animals" 
+                                       Text="{Binding DateInfo.DateTime, Converter={StaticResource DateTimeToAnimalSignFontConverter}}"
+                                       FontSize="60" Opacity="0.15" VerticalAlignment="Center" HorizontalAlignment="Left"
+                                       />
+                            <TextBlock Margin="0 0 0 2" FontSize="12" HorizontalAlignment="Left" Grid.Row="0" Text="{Binding DateInfo, Converter={StaticResource DateInfoToDaysInfoOfYearConverter}}"/>
+                            <TextBlock Margin="0 2 0 2" FontSize="12" HorizontalAlignment="Left" Grid.Row="1" Text="{Binding DateInfo, Converter={StaticResource DateInfoToDateInfoConverter}}"/>
+                            <TextBlock Margin="0 2 0 0" FontSize="12" HorizontalAlignment="Left" Grid.Row="2" Text="{Binding DateInfo, Converter={StaticResource DateInfoToChineseDateInfoConverter}}"/>
+                        </Grid>
+                        <local:OneDayWeatherControl Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="15 10 0 0" CurrentDayWeather="{Binding DateInfo.Weather}" 
+                                                    Visibility="{Binding DateInfo, Converter={StaticResource DateInfoToVisibilityConverter}}"/>
+
+                        <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" FontSize="12" HorizontalAlignment="Left"
+                                   Text="{Binding Notes, Converter={StaticResource NotesToStringConverter}}"
+                                   Visibility="{Binding Text, RelativeSource={RelativeSource Self}, Converter={StaticResource YStringToVisibilitiyConverter}}"
+                                   />
+                    </Grid>
+                </Border>
+            </ToolTip>
+        </Border.ToolTip>
+        <Border BorderBrush="Transparent" BorderThickness="0" CornerRadius="3"
+                MouseLeftButtonUp="Border_OnMouseLeftButtonUp" x:Name="border">
+            <Border.ContextMenu>
+                <ContextMenu Style="{StaticResource ContextMenuStyle}" Opened="ContextMenu_OnOpened">
+                    <MenuItem Style="{StaticResource MenuItemStyle}" Header="设置记事信息" Click="SetNotesMenuItem_OnClick"/>
+                    <MenuItem Style="{StaticResource MenuItemStyle}" x:Name="setmarkMenuItem" Header="设置标记" Click="SetMarkMenuItem_OnClick"/>
+                    <MenuItem Style="{StaticResource MenuItemStyle}" Visibility="Collapsed" x:Name="countDownMenuItem" Header="设置倒计时" Click="CountDownMenuItem_OnClick"/>
+                    <MenuItem Style="{StaticResource MenuItemStyle}" Header="设置节假日" Click="RestHolidayMenuItem_OnClick"/>
+                    <MenuItem Style="{StaticResource MenuItemStyle}" Header="设置公历节日" Click="HolidayMenuItem_OnClick"/>
+                    <MenuItem Style="{StaticResource MenuItemStyle}" Header="设置农历节日" Click="ChineseHolidayMenuItem_OnClick"/>
+                </ContextMenu>
+            </Border.ContextMenu>
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Setter Property="Background" Value="#01000000"></Setter>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#33FFFFFF"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+            <Grid>
+                <Viewport3D>
+                    <Viewport3D.Camera>
+                        <!-- Position属性指定3D空间中摄像机的位置，LookDirection属性为摄像机方向 -->
+                        <PerspectiveCamera Position="{Binding CameraPoint3D}" LookDirection="0 0 -1" />
+                    </Viewport3D.Camera>
+                    <Viewport3D.Children>
+                        <ContainerUIElement3D>
+                            <Viewport2DVisual3D>
+                                <Viewport2DVisual3D.Geometry>
+                                    <!-- Positions属性表示绘制对象的点集合，TriangleIndices属性表示对象的正反面（WPF通过逆时针环绕表示正面），TextureCoordinates属性表示2D纹理映射到3D对象 -->
+                                    <!-- 一般通过3D建模工具推导得出 -->
+                                    <MeshGeometry3D Positions="-200 200 0  -200 -200 0  200 -200 0  200 200 0" TriangleIndices="0 1 2  0 2 3" TextureCoordinates="0 0  0 1  1 1  1 0"/>
+                                </Viewport2DVisual3D.Geometry>
+                                <Viewport2DVisual3D.Material>
+                                    <DiffuseMaterial Viewport2DVisual3D.IsVisualHostMaterial="True"/>
+                                </Viewport2DVisual3D.Material>
+                                <Viewport2DVisual3D.Visual>
+                                    <!-- 放置正面自定义用户控件 -->
+                                    <Grid Background="#00000000" Width="55" Height="55">
+                                        <StackPanel VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding DateInfo.DateTime, StringFormat=\{0: d \}}" Foreground="{Binding DateInfo, Converter={StaticResource DateInfoToBrushConverter}}" />
+                                            <Button>
+                                                <Button.Style>
+                                                    <Style TargetType="Button">
+                                                        <Setter Property="Template">
+                                                            <Setter.Value>
+                                                                <ControlTemplate>
+                                                                    <Border>
+                                                                        <StackPanel HorizontalAlignment="Center">
+                                                                            <TextBlock x:Name="date"
+                                                                                        Visibility="Collapsed"
+                                                                                        HorizontalAlignment="Center"
+                                                                                        Text="{Binding DateInfo, Converter={StaticResource DateInfoToLunisolarDayConverter}}"
+                                                                                        FontSize="11"
+                                                                                        Foreground="{Binding DateInfo, Converter={StaticResource DateInfoToDayBrushConverter}}"/>
+                                                                            <TextBlock x:Name="div"
+                                                                                       HorizontalAlignment="Center"
+                                                                                       Text="{Binding DateInfo, Converter={StaticResource DateInfoToDivisionConverter}}"
+                                                                                       FontSize="11"
+                                                                                       Foreground="{Binding DateInfo, Converter={StaticResource DateInfoToDivisionFontBrushConverter}}"/>
+                                                                            <TextBlock x:Name="holidy"
+                                                                                       HorizontalAlignment="Center"
+                                                                                       Text="{Binding DateInfo, Converter={StaticResource DateInfoToHolidayConverter}}"
+                                                                                       FontSize="11"
+                                                                                       Foreground="{Binding DateInfo, Converter={StaticResource DateInfoToHolidayFontBrushConverter}}"/>
+                                                                        </StackPanel>
+                                                                    </Border>
+                                                                    <ControlTemplate.Triggers>
+                                                                        <MultiTrigger>
+                                                                            <MultiTrigger.Conditions>
+                                                                                <Condition SourceName="div" Property="TextBlock.Text" Value=""/>
+                                                                                <Condition SourceName="holidy" Property="TextBlock.Text" Value=""/>
+                                                                            </MultiTrigger.Conditions>
+                                                                            <Setter TargetName="date" Property="Visibility" Value="Visible"/>
+                                                                        </MultiTrigger>
+                                                                        <Trigger SourceName="div" Property="TextBlock.Text" Value="">
+                                                                            <Setter TargetName="div" Property="Visibility" Value="Collapsed"/>
+                                                                        </Trigger>
+                                                                        <Trigger SourceName="holidy" Property="TextBlock.Text" Value="">
+                                                                            <Setter TargetName="holidy" Property="Visibility" Value="Collapsed"/>
+                                                                        </Trigger>
+                                                                    </ControlTemplate.Triggers>
+                                                                </ControlTemplate>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </Style>
+                                                </Button.Style>
+                                            </Button>
+                                        </StackPanel>
+                                    </Grid>
+                                </Viewport2DVisual3D.Visual>
+                            </Viewport2DVisual3D>
+                            <Viewport2DVisual3D>
+                                <Viewport2DVisual3D.Geometry>
+                                    <MeshGeometry3D Positions="200 200 0  200 -200 0  -200 -200 0  -200 200 0" TriangleIndices="0 1 2  0 2 3" TextureCoordinates="0 0  0 1  1 1  1 0"/>
+                                </Viewport2DVisual3D.Geometry>
+                                <Viewport2DVisual3D.Material>
+                                    <DiffuseMaterial Viewport2DVisual3D.IsVisualHostMaterial="True"/>
+                                </Viewport2DVisual3D.Material>
+                                <Viewport2DVisual3D.Visual>
+                                    <!-- 放置反面自定义用户控件 -->
+                                    <Grid Background="#00000000" Width="55" Height="55">
+                                        <StackPanel VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding DateInfo.DateTime, StringFormat=\{0: d \}}" Foreground="{Binding DateInfo, Converter={StaticResource DateInfoToBrushConverter}}" />
+                                            <Button>
+                                                <Button.Style>
+                                                    <Style TargetType="Button">
+                                                        <Setter Property="Template">
+                                                            <Setter.Value>
+                                                                <ControlTemplate>
+                                                                    <Border>
+                                                                        <StackPanel HorizontalAlignment="Center">
+                                                                            <TextBlock x:Name="date"
+                                                                                        Visibility="Collapsed"
+                                                                                        HorizontalAlignment="Center"
+                                                                                        Text="{Binding DateInfo, Converter={StaticResource DateInfoToLunisolarDayConverter}}"
+                                                                                        FontSize="11"
+                                                                                        Foreground="{Binding DateInfo, Converter={StaticResource DateInfoToDayBrushConverter}}"/>
+                                                                            <TextBlock x:Name="div"
+                                                                                       HorizontalAlignment="Center"
+                                                                                       Text="{Binding DateInfo, Converter={StaticResource DateInfoToDivisionConverter}}"
+                                                                                       FontSize="11"
+                                                                                       Foreground="{Binding DateInfo, Converter={StaticResource DateInfoToDivisionFontBrushConverter}}"/>
+                                                                            <TextBlock x:Name="holidy"
+                                                                                       HorizontalAlignment="Center"
+                                                                                       Text="{Binding DateInfo, Converter={StaticResource DateInfoToHolidayConverter}}"
+                                                                                       FontSize="11"
+                                                                                       Foreground="{Binding DateInfo, Converter={StaticResource DateInfoToHolidayFontBrushConverter}}"/>
+                                                                        </StackPanel>
+                                                                    </Border>
+                                                                    <ControlTemplate.Triggers>
+                                                                        <MultiTrigger>
+                                                                            <MultiTrigger.Conditions>
+                                                                                <Condition SourceName="div" Property="TextBlock.Text" Value=""/>
+                                                                                <Condition SourceName="holidy" Property="TextBlock.Text" Value=""/>
+                                                                            </MultiTrigger.Conditions>
+                                                                            <Setter TargetName="date" Property="Visibility" Value="Visible"/>
+                                                                        </MultiTrigger>
+                                                                        <Trigger SourceName="div" Property="TextBlock.Text" Value="">
+                                                                            <Setter TargetName="div" Property="Visibility" Value="Collapsed"/>
+                                                                        </Trigger>
+                                                                        <Trigger SourceName="holidy" Property="TextBlock.Text" Value="">
+                                                                            <Setter TargetName="holidy" Property="Visibility" Value="Collapsed"/>
+                                                                        </Trigger>
+                                                                    </ControlTemplate.Triggers>
+                                                                </ControlTemplate>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </Style>
+                                                </Button.Style>
+                                            </Button>
+                                        </StackPanel>
+                                    </Grid>
+                                </Viewport2DVisual3D.Visual>
+                            </Viewport2DVisual3D>
+                            <ContainerUIElement3D.Transform>
+                                <RotateTransform3D>
+                                    <RotateTransform3D.Rotation>
+                                        <!-- 设置旋转轴为对齐坐标系统的Y轴 -->
+                                        <AxisAngleRotation3D x:Name="aar" Angle="{Binding Angle}" 
+                                                             Axis="{Binding Axis}"/>
+                                    </RotateTransform3D.Rotation>
+                                </RotateTransform3D>
+                            </ContainerUIElement3D.Transform>
+                        </ContainerUIElement3D>
+                        <ModelVisual3D>
+                            <ModelVisual3D.Content>
+                                <!-- 设置指定方向传播的平行光线填充场景 -->
+                                <DirectionalLight Color="Transparent"/>
+                            </ModelVisual3D.Content>
+                        </ModelVisual3D>
+                    </Viewport3D.Children>
+                </Viewport3D>
+                <Border Visibility="{Binding HasMark, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:CalendarDay}}, Converter={StaticResource YBoolToVisibilityConverter}}" 
+                        Margin="-5 0" Opacity="0.5" VerticalAlignment="Center" Height="3" CornerRadius="1.5" Background="Red" RenderTransformOrigin="0.5 0.5">
+                    <Border.RenderTransform>
+                        <RotateTransform Angle="-45"></RotateTransform>
+                    </Border.RenderTransform>
+                </Border>
+                <StackPanel HorizontalAlignment="Right" VerticalAlignment="Top" Margin="2">
+                    <Image Width="10" Height="10" Source="{Binding DayImage}"/>
+                    <Image Width="10" Height="10" Source="{Binding NightImage}" Margin="0 3 0 0"/>
+                </StackPanel>
+                <StackPanel Margin="5 5 0 0" VerticalAlignment="Top" HorizontalAlignment="Left"
+                            DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}">
+                    <TextBlock Margin="0 0 0 3"
+                               FontSize="7" FontWeight="Bold"
+                               Text="{Binding DateInfo, Converter={StaticResource DateInfoToRestHolidayConverter}}"
+                               Foreground="{Binding DateInfo, Converter={StaticResource DateInfoToHolidayBrushConverter}}"
+                               Visibility="{Binding Text, RelativeSource={RelativeSource Self}, Converter={StaticResource YStringToVisibilitiyConverter}}"
+                            />
+                    <Border Width="6" Height="6" CornerRadius="4"
+                            Tag="{Binding Notes, Converter={StaticResource NotesToStringConverter}}"
+                            Visibility="{Binding Tag, RelativeSource={RelativeSource Self}, Converter={StaticResource YStringToVisibilitiyConverter}}"
+                            >
+                        <Border.Background>
+                            <RadialGradientBrush>
+                                <GradientStop Color="OrangeRed" Offset="0"/>
+                                <GradientStop Color="OrangeRed" Offset="0.618"/>
+                                <GradientStop Color="#00FF4500" Offset="1"/>
+                            </RadialGradientBrush>
+                        </Border.Background>
+                    </Border>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Border>
+</UserControl>
+

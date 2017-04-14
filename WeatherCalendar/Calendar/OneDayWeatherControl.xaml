@@ -1,0 +1,81 @@
+﻿<UserControl x:Class="WeatherCalendar.OneDayWeatherControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WeatherCalendar"
+             mc:Ignorable="d" Margin="5"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid DataContext="{Binding Path=CurrentDayWeather, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:OneDayWeatherControl}}}">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Grid.Row="0" Margin="0 2" FontSize="14" Text="白天" Foreground="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:OneDayWeatherControl}}}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                <StackPanel Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <Image Width="40" Height="40" HorizontalAlignment="Center"
+                           Source="{Binding Path=DayImage, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:OneDayWeatherControl}}}"/>
+                </StackPanel>
+                <StackPanel  Grid.Column="1" Grid.Row="1" Margin="10 0 0 0" VerticalAlignment="Center" HorizontalAlignment="Left">
+                    <TextBlock Margin="0 2" FontSize="12" Text="{Binding DayWeather.Weather}" Foreground="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:OneDayWeatherControl}}}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                    <TextBlock Margin="0 2" FontSize="12" Text="{Binding DayWeather.WindInfo}" Foreground="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:OneDayWeatherControl}}}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                </StackPanel>
+            </Grid>
+            <Grid Grid.Column="1" Margin="10 0 0 0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Grid.Row="0" Margin="0 2" FontSize="14" Text="夜间" Foreground="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:OneDayWeatherControl}}}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                <StackPanel Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <Image Width="40" Height="40" HorizontalAlignment="Center"
+                           Source="{Binding Path=NightImage, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:OneDayWeatherControl}}}"/>
+                </StackPanel>
+                <StackPanel  Grid.Column="1" Grid.Row="1" Margin="10 0 0 0" VerticalAlignment="Center" HorizontalAlignment="Left">
+                    <TextBlock Margin="0 2" FontSize="12" Text="{Binding NightWeather.Weather}" Foreground="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:OneDayWeatherControl}}}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                    <TextBlock Margin="0 2" FontSize="12" Text="{Binding NightWeather.WindInfo}" Foreground="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:OneDayWeatherControl}}}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                </StackPanel>
+            </Grid>
+        </Grid>
+        <Grid Grid.Row="1" Margin="0 5 0 0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Grid.Row="0" FontSize="12" Text="{Binding HighTemperature, StringFormat=高温：{0} ℃}" Foreground="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:OneDayWeatherControl}}}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                <TextBlock Grid.Column="0" Grid.Row="1" FontSize="12" Text="{Binding LowTemperature, StringFormat=低温：{0} ℃}" Foreground="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:OneDayWeatherControl}}}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                <TextBlock Margin="10 2 0 0" Grid.Column="1" Grid.Row="0" FontSize="12" Text="{Binding Sunrise, StringFormat=日出：{0}}" Foreground="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:OneDayWeatherControl}}}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                <TextBlock Margin="10 2 0 0" Grid.Column="1" Grid.Row="1" FontSize="12" Text="{Binding Sunset, StringFormat=日落：{0}}" Foreground="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:OneDayWeatherControl}}}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+            </Grid>
+            <TextBlock Grid.Row="1"  FontSize="16" Text="{Binding DayWeather.Notice}" Foreground="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:OneDayWeatherControl}}}" 
+                       VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0 5 0 2"/>
+        </Grid>
+    </Grid>
+</UserControl>

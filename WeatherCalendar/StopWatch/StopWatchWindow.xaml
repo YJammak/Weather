@@ -1,0 +1,116 @@
+﻿<Window x:Class="WeatherCalendar.StopWatchWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WeatherCalendar"
+        xmlns:yui="clr-namespace:YUI.Controls;assembly=YUI"
+        mc:Ignorable="d" ResizeMode="NoResize"
+        Title="StopWatchWindow" Height="300" Width="400"
+        WindowState="Normal" WindowStartupLocation="CenterScreen" WindowStyle="None" AllowsTransparency="True"
+        Background="Transparent" MouseLeftButtonDown="StopWatchWindow_OnMouseLeftButtonDown"
+        LocationChanged="StopWatchWindow_OnLocationChanged" KeyDown="StopWatchWindow_OnKeyDown">
+    <Window.Resources>
+        <local:StopWatchTimeToTime x:Key="StopWatchTimeToTime"/>
+        <local:StopWatchTimeToMillisecond x:Key="StopWatchTimeToMillisecond"/>
+        <local:StopWatchInfoToStartButton x:Key="StopWatchInfoToStartButton"/>
+        <local:StopWatchInfoToRecordButton x:Key="StopWatchInfoToRecordButton"/>
+        <local:StopWatchInfoToAngle x:Key="StopWatchInfoToAngle"/>
+    </Window.Resources>
+    <Window.CommandBindings>
+        <CommandBinding Command="{x:Static SystemCommands.CloseWindowCommand}" CanExecute="CloseWindowCommand_CanExecute" Executed="CloseWindowCommand_Executed"/>
+    </Window.CommandBindings>
+    <Border Margin="5" Background="#222222" CornerRadius="5">
+        <Border.Effect>
+            <DropShadowEffect Color="Black" Direction="0" ShadowDepth="0" Opacity="0.8" BlurRadius="5"/>
+        </Border.Effect>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Horizontal" Margin="5">
+                    <Image Height="15" Width="15" Margin="0 0 5 0" VerticalAlignment="Center" Source="../Resources/NotifyIcon.png"/>
+                    <TextBlock Text="秒表" VerticalAlignment="Center" Foreground="White"/>
+                </StackPanel>
+                <Button Grid.Column="1" Focusable="False"
+                        Margin="0 -1 -1 0"
+                        BorderBrush="Transparent"
+                        Background="Transparent" 
+                        Height="25" Width="25" 
+                        yui:YAttachProperty.YIcon="&#xe682;" 
+                        yui:YAttachProperty.YIconFontFamily="../Resources/Fonts/#iconfont"
+                        yui:YAttachProperty.YIconSize="10"
+                        yui:YAttachProperty.YCornerRadius="0 3 0 0"
+                        yui:YAttachProperty.YMouseOverBackground="#DD0000"
+                        yui:YAttachProperty.YPressedBackground="DarkRed"
+                        Foreground="#DDDDDD"
+                        Command="{x:Static SystemCommands.CloseWindowCommand}"
+                        VerticalAlignment="Top" 
+                        HorizontalAlignment="Right">
+                    <Button.ToolTip>
+                        <ToolTip Background="Transparent" Padding="0" BorderBrush="Transparent" BorderThickness="0">
+                            <Border Margin="5" Padding="5" BorderBrush="Transparent" BorderThickness="0" CornerRadius="2" Background="#EEEEEE">
+                                <Border.Effect>
+                                    <DropShadowEffect Color="Black" Direction="0" ShadowDepth="0" Opacity="0.8" BlurRadius="5"/>
+                                </Border.Effect>
+                                <Grid Effect="{x:Null}">
+                                    <TextBlock>关闭</TextBlock>
+                                </Grid>
+                            </Border>
+                        </ToolTip>
+                    </Button.ToolTip>
+                </Button>
+            </Grid>
+            <Grid Grid.Row="1">
+                <Border Width="200" Height="200" CornerRadius="100" BorderBrush="DarkRed" BorderThickness="2">
+                    <Grid>
+                        <StackPanel Margin="0 -20 0 0" HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
+                            <TextBlock Foreground="White" FontSize="40" 
+                                       Text="{Binding StopWatch.StopWatchTime, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:StopWatchWindow}}, Converter={StaticResource StopWatchTimeToTime}}"/>
+                            <TextBlock Foreground="White" FontSize="25" Margin="6 0 0 4" VerticalAlignment="Bottom"
+                                       Text="{Binding StopWatch.StopWatchTime, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:StopWatchWindow}}, Converter={StaticResource StopWatchTimeToMillisecond}}"/>
+                        </StackPanel>
+                        <Button Height="30" Width="50" VerticalAlignment="Bottom" Margin="0 0 0 35" Focusable="False"
+                                Background="Transparent" BorderThickness="0" FontSize="20"
+                                yui:YAttachProperty.YMouseOverBackground="Transparent"
+                                yui:YAttachProperty.YPressedBackground="Transparent"
+                                yui:YAttachProperty.YMouseOverForeground="OrangeRed"
+                                yui:YAttachProperty.YPressedForeground="DarkRed"
+                                Click="StartButton_OnClick"
+                                Content="{Binding StopWatch.Status, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:StopWatchWindow}}, Converter={StaticResource StopWatchInfoToStartButton}}"
+                                />
+                        <Grid RenderTransformOrigin="0.5 0.5"
+                              Visibility="{Binding ElementName=recordButton, Path=Visibility}"
+                              >
+                            <Grid.RenderTransform>
+                                <RotateTransform Angle="{Binding StopWatch.StopWatchTime, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:StopWatchWindow}}, Converter={StaticResource StopWatchInfoToAngle}}"></RotateTransform>
+                            </Grid.RenderTransform>
+                            <Border Width="6" Height="6" VerticalAlignment="Top" Margin="0 -4 0 0" Background="OrangeRed" CornerRadius="3">
+                                <Border.Effect>
+                                    <DropShadowEffect Color="OrangeRed" ShadowDepth="0" BlurRadius="10"/>
+                                </Border.Effect>
+                            </Border>
+                        </Grid>
+                        <Button Height="50" Width="50" VerticalAlignment="Bottom" HorizontalAlignment="Right"
+                                yui:YAttachProperty.YCornerRadius="25" Focusable="False"
+                                Background="#4682B4" BorderThickness="0" FontSize="14"
+                                yui:YAttachProperty.YMouseOverBackground="#87CEFA"
+                                yui:YAttachProperty.YPressedBackground="#104E8B"
+                                Click="TimeButton_OnClick"
+                                Visibility="{Binding Tag, RelativeSource={RelativeSource Self}, Converter={StaticResource YStringToVisibilitiyConverter}}"
+                                Tag="{Binding StopWatch.Status, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:StopWatchWindow}}, Converter={StaticResource StopWatchInfoToRecordButton}}"
+                                Content="{Binding StopWatch.Status, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:StopWatchWindow}}, Converter={StaticResource StopWatchInfoToRecordButton}}"
+                                x:Name="recordButton"
+                                />
+                    </Grid>
+                </Border>
+            </Grid>
+        </Grid>
+    </Border>
+</Window>

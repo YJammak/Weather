@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using Newtonsoft.Json;
 using RestSharp;
+using RestSharp.Serializers.NewtonsoftJson;
 
 namespace Weather
 {
@@ -117,18 +117,18 @@ namespace Weather
                     return null;
 
                 var client = new RestClient("http://zhwnlapi.etouch.cn");
+                client.UseNewtonsoftJson();
+
                 var request = new RestRequest("Ecalender/api/v2/weather");
                 request.AddParameter("app_key", "99817882");
                 request.AddParameter("citykey", city.CityKey);
 
-                var response = client.Get(request);
+                var response = client.Get<WeatherForecast>(request);
 
                 if (!response.IsSuccessful)
                     return null;
-                
-                var result = JsonConvert.DeserializeObject<WeatherForecast>(response.Content);
 
-                WeatherForecast = result;
+                WeatherForecast = response.Data;
 
                 WeatherInfoUpdated?.Invoke();
 

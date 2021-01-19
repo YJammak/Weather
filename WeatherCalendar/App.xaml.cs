@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Reflection;
 using System.Windows;
+using ReactiveUI;
+using Splat;
 
 namespace WeatherCalendar
 {
@@ -13,5 +10,11 @@ namespace WeatherCalendar
     /// </summary>
     public partial class App : Application
     {
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+
+            Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetCallingAssembly());
+        }
     }
 }

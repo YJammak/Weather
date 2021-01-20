@@ -5,7 +5,7 @@
     <TargetFramework>net5.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>Icon.ico</ApplicationIcon>
-    <Copyright>Copyright © 2020 Y.J.K. All rights reserved.</Copyright>
+    <Copyright>Copyright © 2021 Y.J.K. All rights reserved.</Copyright>
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
     <FileVersion>1.0.0.0</FileVersion>
     <Version>1.0.0.0</Version>
@@ -33,16 +33,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\" />
-    <Folder Include="Models\" />
-    <Folder Include="Services\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="Icon.ico">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Utils\" />
   </ItemGroup>
 
 </Project>

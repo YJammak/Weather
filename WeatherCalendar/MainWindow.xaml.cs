@@ -1,6 +1,5 @@
-﻿using System.Linq;
+﻿using System.Reactive.Disposables;
 using ReactiveUI;
-using Weather;
 using WeatherCalendar.ViewModels;
 
 namespace WeatherCalendar
@@ -13,6 +12,16 @@ namespace WeatherCalendar
         public MainWindow()
         {
             InitializeComponent();
+
+            ViewModel = new MainWindowViewModel();
+
+            this.WhenActivated(WhenActivated);
+        }
+
+        private void WhenActivated(CompositeDisposable disposable)
+        {
+            this.OneWayBind(ViewModel, model => model.CurrentViewModel, window => window.ViewModelViewHost.ViewModel)
+                .DisposeWith(disposable);
         }
     }
 }

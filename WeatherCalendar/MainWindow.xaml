@@ -6,11 +6,19 @@
     xmlns:local="clr-namespace:WeatherCalendar"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:rxui="http://reactiveui.net"
-    xmlns:vm="clr-namespace:WeatherCalendar.ViewModels"
+    xmlns:vms="clr-namespace:WeatherCalendar.ViewModels"
     Title="MainWindow"
-    Width="800"
-    Height="450"
-    x:TypeArguments="vm:MainWindowViewModel"
+    x:TypeArguments="vms:MainWindowViewModel"
+    AllowsTransparency="True"
+    Background="Transparent"
+    SizeToContent="WidthAndHeight"
+    WindowStartupLocation="CenterScreen"
+    WindowStyle="None"
     mc:Ignorable="d">
-    <Grid />
+    <Grid>
+        <rxui:ViewModelViewHost
+            x:Name="ViewModelViewHost"
+            HorizontalContentAlignment="Stretch"
+            VerticalContentAlignment="Center" />
+    </Grid>
 </rxui:ReactiveWindow>

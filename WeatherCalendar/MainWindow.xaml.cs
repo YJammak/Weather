@@ -14,7 +14,7 @@ namespace WeatherCalendar
             InitializeComponent();
 
             ViewModel = new MainWindowViewModel();
-
+            
             this.WhenActivated(WhenActivated);
         }
 

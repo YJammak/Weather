@@ -9,10 +9,7 @@
     xmlns:vms="clr-namespace:WeatherCalendar.ViewModels"
     x:TypeArguments="vms:CalendarViewModel"
     mc:Ignorable="d">
-    <Grid
-        Width="100"
-        Height="100"
-        Background="White">
-        <TextBlock Text="testsetset" />
+    <Grid Background="White">
+        <ListBox x:Name="ListBox" />
     </Grid>
 </rxui:ReactiveUserControl>

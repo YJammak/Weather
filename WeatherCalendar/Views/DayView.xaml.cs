@@ -21,7 +21,7 @@ namespace WeatherCalendar.Views
         {
             this.OneWayBind(
                 ViewModel,
-                model => model.Date,
+                model => model.Date.Date,
                 view => view.TextBlock.Text, 
                 info => info.Date.ToString("yyyy-MM-dd"));
         }

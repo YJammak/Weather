@@ -1,6 +1,4 @@
-﻿using System;
-using System.Reactive.Disposables;
-using System.Reactive.Linq;
+﻿using System.Reactive.Disposables;
 using System.Windows;
 using ReactiveUI;
 
@@ -22,13 +20,13 @@ namespace WeatherCalendar.Views
         {
             this.OneWayBind(
                     ViewModel, 
-                    model => model.CurrentPageRows, 
+                    model => model.CurrentMonthRows, 
                     view => view.UniformGrid.Rows)
                 .DisposeWith(disposable);
 
             this.OneWayBind(
                     ViewModel, 
-                    model => model.CurrentPageDate, 
+                    model => model.CurrentMonth, 
                     view => view.DateTextBlock.Text, 
                     time => time.ToString("yyyy-MM"))
                 .DisposeWith(disposable);
@@ -39,28 +37,19 @@ namespace WeatherCalendar.Views
             this.BindCommand(ViewModel!, model => model.NextMonthCommand, view => view.NextMonth)
                 .DisposeWith(disposable);
 
-            this.ViewModel
-                .WhenAnyValue(x => x.Days)
-                .Do(ds =>
-                {
-                    UniformGrid.Children.Clear();
+            if (UniformGrid.Children.Count > 0)
+                return;
 
-                    if (ds == null)
-                        return;
+            foreach (var mode in ViewModel.Days)
+            {
+                var viewFor = ViewLocator.Current.ResolveView(mode);
+                if (viewFor is not UIElement element)
+                    continue;
 
-                    foreach (var mode in ds)
-                    {
-                        var viewFor = ViewLocator.Current.ResolveView(mode);
-                        if (viewFor is not UIElement element)
-                            continue;
+                viewFor.ViewModel = mode;
 
-                        viewFor.ViewModel = mode;
-
-                        UniformGrid.Children.Add(element);
-                    }
-                })
-                .Subscribe()
-                .DisposeWith(disposable);
+                UniformGrid.Children.Add(element);
+            }
         }
     }
 }

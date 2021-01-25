@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using DynamicData;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Weather;
-using WeatherCalendar.Models;
 
 // ReSharper disable UnassignedGetOnlyAutoProperty
 
@@ -18,30 +15,22 @@ namespace WeatherCalendar.ViewModels
     {
         public ViewModelActivator Activator { get; }
 
-        //private readonly SourceList<DayViewModel> _daysSource;
-        //private readonly ReadOnlyObservableCollection<DayViewModel> _days;
-        ///// <summary>
-        ///// 当前页的天
-        ///// </summary>
-        //public ReadOnlyObservableCollection<DayViewModel> Days => _days;
+        /// <summary>
+        /// 当前月的天
+        /// </summary>
+        public DayViewModel[] Days { get; }
 
         /// <summary>
-        /// 当前页的天
+        /// 当前月日期（某月1号）
         /// </summary>
         [Reactive]
-        public DayViewModel[] Days { get; set; }
-
-        /// <summary>
-        /// 当前页日期（某月1号）
-        /// </summary>
-        [Reactive]
-        public DateTime CurrentPageDate { get; set; }
+        public DateTime CurrentMonth { get; set; }
         
         /// <summary>
-        /// 当前页行数
+        /// 当前月行数
         /// </summary>
         [Reactive]
-        public int CurrentPageRows { get; set; }
+        public int CurrentMonthRows { get; set; }
         
         /// <summary>
         /// 天气预报
@@ -70,32 +59,37 @@ namespace WeatherCalendar.ViewModels
         {
             Activator = new ViewModelActivator();
 
-            //_daysSource = new SourceList<DayViewModel>();
-            //_daysSource.Connect()
-            //    .ObserveOnDispatcher()
-            //    .Bind(out _days)
-            //    .Subscribe();
+            var days = new DayViewModel[7 * 6];
+            for (var i = 0; i < days.Length; i++)
+            {
+                days[i] = new DayViewModel();
+            }
+            Days = days;
 
-            CurrentPageDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            CurrentMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
 
-            GotoMonthCommand = ReactiveCommand.Create(new Action<DateTime>(UpdateDate));
+            GotoMonthCommand = ReactiveCommand.Create<DateTime>(month =>
+            {
+                CurrentMonth = new DateTime(month.Year, month.Month, 1);
+            });
             NextMonthCommand = ReactiveCommand.Create(() =>
             {
-                CurrentPageDate = CurrentPageDate.AddMonths(1);
+                CurrentMonth = CurrentMonth.AddMonths(1);
             });
             LastMonthCommand = ReactiveCommand.Create(() =>
             {
-                CurrentPageDate = CurrentPageDate.AddMonths(-1);
+                CurrentMonth = CurrentMonth.AddMonths(-1);
             });
             CurrentMonthCommand = ReactiveCommand.Create(() =>
             {
-                CurrentPageDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+                CurrentMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
             });
 
             this.WhenActivated(disposable =>
             {
-                this.WhenAnyValue(x => x.CurrentPageDate)
-                    .InvokeCommand(GotoMonthCommand)
+                this.WhenAnyValue(x => x.CurrentMonth)
+                    .Do(UpdateDate)
+                    .Subscribe()
                     .DisposeWith(disposable);
 
                 MessageBus
@@ -107,6 +101,10 @@ namespace WeatherCalendar.ViewModels
             });
         }
 
+        /// <summary>
+        /// 更新天气
+        /// </summary>
+        /// <param name="weatherForecast"></param>
         private void UpdateForecast(WeatherForecast weatherForecast)
         {
             foreach (var day in Days)
@@ -122,6 +120,10 @@ namespace WeatherCalendar.ViewModels
             }
         }
 
+        /// <summary>
+        /// 更新日历日期
+        /// </summary>
+        /// <param name="date"></param>
         private void UpdateDate(DateTime date)
         {
             var firstDayOfMonth = new DateTime(date.Year, date.Month, 1);
@@ -140,27 +142,12 @@ namespace WeatherCalendar.ViewModels
                 endDateOfPage = startDateOfPage.AddDays(7 * rows - 1);
             }
 
-            CurrentPageRows = rows;
+            CurrentMonthRows = rows;
 
-            var days = new DayViewModel[7 * rows];
-            for (var i = 0; i < days.Length; i++)
+            for (var i = 0; i < 7 * rows; i++)
             {
-                days[i] = new DayViewModel
-                {
-                    Date = new DateInfo
-                    {
-                        Date = startDateOfPage.AddDays(i)
-                    }
-                };
+                Days[i].Date.Date = startDateOfPage.AddDays(i);
             }
-
-            Days = days;
-
-            //_daysSource.Edit(list =>
-            //{
-            //    list.Clear();
-            //    list.AddRange(days);
-            //});
 
             UpdateForecast(Forecast);
         }

@@ -1,4 +1,7 @@
-﻿using ReactiveUI;
+﻿using System;
+using System.Reactive.Disposables;
+using System.Reactive.Linq;
+using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Weather;
 using WeatherCalendar.Models;

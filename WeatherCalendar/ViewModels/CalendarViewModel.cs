@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using DynamicData;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Weather;
+using WeatherCalendar.Models;
 
 // ReSharper disable UnassignedGetOnlyAutoProperty
 
@@ -14,13 +17,20 @@ namespace WeatherCalendar.ViewModels
     public class CalendarViewModel : ReactiveObject, IActivatableViewModel
     {
         public ViewModelActivator Activator { get; }
-        
+
+        //private readonly SourceList<DayViewModel> _daysSource;
+        //private readonly ReadOnlyObservableCollection<DayViewModel> _days;
+        ///// <summary>
+        ///// 当前页的天
+        ///// </summary>
+        //public ReadOnlyObservableCollection<DayViewModel> Days => _days;
+
         /// <summary>
         /// 当前页的天
         /// </summary>
         [Reactive]
         public DayViewModel[] Days { get; set; }
-        
+
         /// <summary>
         /// 当前页日期（某月1号）
         /// </summary>
@@ -59,13 +69,12 @@ namespace WeatherCalendar.ViewModels
         public CalendarViewModel()
         {
             Activator = new ViewModelActivator();
-            
-            var days = new DayViewModel[7 * 6];
-            for (var i = 0; i < days.Length; i++)
-            {
-                days[i] = new DayViewModel();
-            }
-            Days = days;
+
+            //_daysSource = new SourceList<DayViewModel>();
+            //_daysSource.Connect()
+            //    .ObserveOnDispatcher()
+            //    .Bind(out _days)
+            //    .Subscribe();
 
             CurrentPageDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
 
@@ -133,10 +142,25 @@ namespace WeatherCalendar.ViewModels
 
             CurrentPageRows = rows;
 
-            for (var i = 0; i < 7 * rows; i++)
+            var days = new DayViewModel[7 * rows];
+            for (var i = 0; i < days.Length; i++)
             {
-                Days[i].Date.Date = startDateOfPage.AddDays(i);
+                days[i] = new DayViewModel
+                {
+                    Date = new DateInfo
+                    {
+                        Date = startDateOfPage.AddDays(i)
+                    }
+                };
             }
+
+            Days = days;
+
+            //_daysSource.Edit(list =>
+            //{
+            //    list.Clear();
+            //    list.AddRange(days);
+            //});
 
             UpdateForecast(Forecast);
         }

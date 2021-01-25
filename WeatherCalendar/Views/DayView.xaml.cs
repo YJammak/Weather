@@ -1,4 +1,6 @@
-﻿using System.Reactive.Disposables;
+﻿using System;
+using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using ReactiveUI;
 
 namespace WeatherCalendar.Views
@@ -21,7 +23,7 @@ namespace WeatherCalendar.Views
                 ViewModel,
                 model => model.Date,
                 view => view.TextBlock.Text, 
-                info => info.Date.ToString("s"));
+                info => info.Date.ToString("yyyy-MM-dd"));
         }
     }
 }

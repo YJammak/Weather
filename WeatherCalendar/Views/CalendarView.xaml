@@ -10,6 +10,19 @@
     x:TypeArguments="vms:CalendarViewModel"
     mc:Ignorable="d">
     <Grid Background="White">
-        <ListBox x:Name="ListBox" />
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Orientation="Horizontal">
+            <Button x:Name="LastMonth" Content="《" />
+            <TextBlock x:Name="DateTextBlock" Width="100" />
+            <Button x:Name="NextMonth" Content="》" />
+        </StackPanel>
+        <UniformGrid
+            x:Name="UniformGrid"
+            Grid.Row="1"
+            Columns="7"
+            Rows="5" />
     </Grid>
 </rxui:ReactiveUserControl>

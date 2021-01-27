@@ -6,11 +6,30 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:rxui="http://reactiveui.net"
     xmlns:vms="clr-namespace:WeatherCalendar.ViewModels"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
+    Width="55"
+    Height="55"
     x:TypeArguments="vms:DayViewModel"
     mc:Ignorable="d">
-    <Grid>
-        <TextBlock x:Name="TextBlock" />
-    </Grid>
+    <Border>
+        <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <TextBlock
+                x:Name="DayTextBlock"
+                Grid.Row="0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontSize="16"
+                Text="1" />
+            <TextBlock
+                x:Name="LunarTextBlock"
+                Grid.Row="1"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontSize="12"
+                Text="初三" />
+        </Grid>
+    </Border>
 </rxui:ReactiveUserControl>

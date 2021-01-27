@@ -19,10 +19,32 @@
             <TextBlock x:Name="DateTextBlock" Width="100" />
             <Button x:Name="NextMonth" Content="》" />
         </StackPanel>
-        <UniformGrid
-            x:Name="UniformGrid"
-            Grid.Row="1"
-            Columns="7"
-            Rows="5" />
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <UniformGrid Grid.Row="0" Rows="1">
+                <UniformGrid.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="FontSize" Value="18" />
+                        <Setter Property="VerticalAlignment" Value="Center" />
+                        <Setter Property="HorizontalAlignment" Value="Center" />
+                    </Style>
+                </UniformGrid.Resources>
+                <TextBlock Text="一" />
+                <TextBlock Text="二" />
+                <TextBlock Text="三" />
+                <TextBlock Text="四" />
+                <TextBlock Text="五" />
+                <TextBlock Text="六" />
+                <TextBlock Text="日" />
+            </UniformGrid>
+            <UniformGrid
+                x:Name="UniformGrid"
+                Grid.Row="1"
+                Columns="7"
+                Rows="5" />
+        </Grid>
     </Grid>
 </rxui:ReactiveUserControl>

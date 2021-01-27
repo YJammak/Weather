@@ -1,10 +1,10 @@
-﻿using System;
+﻿using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
+using System;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
 using Weather;
 
 // ReSharper disable UnassignedGetOnlyAutoProperty
@@ -25,13 +25,13 @@ namespace WeatherCalendar.ViewModels
         /// </summary>
         [Reactive]
         public DateTime CurrentMonth { get; set; }
-        
+
         /// <summary>
         /// 当前月行数
         /// </summary>
         [Reactive]
         public int CurrentMonthRows { get; set; }
-        
+
         /// <summary>
         /// 天气预报
         /// </summary>
@@ -127,11 +127,11 @@ namespace WeatherCalendar.ViewModels
         private void UpdateDate(DateTime date)
         {
             var firstDayOfMonth = new DateTime(date.Year, date.Month, 1);
-            var startDateOfPage = firstDayOfMonth.AddDays(1 - (int) firstDayOfMonth.DayOfWeek);
+            var startDateOfPage = firstDayOfMonth.AddDays(1 - (int)firstDayOfMonth.DayOfWeek);
 
             var daysOfMonth = (int)(firstDayOfMonth.AddMonths(1) - firstDayOfMonth).TotalDays;
             var endDayOfMonth = firstDayOfMonth.AddDays(daysOfMonth - 1);
-            
+
 
             var rows = 4;
             var endDateOfPage = startDateOfPage.AddDays(7 * rows - 1);
@@ -146,7 +146,11 @@ namespace WeatherCalendar.ViewModels
 
             for (var i = 0; i < 7 * rows; i++)
             {
-                Days[i].Date.Date = startDateOfPage.AddDays(i);
+                var dateOfDay = startDateOfPage.AddDays(i);
+                Days[i].Date.Date = dateOfDay;
+                Days[i].IsCurrentMonth =
+                    dateOfDay.Year == date.Year &&
+                    dateOfDay.Month == date.Month;
             }
 
             UpdateForecast(Forecast);

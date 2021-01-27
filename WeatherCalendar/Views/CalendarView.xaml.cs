@@ -1,6 +1,6 @@
-﻿using System.Reactive.Disposables;
+﻿using ReactiveUI;
+using System.Reactive.Disposables;
 using System.Windows;
-using ReactiveUI;
 
 namespace WeatherCalendar.Views
 {
@@ -19,15 +19,15 @@ namespace WeatherCalendar.Views
         private void WhenActivated(CompositeDisposable disposable)
         {
             this.OneWayBind(
-                    ViewModel, 
-                    model => model.CurrentMonthRows, 
+                    ViewModel,
+                    model => model.CurrentMonthRows,
                     view => view.UniformGrid.Rows)
                 .DisposeWith(disposable);
 
             this.OneWayBind(
-                    ViewModel, 
-                    model => model.CurrentMonth, 
-                    view => view.DateTextBlock.Text, 
+                    ViewModel,
+                    model => model.CurrentMonth,
+                    view => view.DateTextBlock.Text,
                     time => time.ToString("yyyy-MM"))
                 .DisposeWith(disposable);
 

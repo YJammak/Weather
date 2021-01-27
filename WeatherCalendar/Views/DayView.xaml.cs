@@ -1,7 +1,5 @@
-﻿using System;
+﻿using ReactiveUI;
 using System.Reactive.Disposables;
-using System.Reactive.Linq;
-using ReactiveUI;
 
 namespace WeatherCalendar.Views
 {
@@ -21,9 +19,13 @@ namespace WeatherCalendar.Views
         {
             this.OneWayBind(
                 ViewModel,
-                model => model.Date.Date,
-                view => view.TextBlock.Text, 
-                info => info.Date.ToString("yyyy-MM-dd"));
+                model => model.Day,
+                view => view.DayTextBlock.Text);
+
+            this.OneWayBind(
+                ViewModel,
+                model => model.Subtitle1,
+                view => view.LunarTextBlock.Text);
         }
     }
 }

@@ -1,14 +1,12 @@
-﻿using System;
+﻿using SharpSxwnl;
+using System;
 using System.Collections.Concurrent;
-using SharpSxwnl;
-using Splat;
 
 namespace WeatherCalendar.Services
 {
     public class CalendarService
     {
-        private static readonly ConcurrentDictionary<DateTime, Lunar> LunarDictionary 
-            = new ConcurrentDictionary<DateTime, Lunar>();
+        private static readonly ConcurrentDictionary<DateTime, Lunar> LunarDictionary = new();
 
         /// <summary>
         /// 获取农历年名称（正月）

@@ -1,8 +1,8 @@
-﻿using System;
-using System.Reactive.Linq;
-using ReactiveUI;
+﻿using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
+using System;
+using System.Reactive.Linq;
 using WeatherCalendar.Services;
 
 // ReSharper disable UnassignedGetOnlyAutoProperty
@@ -95,6 +95,18 @@ namespace WeatherCalendar.Models
         [ObservableAsProperty]
         public string DogDaysDetail { get; }
 
+        /// <summary>
+        /// 中国节假日
+        /// </summary>
+        [ObservableAsProperty]
+        public string ChineseHoliday { get; }
+
+        /// <summary>
+        /// 节假日
+        /// </summary>
+        [ObservableAsProperty]
+        public string Holiday { get; }
+
         public DateInfo()
         {
             var calendarService = Locator.Current.GetService<CalendarService>();
@@ -150,6 +162,14 @@ namespace WeatherCalendar.Models
             this.WhenAnyValue(x => x.Date)
                 .Select(calendarService.GetDogDaysDetail)
                 .ToPropertyEx(this, info => info.DogDaysDetail);
+
+            this.WhenAnyValue(x => x.Date)
+                .Select(x => "")
+                .ToPropertyEx(this, info => info.ChineseHoliday);
+
+            this.WhenAnyValue(x => x.Date)
+                .Select(x => "")
+                .ToPropertyEx(this, info => info.Holiday);
         }
     }
 }

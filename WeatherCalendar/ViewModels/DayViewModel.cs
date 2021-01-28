@@ -4,6 +4,8 @@ using System.Reactive.Linq;
 using Weather;
 using WeatherCalendar.Models;
 
+// ReSharper disable UnassignedGetOnlyAutoProperty
+
 namespace WeatherCalendar.ViewModels
 {
     public class DayViewModel : ReactiveObject
@@ -30,19 +32,25 @@ namespace WeatherCalendar.ViewModels
         /// 公历日期
         /// </summary>
         [ObservableAsProperty]
-        public string Day { get; }
+        public string DayName { get; }
 
         /// <summary>
-        /// 副标题1
+        /// 农历日期
         /// </summary>
         [ObservableAsProperty]
-        public string Subtitle1 { get; }
+        public string LunarDayName { get; }
 
         /// <summary>
-        /// 副标题2
+        /// 节气
         /// </summary>
         [ObservableAsProperty]
-        public string Subtitle2 { get; set; }
+        public string SolarTermName { get; }
+
+        /// <summary>
+        /// 节假日
+        /// </summary>
+        [ObservableAsProperty]
+        public string HolidayName { get; }
 
         public DayViewModel()
         {
@@ -50,10 +58,51 @@ namespace WeatherCalendar.ViewModels
 
             this.WhenAnyValue(x => x.Date.Date)
                 .Select(d => d.Day.ToString())
-                .ToPropertyEx(this, model => model.Day);
+                .ToPropertyEx(this, model => model.DayName);
 
-            this.WhenAnyValue(x => x.Date.LunarDayName)
-                .ToPropertyEx(this, model => model.Subtitle1);
+            this.WhenAnyValue(
+                    x => x.Date.LunarDayName,
+                    x => x.Date.LunarMonthName,
+                    x => x.Date.LunarMonthSizeFlag,
+                    x => x.Date.LunarLeapMonthFlag,
+                    (lunarDayName,
+                        lunarMonthName,
+                        lunarMonthSizeFlag,
+                        lunarLeapMonthFlag) =>
+                    {
+                        if (lunarDayName == "初一")
+                            return $"{lunarLeapMonthFlag}{lunarMonthName}{lunarMonthSizeFlag}";
+
+                        return lunarDayName;
+                    })
+                .ToPropertyEx(this, model => model.LunarDayName);
+
+            this.WhenAnyValue(
+                    x => x.Date.SolarTerm,
+                    x => x.Date.ShuJiuOrDogDays,
+                    (solarTerm, shuJiuOrDogDays) =>
+                    {
+                        if (!string.IsNullOrWhiteSpace(solarTerm))
+                            return solarTerm;
+
+                        if (!string.IsNullOrWhiteSpace(shuJiuOrDogDays))
+                            return shuJiuOrDogDays;
+
+                        return "";
+                    })
+                .ToPropertyEx(this, model => model.SolarTermName);
+
+            this.WhenAnyValue(
+                    x => x.Date.ChineseHoliday,
+                    x => x.Date.Holiday,
+                    (chineseHoliday, holiday) =>
+                    {
+                        if (!string.IsNullOrWhiteSpace(chineseHoliday))
+                            return chineseHoliday;
+
+                        return holiday;
+                    })
+                .ToPropertyEx(this, model => model.HolidayName);
         }
 
         public override string ToString()

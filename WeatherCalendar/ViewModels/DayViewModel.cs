@@ -1,4 +1,5 @@
-﻿using ReactiveUI;
+﻿using System;
+using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using System.Reactive.Linq;
 using Weather;
@@ -15,12 +16,18 @@ namespace WeatherCalendar.ViewModels
         /// </summary>
         [Reactive]
         public DateInfo Date { get; set; }
+        
+        /// <summary>
+        /// 是否为当日
+        /// </summary>
+        [ObservableAsProperty]
+        public bool IsCurrentDay { get; }
 
         /// <summary>
         /// 是否为当前月
         /// </summary>
         [Reactive]
-        public bool IsCurrentMonth { get; set; }
+        public bool IsCurrentPageMonth { get; set; }
 
         /// <summary>
         /// 天气信息
@@ -52,13 +59,33 @@ namespace WeatherCalendar.ViewModels
         [ObservableAsProperty]
         public string HolidayName { get; }
 
+        /// <summary>
+        /// 是否为中国节假日
+        /// </summary>
+        [ObservableAsProperty]
+        public bool IsChineseHoliday { get; }
+
+        /// <summary>
+        /// 是否为周末
+        /// </summary>
+        [ObservableAsProperty]
+        public bool IsWeekend { get; }
+
         public DayViewModel()
         {
             Date = new DateInfo();
 
             this.WhenAnyValue(x => x.Date.Date)
+                .Select(d => d.Date == DateTime.Today)
+                .ToPropertyEx(this, model => model.IsCurrentDay);
+
+            this.WhenAnyValue(x => x.Date.Date)
                 .Select(d => d.Day.ToString())
                 .ToPropertyEx(this, model => model.DayName);
+
+            this.WhenAnyValue(x => x.Date.Date)
+                .Select(d => d.DayOfWeek == DayOfWeek.Saturday || d.DayOfWeek == DayOfWeek.Sunday)
+                .ToPropertyEx(this, model => model.IsWeekend);
 
             this.WhenAnyValue(
                     x => x.Date.LunarDayName,
@@ -103,6 +130,10 @@ namespace WeatherCalendar.ViewModels
                         return holiday;
                     })
                 .ToPropertyEx(this, model => model.HolidayName);
+
+            this.WhenAnyValue(x => x.Date.ChineseHoliday)
+                .Select(holiday => !string.IsNullOrWhiteSpace(holiday))
+                .ToPropertyEx(this, model => model.IsChineseHoliday);
         }
 
         public override string ToString()

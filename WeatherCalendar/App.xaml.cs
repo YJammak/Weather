@@ -3,6 +3,7 @@ using System.Windows;
 using ReactiveUI;
 using Splat;
 using WeatherCalendar.Services;
+using WeatherCalendar.Themes;
 
 namespace WeatherCalendar
 {
@@ -18,6 +19,8 @@ namespace WeatherCalendar
             Locator.CurrentMutable.RegisterLazySingleton(() => new WeatherService());
             Locator.CurrentMutable.RegisterLazySingleton(() => new CalendarService());
 
+            Locator.CurrentMutable.Register<ITheme>(() => new DefaultTheme());
+            
             Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetCallingAssembly());
             Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetExecutingAssembly());
         }

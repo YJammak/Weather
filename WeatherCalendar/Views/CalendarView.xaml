@@ -3,13 +3,12 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="clr-namespace:WeatherCalendar.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:rxui="http://reactiveui.net"
     xmlns:vms="clr-namespace:WeatherCalendar.ViewModels"
     x:TypeArguments="vms:CalendarViewModel"
     mc:Ignorable="d">
-    <Grid Background="White">
+    <Grid Background="#01000000">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition />
@@ -18,6 +17,7 @@
             <Button x:Name="LastMonth" Content="《" />
             <TextBlock x:Name="DateTextBlock" Width="100" />
             <Button x:Name="NextMonth" Content="》" />
+            <Button x:Name="CurrentMonth" Content="今" />
         </StackPanel>
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>
@@ -32,13 +32,13 @@
                         <Setter Property="HorizontalAlignment" Value="Center" />
                     </Style>
                 </UniformGrid.Resources>
-                <TextBlock Text="一" />
-                <TextBlock Text="二" />
-                <TextBlock Text="三" />
-                <TextBlock Text="四" />
-                <TextBlock Text="五" />
-                <TextBlock Text="六" />
-                <TextBlock Text="日" />
+                <TextBlock x:Name="Column1TextBlock" Text="一" />
+                <TextBlock x:Name="Column2TextBlock" Text="二" />
+                <TextBlock x:Name="Column3TextBlock" Text="三" />
+                <TextBlock x:Name="Column4TextBlock" Text="四" />
+                <TextBlock x:Name="Column5TextBlock" Text="五" />
+                <TextBlock x:Name="Column6TextBlock" Text="六" />
+                <TextBlock x:Name="Column7TextBlock" Text="日" />
             </UniformGrid>
             <UniformGrid
                 x:Name="UniformGrid"

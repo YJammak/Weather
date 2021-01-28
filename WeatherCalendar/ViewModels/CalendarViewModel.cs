@@ -148,7 +148,7 @@ namespace WeatherCalendar.ViewModels
             {
                 var dateOfDay = startDateOfPage.AddDays(i);
                 Days[i].Date.Date = dateOfDay;
-                Days[i].IsCurrentMonth =
+                Days[i].IsCurrentPageMonth =
                     dateOfDay.Year == date.Year &&
                     dateOfDay.Month == date.Month;
             }

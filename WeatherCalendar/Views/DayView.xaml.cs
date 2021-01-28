@@ -1,6 +1,8 @@
 ﻿using ReactiveUI;
 using System.Reactive.Disposables;
 using System.Windows;
+using Splat;
+using WeatherCalendar.Themes;
 
 namespace WeatherCalendar.Views
 {
@@ -70,6 +72,92 @@ namespace WeatherCalendar.Views
                     view => view.HolidayTextBlock.Visibility,
                     holidayName =>
                         string.IsNullOrWhiteSpace(holidayName) ? Visibility.Collapsed : Visibility.Visible)
+                .DisposeWith(disposable);
+
+            this.OneWayBind(
+                    ViewModel,
+                    model => model.IsCurrentDay,
+                    view => view.Border.Background,
+                    isCurrentDay =>
+                    {
+                        var theme = Locator.Current.GetService<ITheme>();
+                        return isCurrentDay ? theme.DayViewCurrentDayBackground : theme.DayViewBackground;
+                    })
+                .DisposeWith(disposable);
+
+            this.WhenAnyValue(
+                    x => x.ViewModel.IsCurrentPageMonth,
+                    x => x.ViewModel.IsWeekend,
+                    (isCurrentMonth, isWeekend) =>
+                    {
+                        var theme = Locator.Current.GetService<ITheme>();
+                        if (!isCurrentMonth)
+                            return theme.DayNameAnotherMonthForeground;
+
+                        if (isWeekend)
+                            return theme.DayNameWeekendForeground;
+
+                        return theme.DayNameNormalForeground;
+                    })
+                .BindTo(this, view => view.DayTextBlock.Foreground)
+                .DisposeWith(disposable);
+
+            this.WhenAnyValue(
+                    x => x.ViewModel.IsCurrentPageMonth,
+                    x => x.ViewModel.IsWeekend,
+                    (isCurrentMonth, isWeekend) =>
+                    {
+                        var theme = Locator.Current.GetService<ITheme>();
+                        if (!isCurrentMonth)
+                            return theme.LunarDayAnotherMonthForeground;
+
+                        if (isWeekend)
+                            return theme.LunarDayWeekendForeground;
+
+                        return theme.LunarDayNormalForeground;
+                    })
+                .BindTo(this, view => view.LunarTextBlock.Foreground)
+                .DisposeWith(disposable);
+
+            this.WhenAnyValue(
+                    x => x.ViewModel.IsCurrentPageMonth,
+                    x => x.ViewModel.IsWeekend,
+                    (isCurrentMonth, isWeekend) =>
+                    {
+                        var theme = Locator.Current.GetService<ITheme>();
+                        if (!isCurrentMonth)
+                            return theme.SolarTermAnotherMonthForeground;
+
+                        if (isWeekend)
+                            return theme.SolarTermWeekendForeground;
+
+                        return theme.SolarTermNormalForeground;
+                    })
+                .BindTo(this, view => view.SolarTermTextBlock.Foreground)
+                .DisposeWith(disposable);
+
+            this.WhenAnyValue(
+                    x => x.ViewModel.IsCurrentPageMonth,
+                    x => x.ViewModel.IsWeekend,
+                    x => x.ViewModel.IsChineseHoliday,
+                    (isCurrentMonth, isWeekend, isChineseHoliday) =>
+                    {
+                        var theme = Locator.Current.GetService<ITheme>();
+                        if (!isCurrentMonth)
+                            return theme.HolidayAnotherMonthForeground;
+
+                        if (isWeekend)
+                        {
+                            return isChineseHoliday ? 
+                                theme.ChineseHolidayWeekendForeground : 
+                                theme.HolidayWeekendForeground;
+                        }
+
+                        return isChineseHoliday ? 
+                            theme.ChineseHolidayNormalForeground : 
+                            theme.HolidayNormalForeground;
+                    })
+                .BindTo(this, view => view.HolidayTextBlock.Foreground)
                 .DisposeWith(disposable);
         }
     }

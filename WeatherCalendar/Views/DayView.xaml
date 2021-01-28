@@ -10,7 +10,7 @@
     Height="55"
     x:TypeArguments="vms:DayViewModel"
     mc:Ignorable="d">
-    <Border>
+    <Border x:Name="Border" CornerRadius="3">
         <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />

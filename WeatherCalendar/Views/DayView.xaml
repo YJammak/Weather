@@ -6,8 +6,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:rxui="http://reactiveui.net"
     xmlns:vms="clr-namespace:WeatherCalendar.ViewModels"
-    Width="55"
-    Height="55"
+    Width="60"
+    Height="60"
     x:TypeArguments="vms:DayViewModel"
     mc:Ignorable="d">
     <Border x:Name="Border" CornerRadius="3">
@@ -23,7 +23,7 @@
                 Grid.Row="0"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
-                FontSize="16"
+                FontSize="20"
                 Text="1" />
             <TextBlock
                 x:Name="LunarTextBlock"
@@ -40,7 +40,7 @@
                 FontSize="12"
                 Text="春分" />
             <TextBlock
-                x:Name="HolidayTextBlock"
+                x:Name="FestivalTextBlock"
                 Grid.Row="3"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"

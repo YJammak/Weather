@@ -33,15 +33,15 @@ namespace WeatherCalendar.Themes
         public Brush SolarTermAnotherMonthForeground 
             => new SolidColorBrush(Color.FromArgb(80, 255, 255, 255));
 
-        public Brush ChineseHolidayNormalForeground => Brushes.OrangeRed;
+        public Brush ChineseFestivalNormalForeground => Brushes.OrangeRed;
 
-        public Brush ChineseHolidayWeekendForeground => Brushes.OrangeRed;
+        public Brush ChineseFestivalWeekendForeground => Brushes.OrangeRed;
 
-        public Brush HolidayNormalForeground => Brushes.DarkOrange;
+        public Brush FestivalNormalForeground => Brushes.DarkOrange;
 
-        public Brush HolidayWeekendForeground => Brushes.DarkOrange;
+        public Brush FestivalWeekendForeground => Brushes.DarkOrange;
 
-        public Brush HolidayAnotherMonthForeground
+        public Brush FestivalAnotherMonthForeground
             => new SolidColorBrush(Color.FromArgb(80, 255, 255, 255));
     }
 }

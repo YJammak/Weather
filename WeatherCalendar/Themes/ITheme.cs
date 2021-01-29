@@ -26,14 +26,14 @@ namespace WeatherCalendar.Themes
 
         public Brush SolarTermAnotherMonthForeground { get; }
 
-        public Brush ChineseHolidayNormalForeground { get; }
+        public Brush ChineseFestivalNormalForeground { get; }
 
-        public Brush ChineseHolidayWeekendForeground { get; }
+        public Brush ChineseFestivalWeekendForeground { get; }
 
-        public Brush HolidayNormalForeground { get; }
+        public Brush FestivalNormalForeground { get; }
 
-        public Brush HolidayWeekendForeground { get; }
+        public Brush FestivalWeekendForeground { get; }
 
-        public Brush HolidayAnotherMonthForeground { get; }
+        public Brush FestivalAnotherMonthForeground { get; }
     }
 }

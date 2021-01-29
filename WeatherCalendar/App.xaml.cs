@@ -19,7 +19,12 @@ namespace WeatherCalendar
             Locator.CurrentMutable.RegisterLazySingleton(() => new WeatherService());
             Locator.CurrentMutable.RegisterLazySingleton(() => new CalendarService());
 
-            Locator.CurrentMutable.Register<ITheme>(() => new DefaultTheme());
+            var festivalService = new FestivalService();
+            festivalService.Load("festivals.json");
+            
+            Locator.CurrentMutable.RegisterConstant(festivalService);
+
+            Locator.CurrentMutable.RegisterConstant<ITheme>(new DefaultTheme());
             
             Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetCallingAssembly());
             Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetExecutingAssembly());

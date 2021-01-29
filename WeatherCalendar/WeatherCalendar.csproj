@@ -40,7 +40,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Utils\" />
+    <None Update="festivals.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

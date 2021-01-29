@@ -27,7 +27,7 @@
             <UniformGrid Grid.Row="0" Rows="1">
                 <UniformGrid.Resources>
                     <Style TargetType="TextBlock">
-                        <Setter Property="FontSize" Value="18" />
+                        <Setter Property="FontSize" Value="22" />
                         <Setter Property="VerticalAlignment" Value="Center" />
                         <Setter Property="HorizontalAlignment" Value="Center" />
                     </Style>

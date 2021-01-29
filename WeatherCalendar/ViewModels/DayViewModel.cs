@@ -57,13 +57,13 @@ namespace WeatherCalendar.ViewModels
         /// 节假日
         /// </summary>
         [ObservableAsProperty]
-        public string HolidayName { get; }
+        public string FestivalName { get; }
 
         /// <summary>
         /// 是否为中国节假日
         /// </summary>
         [ObservableAsProperty]
-        public bool IsChineseHoliday { get; }
+        public bool IsChineseFestival { get; }
 
         /// <summary>
         /// 是否为周末
@@ -120,20 +120,20 @@ namespace WeatherCalendar.ViewModels
                 .ToPropertyEx(this, model => model.SolarTermName);
 
             this.WhenAnyValue(
-                    x => x.Date.ChineseHoliday,
-                    x => x.Date.Holiday,
-                    (chineseHoliday, holiday) =>
+                    x => x.Date.ChineseFestival,
+                    x => x.Date.Festival,
+                    (chineseFestival, festival) =>
                     {
-                        if (!string.IsNullOrWhiteSpace(chineseHoliday))
-                            return chineseHoliday;
+                        if (!string.IsNullOrWhiteSpace(chineseFestival))
+                            return chineseFestival;
 
-                        return holiday;
+                        return festival;
                     })
-                .ToPropertyEx(this, model => model.HolidayName);
+                .ToPropertyEx(this, model => model.FestivalName);
 
-            this.WhenAnyValue(x => x.Date.ChineseHoliday)
-                .Select(holiday => !string.IsNullOrWhiteSpace(holiday))
-                .ToPropertyEx(this, model => model.IsChineseHoliday);
+            this.WhenAnyValue(x => x.Date.ChineseFestival)
+                .Select(chineseFestival => !string.IsNullOrWhiteSpace(chineseFestival))
+                .ToPropertyEx(this, model => model.IsChineseFestival);
         }
 
         public override string ToString()

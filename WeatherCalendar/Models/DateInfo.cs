@@ -99,13 +99,13 @@ namespace WeatherCalendar.Models
         /// 中国节假日
         /// </summary>
         [ObservableAsProperty]
-        public string ChineseHoliday { get; }
+        public string ChineseFestival { get; }
 
         /// <summary>
         /// 节假日
         /// </summary>
         [ObservableAsProperty]
-        public string Holiday { get; }
+        public string Festival { get; }
 
         public DateInfo()
         {
@@ -163,13 +163,15 @@ namespace WeatherCalendar.Models
                 .Select(calendarService.GetDogDaysDetail)
                 .ToPropertyEx(this, info => info.DogDaysDetail);
 
+            var festivalService = Locator.Current.GetService<FestivalService>();
+            
             this.WhenAnyValue(x => x.Date)
-                .Select(x => "")
-                .ToPropertyEx(this, info => info.ChineseHoliday);
+                .Select(festivalService.GetLunarFestival)
+                .ToPropertyEx(this, info => info.ChineseFestival);
 
             this.WhenAnyValue(x => x.Date)
-                .Select(x => "")
-                .ToPropertyEx(this, info => info.Holiday);
+                .Select(festivalService.GetFestival)
+                .ToPropertyEx(this, info => info.Festival);
         }
     }
 }

@@ -40,17 +40,17 @@ namespace WeatherCalendar.Views
 
             this.OneWayBind(
                     ViewModel,
-                    model => model.HolidayName,
-                    view => view.HolidayTextBlock.Text)
+                    model => model.FestivalName,
+                    view => view.FestivalTextBlock.Text)
                 .DisposeWith(disposable);
 
             this.WhenAnyValue(
                     x => x.ViewModel.SolarTermName,
-                    x => x.ViewModel.HolidayName,
-                    (solarTermName, holidayName) =>
+                    x => x.ViewModel.FestivalName,
+                    (solarTermName, festivalName) =>
                     {
                         if (string.IsNullOrWhiteSpace(solarTermName) &&
-                            string.IsNullOrWhiteSpace(holidayName))
+                            string.IsNullOrWhiteSpace(festivalName))
                             return Visibility.Visible;
 
                         return Visibility.Collapsed;
@@ -68,10 +68,10 @@ namespace WeatherCalendar.Views
 
             this.OneWayBind(
                     ViewModel,
-                    model => model.HolidayName,
-                    view => view.HolidayTextBlock.Visibility,
-                    holidayName =>
-                        string.IsNullOrWhiteSpace(holidayName) ? Visibility.Collapsed : Visibility.Visible)
+                    model => model.FestivalName,
+                    view => view.FestivalTextBlock.Visibility,
+                    festivalName =>
+                        string.IsNullOrWhiteSpace(festivalName) ? Visibility.Collapsed : Visibility.Visible)
                 .DisposeWith(disposable);
 
             this.OneWayBind(
@@ -139,25 +139,25 @@ namespace WeatherCalendar.Views
             this.WhenAnyValue(
                     x => x.ViewModel.IsCurrentPageMonth,
                     x => x.ViewModel.IsWeekend,
-                    x => x.ViewModel.IsChineseHoliday,
-                    (isCurrentMonth, isWeekend, isChineseHoliday) =>
+                    x => x.ViewModel.IsChineseFestival,
+                    (isCurrentMonth, isWeekend, isChineseFestival) =>
                     {
                         var theme = Locator.Current.GetService<ITheme>();
                         if (!isCurrentMonth)
-                            return theme.HolidayAnotherMonthForeground;
+                            return theme.FestivalAnotherMonthForeground;
 
                         if (isWeekend)
                         {
-                            return isChineseHoliday ? 
-                                theme.ChineseHolidayWeekendForeground : 
-                                theme.HolidayWeekendForeground;
+                            return isChineseFestival ? 
+                                theme.ChineseFestivalWeekendForeground : 
+                                theme.FestivalWeekendForeground;
                         }
 
-                        return isChineseHoliday ? 
-                            theme.ChineseHolidayNormalForeground : 
-                            theme.HolidayNormalForeground;
+                        return isChineseFestival ? 
+                            theme.ChineseFestivalNormalForeground : 
+                            theme.FestivalNormalForeground;
                     })
-                .BindTo(this, view => view.HolidayTextBlock.Foreground)
+                .BindTo(this, view => view.FestivalTextBlock.Foreground)
                 .DisposeWith(disposable);
         }
     }

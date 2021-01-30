@@ -34,6 +34,13 @@ namespace WeatherCalendar.Views
                 .DisposeWith(disposable);
 
             this.OneWayBind(
+                    ViewModel,
+                    model => model.CurrentMonth,
+                    view => view.MonthTextBlock.Text,
+                    month => month.Month.ToString())
+                .DisposeWith(disposable);
+
+            this.OneWayBind(
                 ViewModel,
                 model => model.CurrentMonth,
                 view => view.Column1TextBlock.Foreground,
@@ -101,6 +108,26 @@ namespace WeatherCalendar.Views
                 {
                     var theme = Locator.Current.GetService<ITheme>();
                     return theme.DayNameWeekendForeground;
+                });
+
+            this.OneWayBind(
+                ViewModel,
+                model => model.CurrentMonth,
+                view => view.MonthTextBlock.Foreground,
+                _ =>
+                {
+                    var theme = Locator.Current.GetService<ITheme>();
+                    return theme.BackgroundMonthForeground;
+                });
+
+            this.OneWayBind(
+                ViewModel,
+                model => model.CurrentMonth,
+                view => view.MonthTextBlock.Opacity,
+                _ =>
+                {
+                    var theme = Locator.Current.GetService<ITheme>();
+                    return theme.BackgroundMonthOpacity;
                 });
 
             this.BindCommand(

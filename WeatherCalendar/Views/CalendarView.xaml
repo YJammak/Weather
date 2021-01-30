@@ -40,9 +40,22 @@
                 <TextBlock x:Name="Column6TextBlock" Text="六" />
                 <TextBlock x:Name="Column7TextBlock" Text="日" />
             </UniformGrid>
+            <Viewbox
+                Grid.Row="1"
+                Width="{Binding ElementName=UniformGrid, Path=ActualWidth}"
+                Height="{Binding ElementName=UniformGrid, Path=ActualHeight}">
+                <TextBlock
+                    x:Name="MonthTextBlock"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontSize="1000"
+                    Foreground="White"
+                    Opacity="0.2" />
+            </Viewbox>
             <UniformGrid
                 x:Name="UniformGrid"
                 Grid.Row="1"
+                VerticalAlignment="Top"
                 Columns="7"
                 Rows="5" />
         </Grid>

@@ -35,5 +35,9 @@ namespace WeatherCalendar.Themes
         public Brush FestivalWeekendForeground { get; }
 
         public Brush FestivalAnotherMonthForeground { get; }
+
+        public Brush BackgroundMonthForeground { get; }
+        
+        public double BackgroundMonthOpacity { get; }
     }
 }

@@ -18,16 +18,16 @@ namespace WeatherCalendar.Models
         public DateTime Date { get; set; }
 
         /// <summary>
-        /// 农历年（正月）
+        /// 干支年（正月）
         /// </summary>
         [ObservableAsProperty]
-        public string LunarYearNameOfFirstMonth { get; }
+        public string StemsAndBranchesYearNameOfFirstMonth { get; }
 
         /// <summary>
-        /// 农历年（立春）
+        /// 干支年（立春）
         /// </summary>
         [ObservableAsProperty]
-        public string LunarYearNameOfSpringBegins { get; }
+        public string StemsAndBranchesYearNameOfSpringBegins { get; }
 
         /// <summary>
         /// 生肖（正月）
@@ -46,6 +46,12 @@ namespace WeatherCalendar.Models
         /// </summary>
         [ObservableAsProperty]
         public string LunarMonthName { get; }
+        
+        /// <summary>
+        /// 干支月
+        /// </summary>
+        [ObservableAsProperty]
+        public string StemsAndBranchesMonthName { get; }
 
         /// <summary>
         /// 农历闰月（‘闰’或空）
@@ -70,6 +76,12 @@ namespace WeatherCalendar.Models
         /// </summary>
         [ObservableAsProperty]
         public string LunarDayName { get; }
+        
+        /// <summary>
+        /// 干支日
+        /// </summary>
+        [ObservableAsProperty]
+        public string StemsAndBranchesDayName { get; }
 
         /// <summary>
         /// 节气
@@ -112,12 +124,12 @@ namespace WeatherCalendar.Models
             var calendarService = Locator.Current.GetService<CalendarService>();
 
             this.WhenAnyValue(x => x.Date)
-                .Select(calendarService.GetLunarYearNameOfFirstMonth)
-                .ToPropertyEx(this, info => info.LunarYearNameOfFirstMonth);
+                .Select(calendarService.GetStemsAndBranchesYearNameOfFirstMonth)
+                .ToPropertyEx(this, info => info.StemsAndBranchesYearNameOfFirstMonth);
 
             this.WhenAnyValue(x => x.Date)
-                .Select(calendarService.GetLunarYearNameOfSpringBegins)
-                .ToPropertyEx(this, info => info.LunarYearNameOfSpringBegins);
+                .Select(calendarService.GetStemsAndBranchesYearNameOfSpringBegins)
+                .ToPropertyEx(this, info => info.StemsAndBranchesYearNameOfSpringBegins);
 
             this.WhenAnyValue(x => x.Date)
                 .Select(calendarService.GetChineseZodiacOfFirstMonth)
@@ -130,6 +142,10 @@ namespace WeatherCalendar.Models
             this.WhenAnyValue(x => x.Date)
                 .Select(calendarService.GetLunarMonthName)
                 .ToPropertyEx(this, info => info.LunarMonthName);
+
+            this.WhenAnyValue(x => x.Date)
+                .Select(calendarService.GetStemsAndBranchesMonthName)
+                .ToPropertyEx(this, info => info.StemsAndBranchesMonthName);
 
             this.WhenAnyValue(x => x.Date)
                 .Select(calendarService.GetLunarLeapMonthFlag)
@@ -146,6 +162,10 @@ namespace WeatherCalendar.Models
             this.WhenAnyValue(x => x.Date)
                 .Select(calendarService.GetLunarDayName)
                 .ToPropertyEx(this, info => info.LunarDayName);
+
+            this.WhenAnyValue(x => x.Date)
+                .Select(calendarService.GetStemsAndBranchesDayName)
+                .ToPropertyEx(this, info => info.StemsAndBranchesDayName);
 
             this.WhenAnyValue(x => x.Date)
                 .Select(calendarService.GetSolarTerm)

@@ -1,4 +1,6 @@
-﻿using System.Reflection;
+﻿using System.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
 using System.Windows;
 using ReactiveUI;
 using Splat;
@@ -16,7 +18,15 @@ namespace WeatherCalendar
         {
             base.OnStartup(e);
 
-            Locator.CurrentMutable.RegisterLazySingleton(() => new WeatherService());
+            var weatherService = new WeatherService();
+
+            Task.Run(() =>
+            {
+                var city = weatherService.GetCities().FirstOrDefault(c => c.City == "浦东");
+                weatherService.UpdateWeather(city);
+            });
+            
+            Locator.CurrentMutable.RegisterConstant(weatherService);
             Locator.CurrentMutable.RegisterLazySingleton(() => new CalendarService());
 
             var festivalService = new FestivalService();

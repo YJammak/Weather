@@ -8,56 +8,44 @@
     xmlns:vms="clr-namespace:WeatherCalendar.ViewModels"
     x:TypeArguments="vms:CalendarViewModel"
     mc:Ignorable="d">
-    <Grid Background="#01000000">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0" Orientation="Horizontal">
-            <Button x:Name="LastMonth" Content="《" />
-            <TextBlock x:Name="DateTextBlock" Width="100" />
-            <Button x:Name="NextMonth" Content="》" />
-            <Button x:Name="CurrentMonth" Content="今" />
-        </StackPanel>
-        <Grid Grid.Row="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition />
-            </Grid.RowDefinitions>
-            <UniformGrid Grid.Row="0" Rows="1">
-                <UniformGrid.Resources>
-                    <Style TargetType="TextBlock">
-                        <Setter Property="FontSize" Value="22" />
-                        <Setter Property="VerticalAlignment" Value="Center" />
-                        <Setter Property="HorizontalAlignment" Value="Center" />
-                    </Style>
-                </UniformGrid.Resources>
-                <TextBlock x:Name="Column1TextBlock" Text="一" />
-                <TextBlock x:Name="Column2TextBlock" Text="二" />
-                <TextBlock x:Name="Column3TextBlock" Text="三" />
-                <TextBlock x:Name="Column4TextBlock" Text="四" />
-                <TextBlock x:Name="Column5TextBlock" Text="五" />
-                <TextBlock x:Name="Column6TextBlock" Text="六" />
-                <TextBlock x:Name="Column7TextBlock" Text="日" />
-            </UniformGrid>
-            <Viewbox
-                Grid.Row="1"
-                Width="{Binding ElementName=UniformGrid, Path=ActualWidth}"
-                Height="{Binding ElementName=UniformGrid, Path=ActualHeight}">
-                <TextBlock
-                    x:Name="MonthTextBlock"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    FontSize="1000"
-                    Foreground="White"
-                    Opacity="0.2" />
-            </Viewbox>
-            <UniformGrid
-                x:Name="UniformGrid"
-                Grid.Row="1"
-                VerticalAlignment="Top"
-                Columns="7"
-                Rows="5" />
-        </Grid>
+        <UniformGrid Grid.Row="0" Rows="1">
+            <UniformGrid.Resources>
+                <Style TargetType="TextBlock">
+                    <Setter Property="FontSize" Value="22" />
+                    <Setter Property="VerticalAlignment" Value="Center" />
+                    <Setter Property="HorizontalAlignment" Value="Center" />
+                </Style>
+            </UniformGrid.Resources>
+            <TextBlock x:Name="Column1TextBlock" Text="一" />
+            <TextBlock x:Name="Column2TextBlock" Text="二" />
+            <TextBlock x:Name="Column3TextBlock" Text="三" />
+            <TextBlock x:Name="Column4TextBlock" Text="四" />
+            <TextBlock x:Name="Column5TextBlock" Text="五" />
+            <TextBlock x:Name="Column6TextBlock" Text="六" />
+            <TextBlock x:Name="Column7TextBlock" Text="日" />
+        </UniformGrid>
+        <Viewbox
+            Grid.Row="1"
+            Width="{Binding ElementName=UniformGrid, Path=ActualWidth}"
+            Height="{Binding ElementName=UniformGrid, Path=ActualHeight}">
+            <TextBlock
+                x:Name="MonthTextBlock"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontSize="1000"
+                Foreground="White"
+                Opacity="0.2" />
+        </Viewbox>
+        <UniformGrid
+            x:Name="UniformGrid"
+            Grid.Row="1"
+            VerticalAlignment="Top"
+            Columns="7"
+            Rows="5" />
     </Grid>
 </rxui:ReactiveUserControl>

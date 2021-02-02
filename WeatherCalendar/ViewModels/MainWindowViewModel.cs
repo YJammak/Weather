@@ -10,7 +10,7 @@ namespace WeatherCalendar.ViewModels
 
         public MainWindowViewModel()
         {
-            CurrentViewModel = new CalendarViewModel();
+            CurrentViewModel = new MainViewModel();
         }
     }
 }

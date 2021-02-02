@@ -42,6 +42,12 @@ namespace Weather
         /// </summary>
         [JsonProperty(propertyName: "night")]
         public WeatherInfo NightWeather { get; set; }
+        
+        /// <summary>
+        /// 空气质量指数
+        /// </summary>
+        [JsonProperty(propertyName: "aqi")]
+        public int AirQualityIndex { get; set; }
 
         /// <summary>
         /// 温度范围

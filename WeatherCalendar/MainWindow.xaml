@@ -11,14 +11,15 @@
     x:TypeArguments="vms:MainWindowViewModel"
     AllowsTransparency="True"
     Background="Transparent"
+    MouseLeftButtonDown="MainWindow_OnMouseLeftButtonDown"
     SizeToContent="WidthAndHeight"
     WindowStartupLocation="CenterScreen"
     WindowStyle="None"
     mc:Ignorable="d">
-    <Grid>
+    <Grid Background="#01000000">
         <rxui:ViewModelViewHost
             x:Name="ViewModelViewHost"
             HorizontalContentAlignment="Stretch"
-            VerticalContentAlignment="Center" />
+            VerticalContentAlignment="Stretch" />
     </Grid>
 </rxui:ReactiveWindow>

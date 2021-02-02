@@ -9,18 +9,18 @@ namespace WeatherCalendar.Services
         private static readonly ConcurrentDictionary<DateTime, Lunar> LunarDictionary = new();
 
         /// <summary>
-        /// 获取农历年名称（正月）
+        /// 获取干支年名称（正月）
         /// </summary>
         /// <param name="date"></param>
         /// <returns></returns>
-        public string GetLunarYearNameOfFirstMonth(DateTime date) => GetOb(date)?.Lyear3;
+        public string GetStemsAndBranchesYearNameOfFirstMonth(DateTime date) => GetOb(date)?.Lyear3;
 
         /// <summary>
-        /// 获取农历年名称（立春）
+        /// 获取干支年名称（立春）
         /// </summary>
         /// <param name="date"></param>
         /// <returns></returns>
-        public string GetLunarYearNameOfSpringBegins(DateTime date) => GetOb(date)?.Lyear2;
+        public string GetStemsAndBranchesYearNameOfSpringBegins(DateTime date) => GetOb(date)?.Lyear2;
 
         /// <summary>
         /// 获取生肖（正月）
@@ -51,6 +51,13 @@ namespace WeatherCalendar.Services
         public string GetLunarLeapMonthFlag(DateTime date) => GetOb(date)?.Lleap;
 
         /// <summary>
+        /// 获取干支月名称
+        /// </summary>
+        /// <param name="date"></param>
+        /// <returns></returns>
+        public string GetStemsAndBranchesMonthName(DateTime date) => GetOb(date)?.Lmonth2;
+
+        /// <summary>
         /// 获取农历月大小标志
         /// </summary>
         /// <param name="date"></param>
@@ -70,6 +77,13 @@ namespace WeatherCalendar.Services
         /// <param name="date"></param>
         /// <returns></returns>
         public string GetLunarDayName(DateTime date) => GetOb(date)?.Ldc;
+
+        /// <summary>
+        /// 获取干支日名称
+        /// </summary>
+        /// <param name="date"></param>
+        /// <returns></returns>
+        public string GetStemsAndBranchesDayName(DateTime date) => GetOb(date)?.Lday2;
 
         /// <summary>
         /// 获取二十四节气

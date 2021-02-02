@@ -29,13 +29,6 @@ namespace WeatherCalendar.Views
             this.OneWayBind(
                     ViewModel,
                     model => model.CurrentMonth,
-                    view => view.DateTextBlock.Text,
-                    time => time.ToString("yyyy-MM"))
-                .DisposeWith(disposable);
-
-            this.OneWayBind(
-                    ViewModel,
-                    model => model.CurrentMonth,
                     view => view.MonthTextBlock.Text,
                     month => month.Month.ToString())
                 .DisposeWith(disposable);
@@ -130,28 +123,10 @@ namespace WeatherCalendar.Views
                     return theme.BackgroundMonthOpacity;
                 });
 
-            this.BindCommand(
-                    ViewModel!, 
-                    model => model.LastMonthCommand, 
-                    view => view.LastMonth)
-                .DisposeWith(disposable);
-
-            this.BindCommand(
-                    ViewModel!, 
-                    model => model.NextMonthCommand, 
-                    view => view.NextMonth)
-                .DisposeWith(disposable);
-
-            this.BindCommand(
-                    ViewModel!,
-                    model => model.CurrentMonthCommand,
-                    view => view.CurrentMonth)
-                .DisposeWith(disposable);
-
             if (UniformGrid.Children.Count > 0)
                 return;
 
-            foreach (var mode in ViewModel.Days)
+            foreach (var mode in ViewModel!.Days)
             {
                 var viewFor = ViewLocator.Current.ResolveView(mode);
                 if (viewFor is not UIElement element)

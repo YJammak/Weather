@@ -5,7 +5,9 @@ using System.Linq;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using Splat;
 using Weather;
+using WeatherCalendar.Services;
 
 // ReSharper disable UnassignedGetOnlyAutoProperty
 
@@ -42,14 +44,17 @@ namespace WeatherCalendar.ViewModels
         /// 跳转到指定月命令
         /// </summary>
         public ReactiveCommand<DateTime, Unit> GotoMonthCommand;
+        
         /// <summary>
         /// 跳转到当前月命令
         /// </summary>
         public ReactiveCommand<Unit, Unit> CurrentMonthCommand;
+        
         /// <summary>
         /// 跳转到上一个月
         /// </summary>
         public ReactiveCommand<Unit, Unit> LastMonthCommand;
+        
         /// <summary>
         /// 跳转到下一个月
         /// </summary>
@@ -72,14 +77,17 @@ namespace WeatherCalendar.ViewModels
             {
                 CurrentMonth = new DateTime(month.Year, month.Month, 1);
             });
+            
             NextMonthCommand = ReactiveCommand.Create(() =>
             {
                 CurrentMonth = CurrentMonth.AddMonths(1);
             });
+            
             LastMonthCommand = ReactiveCommand.Create(() =>
             {
                 CurrentMonth = CurrentMonth.AddMonths(-1);
             });
+            
             CurrentMonthCommand = ReactiveCommand.Create(() =>
             {
                 CurrentMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
@@ -92,9 +100,10 @@ namespace WeatherCalendar.ViewModels
                     .Subscribe()
                     .DisposeWith(disposable);
 
-                MessageBus
-                    .Current
-                    .ListenIncludeLatest<WeatherForecast>()
+                var weatherService = Locator.Current.GetService<WeatherService>();
+                
+                weatherService
+                    .WhenAnyValue(x => x.Forecast)
                     .Do(UpdateForecast)
                     .ToPropertyEx(this, model => model.Forecast)
                     .DisposeWith(disposable);

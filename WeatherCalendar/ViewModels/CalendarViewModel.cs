@@ -1,11 +1,11 @@
 ﻿using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using Splat;
 using System;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using Splat;
 using Weather;
 using WeatherCalendar.Services;
 
@@ -44,17 +44,17 @@ namespace WeatherCalendar.ViewModels
         /// 跳转到指定月命令
         /// </summary>
         public ReactiveCommand<DateTime, Unit> GotoMonthCommand;
-        
+
         /// <summary>
         /// 跳转到当前月命令
         /// </summary>
         public ReactiveCommand<Unit, Unit> CurrentMonthCommand;
-        
+
         /// <summary>
         /// 跳转到上一个月
         /// </summary>
         public ReactiveCommand<Unit, Unit> LastMonthCommand;
-        
+
         /// <summary>
         /// 跳转到下一个月
         /// </summary>
@@ -77,17 +77,17 @@ namespace WeatherCalendar.ViewModels
             {
                 CurrentMonth = new DateTime(month.Year, month.Month, 1);
             });
-            
+
             NextMonthCommand = ReactiveCommand.Create(() =>
             {
                 CurrentMonth = CurrentMonth.AddMonths(1);
             });
-            
+
             LastMonthCommand = ReactiveCommand.Create(() =>
             {
                 CurrentMonth = CurrentMonth.AddMonths(-1);
             });
-            
+
             CurrentMonthCommand = ReactiveCommand.Create(() =>
             {
                 CurrentMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
@@ -101,7 +101,7 @@ namespace WeatherCalendar.ViewModels
                     .DisposeWith(disposable);
 
                 var weatherService = Locator.Current.GetService<WeatherService>();
-                
+
                 weatherService
                     .WhenAnyValue(x => x.Forecast)
                     .Do(UpdateForecast)
@@ -119,11 +119,10 @@ namespace WeatherCalendar.ViewModels
             foreach (var day in Days)
             {
                 var day1 = day;
-                var forecast = weatherForecast
-                    ?.Forecast
-                    .FirstOrDefault(f => f.DateTime.Date == day1.Date.Date.Date) ?? weatherForecast
-                    ?.ForecastFifteenDays
-                    .FirstOrDefault(f => f.DateTime.Date == day.Date.Date.Date);
+                var forecast =
+                    weatherForecast
+                        ?.ForecastFortyDays
+                        .FirstOrDefault(f => f.DateTime.Date == day1.Date.Date.Date);
 
                 day.Forecast = forecast;
             }

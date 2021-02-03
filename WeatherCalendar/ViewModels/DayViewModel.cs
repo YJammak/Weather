@@ -1,9 +1,11 @@
-﻿using System;
-using ReactiveUI;
+﻿using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using Splat;
+using System;
 using System.Reactive.Linq;
 using Weather;
 using WeatherCalendar.Models;
+using WeatherCalendar.Services;
 
 // ReSharper disable UnassignedGetOnlyAutoProperty
 
@@ -16,7 +18,7 @@ namespace WeatherCalendar.ViewModels
         /// </summary>
         [Reactive]
         public DateInfo Date { get; set; }
-        
+
         /// <summary>
         /// 是否为当日
         /// </summary>
@@ -34,6 +36,18 @@ namespace WeatherCalendar.ViewModels
         /// </summary>
         [Reactive]
         public ForecastInfo Forecast { get; set; }
+
+        /// <summary>
+        /// 白天天气图片视图模型
+        /// </summary>
+        [ObservableAsProperty]
+        public ReactiveObject DayWeatherImageViewModel { get; }
+
+        /// <summary>
+        /// 夜间天气图片视图模型
+        /// </summary>
+        [ObservableAsProperty]
+        public ReactiveObject NightWeatherImageViewModel { get; }
 
         /// <summary>
         /// 公历日期
@@ -134,6 +148,18 @@ namespace WeatherCalendar.ViewModels
             this.WhenAnyValue(x => x.Date.ChineseFestival)
                 .Select(chineseFestival => !string.IsNullOrWhiteSpace(chineseFestival))
                 .ToPropertyEx(this, model => model.IsChineseFestival);
+
+            var weatherImageService = Locator.Current.GetService<IWeatherImageService>();
+
+            this.WhenAnyValue(x => x.Forecast)
+                .Select(f => f?.DayWeather?.Weather)
+                .Select(w => weatherImageService.GetWeatherImageViewModel(w))
+                .ToPropertyEx(this, model => model.DayWeatherImageViewModel);
+
+            this.WhenAnyValue(x => x.Forecast)
+                .Select(f => f?.NightWeather?.Weather)
+                .Select(w => weatherImageService.GetWeatherImageViewModel(w))
+                .ToPropertyEx(this, model => model.NightWeatherImageViewModel);
         }
 
         public override string ToString()

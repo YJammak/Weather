@@ -11,41 +11,58 @@
     x:TypeArguments="vms:DayViewModel"
     mc:Ignorable="d">
     <Border x:Name="Border" CornerRadius="3">
-        <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <TextBlock
-                x:Name="DayTextBlock"
-                Grid.Row="0"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                FontSize="20"
-                Text="1" />
-            <TextBlock
-                x:Name="LunarTextBlock"
-                Grid.Row="1"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                FontSize="12"
-                Text="初三" />
-            <TextBlock
-                x:Name="SolarTermTextBlock"
-                Grid.Row="2"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                FontSize="12"
-                Text="春分" />
-            <TextBlock
-                x:Name="FestivalTextBlock"
-                Grid.Row="3"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                FontSize="12"
-                Text="春节" />
+        <Grid>
+            <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <TextBlock
+                    x:Name="DayTextBlock"
+                    Grid.Row="0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontSize="20"
+                    Text="1" />
+                <TextBlock
+                    x:Name="LunarTextBlock"
+                    Grid.Row="1"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontSize="12"
+                    Text="初三" />
+                <TextBlock
+                    x:Name="SolarTermTextBlock"
+                    Grid.Row="2"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontSize="12"
+                    Text="春分" />
+                <TextBlock
+                    x:Name="FestivalTextBlock"
+                    Grid.Row="3"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontSize="12"
+                    Text="春节" />
+            </Grid>
+            <StackPanel HorizontalAlignment="Right" VerticalAlignment="Top">
+                <rxui:ViewModelViewHost
+                    x:Name="DayWeatherImageViewHost"
+                    Width="10"
+                    Height="10"
+                    HorizontalContentAlignment="Stretch"
+                    VerticalContentAlignment="Stretch" />
+                <rxui:ViewModelViewHost
+                    x:Name="NightWeatherImageViewHost"
+                    Width="10"
+                    Height="10"
+                    Margin="0,3,0,0"
+                    HorizontalContentAlignment="Stretch"
+                    VerticalContentAlignment="Stretch" />
+            </StackPanel>
         </Grid>
     </Border>
 </rxui:ReactiveUserControl>

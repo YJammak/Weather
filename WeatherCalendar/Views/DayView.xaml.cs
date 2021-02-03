@@ -1,7 +1,7 @@
 ﻿using ReactiveUI;
+using Splat;
 using System.Reactive.Disposables;
 using System.Windows;
-using Splat;
 using WeatherCalendar.Themes;
 
 namespace WeatherCalendar.Views
@@ -148,17 +148,28 @@ namespace WeatherCalendar.Views
 
                         if (isWeekend)
                         {
-                            return isChineseFestival ? 
-                                theme.ChineseFestivalWeekendForeground : 
+                            return isChineseFestival ?
+                                theme.ChineseFestivalWeekendForeground :
                                 theme.FestivalWeekendForeground;
                         }
 
-                        return isChineseFestival ? 
-                            theme.ChineseFestivalNormalForeground : 
+                        return isChineseFestival ?
+                            theme.ChineseFestivalNormalForeground :
                             theme.FestivalNormalForeground;
                     })
                 .BindTo(this, view => view.FestivalTextBlock.Foreground)
                 .DisposeWith(disposable);
+
+            this.OneWayBind(
+                    ViewModel,
+                    model => model.DayWeatherImageViewModel,
+                    view => view.DayWeatherImageViewHost.ViewModel)
+                .DisposeWith(disposable);
+
+            this.OneWayBind(
+                ViewModel,
+                model => model.NightWeatherImageViewModel,
+                view => view.NightWeatherImageViewHost.ViewModel);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using SharpSxwnl;
 using System;
 using System.Collections.Concurrent;
+using WeatherCalendar.Utils;
 
 namespace WeatherCalendar.Services
 {
@@ -117,7 +118,7 @@ namespace WeatherCalendar.Services
         {
             if (date == DateTime.MinValue)
                 return null;
-            
+
             var monthDate = new DateTime(date.Year, date.Month, 1);
 
             if (!LunarDictionary.TryGetValue(monthDate, out var lunar))

@@ -13,6 +13,8 @@
                     SecondaryColor="Red" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/materialdesigntheme.defaults.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <FontFamily x:Key="ChineseZodiacFontFamily">pack://application:,,,/WeatherCalendar;component/Resources/Fonts/#ChineseZodiac</FontFamily>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

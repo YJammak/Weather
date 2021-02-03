@@ -35,6 +35,7 @@ namespace WeatherCalendar
 
             Locator.CurrentMutable.RegisterConstant(festivalService);
             Locator.CurrentMutable.RegisterConstant(new WeatherImageService(), typeof(IWeatherImageService));
+            Locator.CurrentMutable.RegisterConstant(new ChineseZodiacFontService(), typeof(IChineseZodiacService));
             Locator.CurrentMutable.RegisterConstant(new SystemInfoService());
 
             Locator.CurrentMutable.RegisterConstant<ITheme>(new DefaultTheme());

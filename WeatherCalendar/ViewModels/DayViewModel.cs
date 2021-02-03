@@ -14,6 +14,12 @@ namespace WeatherCalendar.ViewModels
     public class DayViewModel : ReactiveObject
     {
         /// <summary>
+        /// 是否有效
+        /// </summary>
+        [Reactive]
+        public bool IsValid { get; set; }
+
+        /// <summary>
         /// 日期信息
         /// </summary>
         [Reactive]

@@ -170,6 +170,12 @@ namespace WeatherCalendar.Views
                     view => view.DownloadSpeedTextBlock.Text,
                     info => GetNetworkSpeed(info?.ReceivedSpeed ?? 0))
                 .DisposeWith(disposable);
+
+            this.OneWayBind(
+                    ViewModel,
+                    model => model.ChineseZodiacViewModel,
+                    view => view.ChineseZodiacModelViewHost.ViewModel)
+                .DisposeWith(disposable);
         }
 
         private static string GetNetworkSpeed(double speed)

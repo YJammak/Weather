@@ -120,7 +120,11 @@ namespace WeatherCalendar.ViewModels
             {
                 var day1 = day;
                 var forecast =
-                    weatherForecast
+                    (weatherForecast
+                        ?.Forecast
+                        .FirstOrDefault(f => f.DateTime.Date == day1.Date.Date.Date) ?? weatherForecast
+                        ?.ForecastFifteenDays
+                        .FirstOrDefault(f => f.DateTime.Date == day1.Date.Date.Date)) ?? weatherForecast
                         ?.ForecastFortyDays
                         .FirstOrDefault(f => f.DateTime.Date == day1.Date.Date.Date);
 
@@ -159,6 +163,12 @@ namespace WeatherCalendar.ViewModels
                 Days[i].IsCurrentPageMonth =
                     dateOfDay.Year == date.Year &&
                     dateOfDay.Month == date.Month;
+                Days[i].IsValid = true;
+            }
+
+            for (var i = 7 * rows; i < Days.Length; i++)
+            {
+                Days[i].IsValid = false;
             }
 
             UpdateForecast(Forecast);

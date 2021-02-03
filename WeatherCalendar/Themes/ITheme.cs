@@ -5,15 +5,17 @@ namespace WeatherCalendar.Themes
     public interface ITheme
     {
         public Brush DayNameNormalForeground { get; }
-        
+
         public Brush DayNameWeekendForeground { get; }
-        
+
         public Brush DayNameAnotherMonthForeground { get; }
-        
+
         public Brush DayViewBackground { get; }
-        
+
         public Brush DayViewCurrentDayBackground { get; }
-        
+
+        public Brush DayViewMouseOverDayBackground { get; }
+
         public Brush LunarDayNormalForeground { get; }
 
         public Brush LunarDayWeekendForeground { get; }
@@ -37,7 +39,7 @@ namespace WeatherCalendar.Themes
         public Brush FestivalAnotherMonthForeground { get; }
 
         public Brush BackgroundMonthForeground { get; }
-        
+
         public double BackgroundMonthOpacity { get; }
     }
 }

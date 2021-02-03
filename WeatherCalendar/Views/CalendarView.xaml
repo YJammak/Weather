@@ -13,7 +13,10 @@
             <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <UniformGrid Grid.Row="0" Rows="1">
+        <UniformGrid
+            Grid.Row="0"
+            Margin="0,0,0,10"
+            Rows="1">
             <UniformGrid.Resources>
                 <Style TargetType="TextBlock">
                     <Setter Property="FontSize" Value="22" />

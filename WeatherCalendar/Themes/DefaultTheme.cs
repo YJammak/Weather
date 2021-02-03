@@ -14,23 +14,26 @@ namespace WeatherCalendar.Themes
 
         public Brush DayViewBackground => Brushes.Transparent;
 
-        public Brush DayViewCurrentDayBackground 
+        public Brush DayViewCurrentDayBackground
             => new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
+
+        public Brush DayViewMouseOverDayBackground
+            => new SolidColorBrush(Color.FromArgb(0x33, 0xFF, 0xFF, 0xFF));
 
         public Brush LunarDayNormalForeground => Brushes.White;
 
         public Brush LunarDayWeekendForeground => Brushes.White;
 
-        public Brush LunarDayAnotherMonthForeground 
+        public Brush LunarDayAnotherMonthForeground
             => new SolidColorBrush(Color.FromArgb(80, 255, 255, 255));
 
-        public Brush SolarTermNormalForeground 
+        public Brush SolarTermNormalForeground
             => new SolidColorBrush(Color.FromArgb(255, 0, 150, 200));
 
-        public Brush SolarTermWeekendForeground 
+        public Brush SolarTermWeekendForeground
             => new SolidColorBrush(Color.FromArgb(255, 0, 150, 200));
 
-        public Brush SolarTermAnotherMonthForeground 
+        public Brush SolarTermAnotherMonthForeground
             => new SolidColorBrush(Color.FromArgb(80, 255, 255, 255));
 
         public Brush ChineseFestivalNormalForeground => Brushes.OrangeRed;

@@ -11,6 +11,279 @@
     x:TypeArguments="vms:DayViewModel"
     mc:Ignorable="d">
     <Border x:Name="Border" CornerRadius="3">
+        <Border.ToolTip>
+            <ToolTip
+                Padding="0"
+                Background="Transparent"
+                BorderBrush="Transparent"
+                BorderThickness="0"
+                Foreground="#555555">
+                <Border
+                    Margin="5"
+                    Padding="15"
+                    Background="#EEEEEE"
+                    BorderBrush="Transparent"
+                    BorderThickness="0"
+                    CornerRadius="3">
+                    <Border.Effect>
+                        <DropShadowEffect
+                            BlurRadius="5"
+                            Direction="0"
+                            Opacity="0.3"
+                            ShadowDepth="0"
+                            Color="Black" />
+                    </Border.Effect>
+                    <Grid Effect="{x:Null}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Margin="0,0,10,0"
+                            VerticalAlignment="Center">
+                            <TextBlock
+                                x:Name="DaysTextBlock"
+                                HorizontalAlignment="Center"
+                                FontSize="30"
+                                Text="今天" />
+                            <TextBlock
+                                x:Name="DutyTextBlock"
+                                HorizontalAlignment="Center"
+                                FontSize="15"
+                                Text="上班" />
+                        </StackPanel>
+                        <Grid
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            VerticalAlignment="Center">
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <TextBlock
+                                x:Name="ChineseZodiacTextBlock"
+                                Grid.Row="0"
+                                Grid.RowSpan="3"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                FontFamily="{DynamicResource ChineseZodiacFontFamily}"
+                                FontSize="60"
+                                Opacity="0.15"
+                                Text="&#xe663;" />
+                            <TextBlock
+                                x:Name="YearInfoTextBlock"
+                                Grid.Row="0"
+                                Margin="0,0,0,2"
+                                HorizontalAlignment="Left"
+                                FontSize="12"
+                                Text="第34天 第6周 (立春 五九 第9天)" />
+                            <TextBlock
+                                x:Name="DateInfoTextBlock"
+                                Grid.Row="1"
+                                Margin="0,2,0,2"
+                                HorizontalAlignment="Left"
+                                FontSize="12"
+                                Text="2021年2月3日 (腊月大廿二)" />
+                            <TextBlock
+                                x:Name="LunarInfoTextBlock"
+                                Grid.Row="2"
+                                Margin="0,2,0,0"
+                                HorizontalAlignment="Left"
+                                FontSize="12"
+                                Text="庚子鼠年 庚寅月 壬午日" />
+                        </Grid>
+                        <Grid
+                            x:Name="WeatherGrid"
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="2"
+                            Margin="15,10,0,0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Grid Grid.Column="0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock
+                                        Grid.Row="0"
+                                        Grid.Column="0"
+                                        Margin="0,2"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        FontSize="14"
+                                        Text="白天" />
+                                    <StackPanel
+                                        Grid.Row="1"
+                                        Grid.Column="0"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center">
+                                        <rxui:ViewModelViewHost
+                                            x:Name="TooltipDayWeatherImageViewHost"
+                                            Width="40"
+                                            Height="40"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            HorizontalContentAlignment="Stretch"
+                                            VerticalContentAlignment="Stretch" />
+                                    </StackPanel>
+                                    <StackPanel
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        Margin="10,0,0,0"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center">
+                                        <TextBlock
+                                            x:Name="DayWeatherTextBlock"
+                                            Margin="0,2"
+                                            HorizontalAlignment="Left"
+                                            VerticalAlignment="Center"
+                                            FontSize="12"
+                                            Text="晴" />
+                                        <TextBlock
+                                            x:Name="DayWindInfoTextBlock"
+                                            Margin="0,2"
+                                            HorizontalAlignment="Left"
+                                            VerticalAlignment="Center"
+                                            FontSize="12"
+                                            Text="东南风3级" />
+                                    </StackPanel>
+                                </Grid>
+                                <Grid Grid.Column="1" Margin="10,0,0,0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock
+                                        Grid.Row="0"
+                                        Grid.Column="0"
+                                        Margin="0,2"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        FontSize="14"
+                                        Text="夜间" />
+                                    <StackPanel
+                                        Grid.Row="1"
+                                        Grid.Column="0"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center">
+                                        <rxui:ViewModelViewHost
+                                            x:Name="TooltipNightWeatherImageViewHost"
+                                            Width="40"
+                                            Height="40"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            HorizontalContentAlignment="Stretch"
+                                            VerticalContentAlignment="Stretch" />
+                                    </StackPanel>
+                                    <StackPanel
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        Margin="10,0,0,0"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center">
+                                        <TextBlock
+                                            x:Name="NightWeatherTextBlock"
+                                            Margin="0,2"
+                                            HorizontalAlignment="Left"
+                                            VerticalAlignment="Center"
+                                            FontSize="12"
+                                            Text="晴" />
+                                        <TextBlock
+                                            x:Name="NightWindInfoTextBlock"
+                                            Margin="0,2"
+                                            HorizontalAlignment="Left"
+                                            VerticalAlignment="Center"
+                                            FontSize="12"
+                                            Text="东南风3级" />
+                                    </StackPanel>
+                                </Grid>
+                            </Grid>
+                            <Grid Grid.Row="1" Margin="0,5,0,0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock
+                                        x:Name="HighTemperatureTextBlock"
+                                        Grid.Row="0"
+                                        Grid.Column="0"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        FontSize="12"
+                                        Text="高温：13 ℃" />
+                                    <TextBlock
+                                        x:Name="LowTemperatureTextBlock"
+                                        Grid.Row="1"
+                                        Grid.Column="0"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        FontSize="12"
+                                        Text="低温：6 ℃" />
+                                    <TextBlock
+                                        x:Name="SunriseTextBlock"
+                                        Grid.Row="0"
+                                        Grid.Column="1"
+                                        Margin="10,2,0,0"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        FontSize="12"
+                                        Text="日出：06:45" />
+                                    <TextBlock
+                                        x:Name="SunsetTextBlock"
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        Margin="10,2,0,0"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        FontSize="12"
+                                        Text="日落：17:30" />
+                                </Grid>
+                                <TextBlock
+                                    x:Name="WeatherNoticeTextBlock"
+                                    Grid.Row="1"
+                                    Margin="0,5,0,2"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    Text="愿你拥有比阳光明媚的心情" />
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </Border>
+            </ToolTip>
+        </Border.ToolTip>
         <Grid>
             <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Grid.RowDefinitions>
@@ -48,7 +321,10 @@
                     FontSize="12"
                     Text="春节" />
             </Grid>
-            <StackPanel HorizontalAlignment="Right" VerticalAlignment="Top">
+            <StackPanel
+                Margin="0,5,5,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top">
                 <rxui:ViewModelViewHost
                     x:Name="DayWeatherImageViewHost"
                     Width="10"

@@ -96,6 +96,12 @@ namespace WeatherCalendar.ViewModels
         [ObservableAsProperty]
         public float MemoryLoad { get; }
 
+        /// <summary>
+        /// 生肖视图模型
+        /// </summary>
+        [ObservableAsProperty]
+        public ReactiveObject ChineseZodiacViewModel { get; }
+
         public MainViewModel()
         {
             Calendar = new CalendarViewModel();
@@ -138,6 +144,12 @@ namespace WeatherCalendar.ViewModels
                 .Select(calendarService.GetLunarMonthInfo)
                 .ToPropertyEx(this, model => model.LunarMonthInfo);
 
+            var chineseZodiacService = Locator.Current.GetService<IChineseZodiacService>();
+
+            this.WhenAnyValue(x => x.ChineseZodiacOfFirstMonth)
+                .Select(chineseZodiacService.GetChineseZodiacViewModel)
+                .ToPropertyEx(this, model => model.ChineseZodiacViewModel);
+
             var weatherService = Locator.Current.GetService<WeatherService>();
 
             weatherService
@@ -147,7 +159,7 @@ namespace WeatherCalendar.ViewModels
             var weatherImageService = Locator.Current.GetService<IWeatherImageService>();
 
             this.WhenAnyValue(x => x.Forecast)
-                .Select(w => w.GetCurrentWeather()?.Weather)
+                .Select(w => w?.GetCurrentWeather()?.Weather)
                 .Select(w => weatherImageService.GetWeatherImageViewModel(w))
                 .ToPropertyEx(this, model => model.WeatherImageViewModel);
 

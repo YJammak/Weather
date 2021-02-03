@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WeatherCalendar.Services
+namespace WeatherCalendar.Utils
 {
     /// <summary>
     /// 数九三伏计算

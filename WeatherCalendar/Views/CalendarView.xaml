@@ -32,7 +32,8 @@
         <Viewbox
             Grid.Row="1"
             Width="{Binding ElementName=UniformGrid, Path=ActualWidth}"
-            Height="{Binding ElementName=UniformGrid, Path=ActualHeight}">
+            Height="{Binding ElementName=UniformGrid, Path=ActualHeight}"
+            Stretch="Uniform">
             <TextBlock
                 x:Name="MonthTextBlock"
                 HorizontalAlignment="Center"

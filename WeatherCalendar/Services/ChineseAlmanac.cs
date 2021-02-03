@@ -95,7 +95,7 @@ namespace WeatherCalendar.Services
             num = 525948.76 * (y - 1900) + JqData[14];
             var liQiu = dtBase.AddMinutes(num);
 
-            if (dt.Date <= xiaZhi.Date || dt.Date >= liQiu.Date.AddDays(20)) 
+            if (dt.Date <= xiaZhi.Date || dt.Date >= liQiu.Date.AddDays(20))
                 return "";
 
             var t = ((xiaZhi.Date - dtBase.Date).Days + 6) % 10;
@@ -117,7 +117,7 @@ namespace WeatherCalendar.Services
             if (dt.Date == moFu.Date)
                 return "末伏";
 
-            if (dt.Date <= chuFu.Date) 
+            if (dt.Date <= chuFu.Date)
                 return "";
 
             if (dt.Date < zhongFu.Date)
@@ -186,18 +186,39 @@ namespace WeatherCalendar.Services
             var days = (dt.Date - dongZhi.Date).Days;
             switch (days)
             {
+                case 0:
+                    return "一九";
                 case 9:
                     return "二九";
                 case 18:
                     return "三九";
+                case 27:
+                    return "四九";
+                case 36:
+                    return "五九";
+                case 45:
+                    return "六九";
+                case 54:
+                    return "七九";
+                case 63:
+                    return "八九";
+                case 72:
+                    return "九九";
             }
 
             days = (dt.Date - donZhiLastYear.Date).Days;
 
             return days switch
             {
+                0 => "一九",
                 9 => "二九",
                 18 => "三九",
+                27 => "四九",
+                36 => "五九",
+                45 => "六九",
+                54 => "七九",
+                63 => "八九",
+                72 => "九九",
                 _ => ""
             };
 

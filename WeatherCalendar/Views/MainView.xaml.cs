@@ -1,7 +1,7 @@
-﻿using System;
+﻿using ReactiveUI;
+using System;
 using System.Linq;
 using System.Reactive.Disposables;
-using ReactiveUI;
 
 namespace WeatherCalendar.Views
 {
@@ -41,9 +41,15 @@ namespace WeatherCalendar.Views
 
             this.OneWayBind(
                     ViewModel,
+                    model => model.WeatherImageViewModel,
+                    view => view.WeatherImageViewHost.ViewModel)
+                .DisposeWith(disposable);
+
+            this.OneWayBind(
+                    ViewModel,
                     model => model.Forecast,
                     view => view.WeatherTextBlock.Text,
-                    forecast => forecast?.Forecast[1].DayWeather.Weather)
+                    forecast => forecast?.GetCurrentWeather().Weather)
                 .DisposeWith(disposable);
 
             this.OneWayBind(
@@ -55,11 +61,11 @@ namespace WeatherCalendar.Views
                         if (forecast == null)
                             return null;
 
-                        var today = 
+                        var today =
                             forecast
                                 .Forecast
                                 .FirstOrDefault(
-                                    f => 
+                                    f =>
                                         f.DateTime.Date == DateTime.Today);
 
                         if (today == null)
@@ -136,6 +142,66 @@ namespace WeatherCalendar.Views
                     model => model.Calendar,
                     view => view.CalendarViewHost.ViewModel)
                 .DisposeWith(disposable);
+
+            this.OneWayBind(
+                    ViewModel,
+                    model => model.CpuLoad,
+                    view => view.CpuLoadTextBlock.Text,
+                    cpuLoad => $"{cpuLoad:F0} %")
+                .DisposeWith(disposable);
+
+            this.OneWayBind(
+                    ViewModel,
+                    model => model.MemoryLoad,
+                    view => view.MemoryLoadTextBlock.Text,
+                    memoryLoad => $"{memoryLoad:F0} %")
+                .DisposeWith(disposable);
+
+            this.OneWayBind(
+                    ViewModel,
+                    model => model.NetWorkInfo,
+                    view => view.UploadSpeedTextBlock.Text,
+                    info => GetNetworkSpeed(info?.SentSpeed ?? 0))
+                .DisposeWith(disposable);
+
+            this.OneWayBind(
+                    ViewModel,
+                    model => model.NetWorkInfo,
+                    view => view.DownloadSpeedTextBlock.Text,
+                    info => GetNetworkSpeed(info?.ReceivedSpeed ?? 0))
+                .DisposeWith(disposable);
+        }
+
+        private static string GetNetworkSpeed(double speed)
+        {
+            if (speed < 0)
+                speed = 0d;
+
+            var units = new[] { "KB/s", "MB/s", "TB/s" };
+
+            var unit = units[0];
+
+            for (var i = 0; i < 2; i++)
+            {
+                if (speed >= 999.5)
+                {
+                    speed /= 1024d;
+                    unit = units[i + 1];
+                }
+            }
+
+            return $"{GetValue(speed)} {unit}";
+        }
+
+        private static string GetValue(double value)
+        {
+            return value switch
+            {
+                <= 0 => "0",
+                < 9.5 => $"{value:F2}",
+                < 99.5 => $"{value:F1}",
+                _ => $"{value:F0}"
+            };
         }
     }
 }

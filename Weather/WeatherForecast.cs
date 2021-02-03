@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Newtonsoft.Json;
 
 namespace Weather
 {
@@ -46,6 +46,10 @@ namespace Weather
         [JsonProperty(propertyName: "observe")]
         public RealTimeInfo RealTimeWeather { get; set; }
 
+        /// <summary>
+        /// 获取当前天气
+        /// </summary>
+        /// <returns></returns>
         public WeatherInfo GetCurrentWeather()
         {
             if (DateTime.Now.TimeOfDay < new TimeSpan(8, 0, 0))
@@ -56,10 +60,7 @@ namespace Weather
                             f =>
                                 f.DateTime.Date == DateTime.Today.AddDays(-1));
 
-                if (forecastYesterday == null)
-                    return null;
-
-                return forecastYesterday.NightWeather;
+                return forecastYesterday?.NightWeather;
             }
 
             var forecastToday =
@@ -70,6 +71,11 @@ namespace Weather
 
             if (forecastToday == null)
                 return null;
+
+            if (DateTime.Now.TimeOfDay >= new TimeSpan(20, 0, 0))
+                return forecastToday.NightWeather;
+
+            return forecastToday.DayWeather;
         }
     }
 }

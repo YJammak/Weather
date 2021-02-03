@@ -1,9 +1,10 @@
-﻿using System;
-using System.Reactive.Linq;
-using ReactiveUI;
+﻿using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
+using System;
+using System.Reactive.Linq;
 using Weather;
+using WeatherCalendar.Models;
 using WeatherCalendar.Services;
 
 // ReSharper disable UnassignedGetOnlyAutoProperty
@@ -34,13 +35,13 @@ namespace WeatherCalendar.ViewModels
         /// </summary>
         [ObservableAsProperty]
         public string StemsAndBranchesYearNameOfSpringBegins { get; }
-        
+
         /// <summary>
         /// 生肖（正月）
         /// </summary>
         [ObservableAsProperty]
         public string ChineseZodiacOfFirstMonth { get; }
-        
+
         /// <summary>
         /// 生肖（立春）
         /// </summary>
@@ -52,24 +53,48 @@ namespace WeatherCalendar.ViewModels
         /// </summary>
         [ObservableAsProperty]
         public string StemsAndBranchesMonthName { get; }
-        
+
         /// <summary>
         /// 干支日
         /// </summary>
         [ObservableAsProperty]
         public string StemsAndBranchesDayName { get; }
-        
+
         /// <summary>
         /// 农历月信息
         /// </summary>
         [ObservableAsProperty]
         public string LunarMonthInfo { get; }
-        
+
         /// <summary>
         /// 天气预报
         /// </summary>
         [ObservableAsProperty]
         public WeatherForecast Forecast { get; }
+
+        /// <summary>
+        /// 天气图片视图模型
+        /// </summary>
+        [ObservableAsProperty]
+        public ReactiveObject WeatherImageViewModel { get; }
+
+        /// <summary>
+        /// 网络信息
+        /// </summary>
+        [ObservableAsProperty]
+        public NetWorkInfo NetWorkInfo { get; }
+
+        /// <summary>
+        /// CPU使用率
+        /// </summary>
+        [ObservableAsProperty]
+        public float CpuLoad { get; }
+
+        /// <summary>
+        /// 内存使用率
+        /// </summary>
+        [ObservableAsProperty]
+        public float MemoryLoad { get; }
 
         public MainViewModel()
         {
@@ -77,7 +102,7 @@ namespace WeatherCalendar.ViewModels
 
             Observable
                 .Timer(
-                    TimeSpan.FromSeconds(0), 
+                    TimeSpan.FromSeconds(0),
                     TimeSpan.FromSeconds(1),
                     RxApp.MainThreadScheduler)
                 .Select(_ => DateTime.Now)
@@ -118,6 +143,27 @@ namespace WeatherCalendar.ViewModels
             weatherService
                 .WhenAnyValue(x => x.Forecast)
                 .ToPropertyEx(this, model => model.Forecast);
+
+            var weatherImageService = Locator.Current.GetService<IWeatherImageService>();
+
+            this.WhenAnyValue(x => x.Forecast)
+                .Select(w => w.GetCurrentWeather()?.Weather)
+                .Select(w => weatherImageService.GetWeatherImageViewModel(w))
+                .ToPropertyEx(this, model => model.WeatherImageViewModel);
+
+            var systemInfoService = Locator.Current.GetService<SystemInfoService>();
+
+            systemInfoService
+                .WhenAnyValue(x => x.NetWorkInfo)
+                .ToPropertyEx(this, model => model.NetWorkInfo, false, RxApp.MainThreadScheduler);
+
+            systemInfoService
+                .WhenAnyValue(x => x.CpuLoad)
+                .ToPropertyEx(this, model => model.CpuLoad, false, RxApp.MainThreadScheduler);
+
+            systemInfoService
+                .WhenAnyValue(x => x.MemoryLoad)
+                .ToPropertyEx(this, model => model.MemoryLoad, false, RxApp.MainThreadScheduler);
         }
     }
 }

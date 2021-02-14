@@ -205,6 +205,20 @@ namespace WeatherCalendar.Views
             this.OneWayBind(
                     ViewModel,
                     model => model.Date,
+                    view => view.DutyTextBlock.Text,
+                    date =>
+                    {
+                        if (date.Date.DayOfWeek == DayOfWeek.Saturday ||
+                            date.Date.DayOfWeek == DayOfWeek.Sunday)
+                            return "休息";
+
+                        return "上班";
+                    })
+                .DisposeWith(disposable);
+
+            this.OneWayBind(
+                    ViewModel,
+                    model => model.Date,
                     view => view.YearInfoTextBlock.Text,
                     GetYearInfo)
                 .DisposeWith(disposable);
@@ -255,28 +269,28 @@ namespace WeatherCalendar.Views
                     ViewModel,
                     model => model.Forecast,
                     view => view.HighTemperatureTextBlock.Text,
-                    forecast => $"高温 :  {forecast?.HighTemperature} ℃")
+                    forecast => $"高温 :   {forecast?.HighTemperature} ℃")
                 .DisposeWith(disposable);
 
             this.OneWayBind(
                     ViewModel,
                     model => model.Forecast,
                     view => view.LowTemperatureTextBlock.Text,
-                    forecast => $"低温 :  {forecast?.LowTemperature} ℃")
+                    forecast => $"低温 :   {forecast?.LowTemperature} ℃")
                 .DisposeWith(disposable);
 
             this.OneWayBind(
                     ViewModel,
                     model => model.Forecast,
                     view => view.SunriseTextBlock.Text,
-                    forecast => $"日出 :  {forecast?.Sunrise}")
+                    forecast => $"日出 :   {forecast?.Sunrise}")
                 .DisposeWith(disposable);
 
             this.OneWayBind(
                     ViewModel,
                     model => model.Forecast,
                     view => view.SunsetTextBlock.Text,
-                    forecast => $"日落 :  {forecast?.Sunset}")
+                    forecast => $"日落 :   {forecast?.Sunset}")
                 .DisposeWith(disposable);
 
             this.OneWayBind(

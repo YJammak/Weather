@@ -15,7 +15,7 @@ namespace WeatherCalendar.Themes
         public Brush DayViewBackground => Brushes.Transparent;
 
         public Brush DayViewCurrentDayBackground
-            => new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
+            => new SolidColorBrush(Color.FromArgb(0x22, 0, 0, 0));
 
         public Brush DayViewMouseOverDayBackground
             => new SolidColorBrush(Color.FromArgb(0x33, 0xFF, 0xFF, 0xFF));

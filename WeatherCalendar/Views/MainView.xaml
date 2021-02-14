@@ -11,12 +11,15 @@
     d:DesignWidth="450"
     x:TypeArguments="vms:MainViewModel"
     mc:Ignorable="d">
-    <Grid Background="#33000000">
+    <Grid Background="#00000000">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
+        <Grid.Effect>
+            <DropShadowEffect Opacity="0.3" ShadowDepth="2" />
+        </Grid.Effect>
         <Grid Grid.Row="0" Margin="25,15,22,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />

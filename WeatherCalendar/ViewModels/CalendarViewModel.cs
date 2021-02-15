@@ -83,6 +83,7 @@ namespace WeatherCalendar.ViewModels
 
                 weatherService
                     .WhenAnyValue(x => x.Forecast)
+                    .ObserveOnDispatcher()
                     .Do(UpdateForecast)
                     .ToPropertyEx(this, model => model.Forecast)
                     .DisposeWith(disposable);

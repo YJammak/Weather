@@ -4,6 +4,8 @@ namespace WeatherCalendar.Themes
 {
     public interface ITheme
     {
+        public Brush MainWindowBackground { get; }
+        
         public Brush DayNameNormalForeground { get; }
 
         public Brush DayNameWeekendForeground { get; }

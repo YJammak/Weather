@@ -2,6 +2,7 @@
 using ReactiveUI.Fody.Helpers;
 using System;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using Weather;
 
 namespace WeatherCalendar.Services
@@ -57,6 +58,11 @@ namespace WeatherCalendar.Services
         {
             Forecast = City == null ? null : UpdateWeather(City);
             return Forecast;
+        }
+
+        public async Task<WeatherForecast> UpdateWeatherAsync()
+        {
+            return await Task.Run(() => Forecast = City == null ? null : UpdateWeather(City));
         }
 
         public WeatherForecast UpdateWeather(CityKeyInfo city)

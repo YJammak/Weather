@@ -3,7 +3,6 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="clr-namespace:WeatherCalendar"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:rxui="http://reactiveui.net"
@@ -13,12 +12,11 @@
     x:TypeArguments="vms:MainWindowViewModel"
     AllowsTransparency="True"
     Background="Transparent"
-    MouseLeftButtonDown="MainWindow_OnMouseLeftButtonDown"
     SizeToContent="WidthAndHeight"
-    WindowStartupLocation="CenterScreen"
+    WindowStartupLocation="Manual"
     WindowStyle="None"
     mc:Ignorable="d">
-    <Grid Background="#01000000">
+    <Grid x:Name="MainGrid" Background="#01000000">
         <tb:TaskbarIcon x:Name="NotifyIcon" IconSource="Icon.ico">
             <tb:TaskbarIcon.TrayToolTip>
                 <Border
@@ -41,6 +39,28 @@
                         Icon="{materialDesign:PackIcon Kind=CalendarMonth}" />
                     <Separator />
                     <MenuItem
+                        x:Name="MousePenetrationMenuItem"
+                        Header="鼠标穿透"
+                        IsCheckable="True" />
+                    <MenuItem
+                        x:Name="LockedPositionMenuItem"
+                        Header="锁定位置"
+                        IsCheckable="True" />
+                    <MenuItem
+                        x:Name="BackgroundTransparentMenuItem"
+                        Header="背景透明"
+                        IsCheckable="True" />
+                    <Separator />
+                    <MenuItem
+                        x:Name="UpdateWeatherMenuItem"
+                        Header="更新天气"
+                        Icon="{materialDesign:PackIcon Kind=CloudRefresh}" />
+                    <MenuItem
+                        x:Name="ChangeCityMenuItem"
+                        Header="切换城市"
+                        Icon="{materialDesign:PackIcon Kind=City}" />
+                    <Separator />
+                    <MenuItem
                         x:Name="CurrentMonthMenuItem"
                         Header="本月"
                         Icon="{materialDesign:PackIcon Kind=CalendarToday}" />
@@ -52,6 +72,18 @@
                         x:Name="NextMonthMenuItem"
                         Header="下个月"
                         Icon="{materialDesign:PackIcon Kind=CalendarArrowRight}" />
+                    <Separator />
+                    <MenuItem
+                        x:Name="ThemeMenuItem"
+                        Header="主题"
+                        Icon="{materialDesign:PackIcon Kind=Palette}">
+                        <MenuItem
+                            x:Name="DefaultThemeMenuItem"
+                            Header="默认"
+                            IsCheckable="True"
+                            IsChecked="True"
+                            IsEnabled="False" />
+                    </MenuItem>
                     <Separator />
                     <MenuItem
                         x:Name="QuitMenuItem"

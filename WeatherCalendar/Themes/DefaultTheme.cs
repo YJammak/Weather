@@ -4,6 +4,9 @@ namespace WeatherCalendar.Themes
 {
     public sealed class DefaultTheme : ITheme
     {
+        public Brush MainWindowBackground => 
+            new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
+
         public Brush DayNameNormalForeground => Brushes.White;
 
         public Brush DayNameWeekendForeground

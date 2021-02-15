@@ -3,7 +3,6 @@ using ReactiveUI.Fody.Helpers;
 using Splat;
 using System;
 using System.Linq;
-using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using Weather;
@@ -13,7 +12,7 @@ using WeatherCalendar.Services;
 
 namespace WeatherCalendar.ViewModels
 {
-    public class CalendarViewModel : ReactiveObject, IActivatableViewModel
+    public class CalendarViewModel : CalendarBaseViewModel, IActivatableViewModel
     {
         public ViewModelActivator Activator { get; }
 
@@ -39,26 +38,6 @@ namespace WeatherCalendar.ViewModels
         /// </summary>
         [ObservableAsProperty]
         public WeatherForecast Forecast { get; }
-
-        /// <summary>
-        /// 跳转到指定月命令
-        /// </summary>
-        public ReactiveCommand<DateTime, Unit> GotoMonthCommand;
-
-        /// <summary>
-        /// 跳转到当前月命令
-        /// </summary>
-        public ReactiveCommand<Unit, Unit> CurrentMonthCommand;
-
-        /// <summary>
-        /// 跳转到上一个月
-        /// </summary>
-        public ReactiveCommand<Unit, Unit> LastMonthCommand;
-
-        /// <summary>
-        /// 跳转到下一个月
-        /// </summary>
-        public ReactiveCommand<Unit, Unit> NextMonthCommand;
 
         public CalendarViewModel()
         {

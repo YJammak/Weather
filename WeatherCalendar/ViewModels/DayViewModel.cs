@@ -2,6 +2,7 @@
 using ReactiveUI.Fody.Helpers;
 using Splat;
 using System;
+using System.Linq;
 using System.Reactive.Linq;
 using Weather;
 using WeatherCalendar.Models;
@@ -42,6 +43,12 @@ namespace WeatherCalendar.ViewModels
         /// </summary>
         [Reactive]
         public ForecastInfo Forecast { get; set; }
+        
+        /// <summary>
+        /// 生肖视图模型
+        /// </summary>
+        [ObservableAsProperty]
+        public ReactiveObject ChineseZodiacViewModel { get; }
 
         /// <summary>
         /// 白天天气图片视图模型
@@ -90,6 +97,18 @@ namespace WeatherCalendar.ViewModels
         /// </summary>
         [ObservableAsProperty]
         public bool IsWeekend { get; }
+        
+        /// <summary>
+        /// 假日名城
+        /// </summary>
+        [ObservableAsProperty]
+        public string HolidayName { get; }
+
+        /// <summary>
+        /// 是否为休息日
+        /// </summary>
+        [ObservableAsProperty]
+        public bool IsHolidayRestDay { get; }
 
         public DayViewModel()
         {
@@ -155,6 +174,12 @@ namespace WeatherCalendar.ViewModels
                 .Select(chineseFestival => !string.IsNullOrWhiteSpace(chineseFestival))
                 .ToPropertyEx(this, model => model.IsChineseFestival);
 
+            var chineseZodiacService = Locator.Current.GetService<IChineseZodiacService>();
+
+            this.WhenAnyValue(x => x.Date.ChineseZodiacOfFirstMonth)
+                .Select(chineseZodiacService.GetChineseZodiacViewModel)
+                .ToPropertyEx(this, model => model.ChineseZodiacViewModel);
+
             var weatherImageService = Locator.Current.GetService<IWeatherImageService>();
 
             this.WhenAnyValue(x => x.Forecast)
@@ -166,6 +191,27 @@ namespace WeatherCalendar.ViewModels
                 .Select(f => f?.NightWeather?.Weather)
                 .Select(w => weatherImageService.GetWeatherImageViewModel(w))
                 .ToPropertyEx(this, model => model.NightWeatherImageViewModel);
+
+            var holidayService = Locator.Current.GetService<IHolidayService>();
+
+            this.WhenAnyValue(x => x.Date.Date)
+                .Select(d =>
+                {
+                    var holiday = holidayService.GetHoliday(d);
+                    return holiday?.Name;
+                })
+                .ToPropertyEx(this, model => model.HolidayName);
+
+            this.WhenAnyValue(x => x.Date.Date)
+                .Select(d =>
+                {
+                    var holiday = holidayService.GetHoliday(d);
+                    if (holiday == null)
+                        return false;
+
+                    return holiday.RestDates?.Contains(d.Date) ?? false;
+                })
+                .ToPropertyEx(this, model => model.IsHolidayRestDay);
         }
 
         public override string ToString()

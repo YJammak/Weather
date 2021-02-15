@@ -4,7 +4,6 @@ using System;
 using System.Globalization;
 using System.Reactive.Disposables;
 using System.Windows;
-using WeatherCalendar.Models;
 using WeatherCalendar.Themes;
 
 namespace WeatherCalendar.Views
@@ -197,44 +196,60 @@ namespace WeatherCalendar.Views
 
             this.OneWayBind(
                     ViewModel,
-                    model => model.Date,
+                    model => model.Date.Date,
                     view => view.DaysTextBlock.Text,
                     dateInfo => GetDaysFromTodayInfo(dateInfo.Date))
                 .DisposeWith(disposable);
 
-            this.OneWayBind(
-                    ViewModel,
-                    model => model.Date,
-                    view => view.DutyTextBlock.Text,
-                    date =>
+            this.WhenAnyValue(
+                    x => x.ViewModel.Date.Date,
+                    x => x.ViewModel.HolidayName,
+                    x => x.ViewModel.IsHolidayRestDay,
+                    (date, holidayName, isRestDay) =>
                     {
-                        if (date.Date.DayOfWeek == DayOfWeek.Saturday ||
-                            date.Date.DayOfWeek == DayOfWeek.Sunday)
+                        if (!string.IsNullOrWhiteSpace(holidayName))
+                            return isRestDay ? "休息" : "上班";
+
+                        if (date.DayOfWeek == DayOfWeek.Saturday ||
+                            date.DayOfWeek == DayOfWeek.Sunday)
                             return "休息";
 
                         return "上班";
                     })
+                .BindTo(this, view => view.DutyTextBlock.Text)
                 .DisposeWith(disposable);
 
             this.OneWayBind(
                     ViewModel,
-                    model => model.Date,
-                    view => view.YearInfoTextBlock.Text,
+                    model => model.ChineseZodiacViewModel,
+                    view => view.ChineseZodiacModelViewHost.ViewModel)
+                .DisposeWith(disposable);
+
+            this.WhenAnyValue(
+                    x => x.ViewModel.Date.Date,
+                    x => x.ViewModel.Date.SolarTerm,
+                    x => x.ViewModel.Date.DogDaysDetail,
+                    x => x.ViewModel.Date.ShuJiuDetail,
+                    x => x.ViewModel.Date.Festival,
+                    x => x.ViewModel.Date.ChineseFestival,
                     GetYearInfo)
+                .BindTo(this, view => view.YearInfoTextBlock.Text)
                 .DisposeWith(disposable);
 
-            this.OneWayBind(
-                    ViewModel,
-                    model => model.Date,
-                    view => view.DateInfoTextBlock.Text,
+            this.WhenAnyValue(
+                    x => x.ViewModel.Date.Date,
+                    x => x.ViewModel.Date.LunarMonthInfo,
                     GetDateInfo)
+                .BindTo(this, view => view.DateInfoTextBlock.Text)
                 .DisposeWith(disposable);
 
-            this.OneWayBind(
-                    ViewModel,
-                    model => model.Date,
-                    view => view.LunarInfoTextBlock.Text,
+            this.WhenAnyValue(
+                    x => x.ViewModel.Date.StemsAndBranchesYearNameOfFirstMonth,
+                    x => x.ViewModel.Date.ChineseZodiacOfFirstMonth,
+                    x => x.ViewModel.Date.StemsAndBranchesMonthName,
+                    x => x.ViewModel.Date.StemsAndBranchesDayName,
                     GetLunarInfo)
+                .BindTo(this, view => view.LunarInfoTextBlock.Text)
                 .DisposeWith(disposable);
 
             this.OneWayBind(
@@ -302,6 +317,31 @@ namespace WeatherCalendar.Views
 
             this.OneWayBind(
                     ViewModel,
+                    model => model.HolidayName,
+                    view => view.HolidayTextBlock.Visibility,
+                    name => string.IsNullOrWhiteSpace(name) ? Visibility.Collapsed : Visibility.Visible)
+                .DisposeWith(disposable);
+
+            this.OneWayBind(
+                    ViewModel,
+                    model => model.IsHolidayRestDay,
+                    view => view.HolidayTextBlock.Text,
+                    isRestDay => isRestDay ? "休" : "班")
+                .DisposeWith(disposable);
+            
+            this.OneWayBind(
+                    ViewModel,
+                    model => model.IsHolidayRestDay,
+                    view => view.HolidayTextBlock.Foreground,
+                    isRestDay =>
+                    {
+                        var theme = Locator.Current.GetService<ITheme>();
+                        return isRestDay ? theme.HolidayRestDayForeground : theme.HolidayWorkDayForeground;
+                    })
+                .DisposeWith(disposable);
+
+            this.OneWayBind(
+                    ViewModel,
                     model => model.DayWeatherImageViewModel,
                     view => view.TooltipDayWeatherImageViewHost.ViewModel)
                 .DisposeWith(disposable);
@@ -313,38 +353,48 @@ namespace WeatherCalendar.Views
                 .DisposeWith(disposable);
         }
 
-        private static string GetLunarInfo(DateInfo dateInfo)
+        private static string GetLunarInfo(
+            string stemsAndBranchesYearNameOfFirstMonth,
+            string chineseZodiacOfFirstMonth,
+            string stemsAndBranchesMonthName,
+            string stemsAndBranchesDayName)
         {
-            return $"{dateInfo.StemsAndBranchesYearNameOfFirstMonth}{dateInfo.ChineseZodiacOfFirstMonth}年 {dateInfo.StemsAndBranchesMonthName}月 {dateInfo.StemsAndBranchesDayName}日";
+            return $"{stemsAndBranchesYearNameOfFirstMonth}{chineseZodiacOfFirstMonth}年 {stemsAndBranchesMonthName}月 {stemsAndBranchesDayName}日";
         }
 
-        private static string GetDateInfo(DateInfo dateInfo)
+        private static string GetDateInfo(DateTime date, string lunarMonthInfo)
         {
-            return $"{dateInfo.Date:yyyy年M月d日} ({dateInfo.LunarMonthInfo})";
+            return $"{date:yyyy年M月d日} ({lunarMonthInfo})";
         }
 
-        private static string GetYearInfo(DateInfo dateInfo)
+        private static string GetYearInfo(
+            DateTime date, 
+            string solarTerm, 
+            string dogDaysDetail,
+            string shuJiuDetail,
+            string festival,
+            string chineseFestival)
         {
             var gc = new GregorianCalendar();
 
-            var result = $"第{dateInfo.Date.DayOfYear}天 第{gc.GetWeekOfYear(dateInfo.Date, CalendarWeekRule.FirstDay, DayOfWeek.Monday)}周";
+            var result = $"第{date.DayOfYear}天 第{gc.GetWeekOfYear(date, CalendarWeekRule.FirstDay, DayOfWeek.Monday)}周";
 
             var info = "";
 
-            if (!string.IsNullOrWhiteSpace(dateInfo.SolarTerm))
-                info += dateInfo.SolarTerm;
+            if (!string.IsNullOrWhiteSpace(solarTerm))
+                info += solarTerm;
 
-            if (!string.IsNullOrWhiteSpace(dateInfo.DogDaysDetail))
-                info += string.IsNullOrWhiteSpace(info) ? dateInfo.DogDaysDetail : " " + dateInfo.DogDaysDetail;
+            if (!string.IsNullOrWhiteSpace(dogDaysDetail))
+                info += string.IsNullOrWhiteSpace(info) ? dogDaysDetail : " " + dogDaysDetail;
 
-            if (!string.IsNullOrWhiteSpace(dateInfo.ShuJiuDetail))
-                info += string.IsNullOrWhiteSpace(info) ? dateInfo.ShuJiuDetail : " " + dateInfo.ShuJiuDetail;
+            if (!string.IsNullOrWhiteSpace(shuJiuDetail))
+                info += string.IsNullOrWhiteSpace(info) ? shuJiuDetail : " " + shuJiuDetail;
 
-            if (!string.IsNullOrWhiteSpace(dateInfo.Festival))
-                info += string.IsNullOrWhiteSpace(info) ? dateInfo.Festival : " " + dateInfo.Festival;
+            if (!string.IsNullOrWhiteSpace(festival))
+                info += string.IsNullOrWhiteSpace(info) ? festival : " " + festival;
 
-            if (!string.IsNullOrWhiteSpace(dateInfo.ChineseFestival))
-                info += string.IsNullOrWhiteSpace(info) ? dateInfo.ChineseFestival : " " + dateInfo.ChineseFestival;
+            if (!string.IsNullOrWhiteSpace(chineseFestival))
+                info += string.IsNullOrWhiteSpace(info) ? chineseFestival : " " + chineseFestival;
 
             result += $"{(string.IsNullOrWhiteSpace(info) ? "" : $" ({info})")}";
 

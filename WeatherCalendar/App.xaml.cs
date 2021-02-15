@@ -20,9 +20,12 @@ namespace WeatherCalendar
 
             var weatherService = new WeatherService();
 
+            var appConfig = new AppConfigService();
+            appConfig.Load("config.json");
+
             Task.Run(() =>
             {
-                var city = weatherService.GetCities().FirstOrDefault(c => c.City == "浦东");
+                var city = weatherService.GetCities().FirstOrDefault(c => c.CityKey == appConfig.Config.CityKey);
                 weatherService.UpdateWeather(city);
                 weatherService.StartUpdate();
             });
@@ -33,7 +36,12 @@ namespace WeatherCalendar
             var festivalService = new FestivalService();
             festivalService.Load("festivals.json");
 
+            var holidayService = new HolidayFileService();
+            holidayService.Load("holidays.json");
+
+            Locator.CurrentMutable.RegisterConstant(appConfig);
             Locator.CurrentMutable.RegisterConstant(festivalService);
+            Locator.CurrentMutable.RegisterConstant(holidayService, typeof(IHolidayService));
             Locator.CurrentMutable.RegisterConstant(new WeatherImageService(), typeof(IWeatherImageService));
             Locator.CurrentMutable.RegisterConstant(new ChineseZodiacFontService(), typeof(IChineseZodiacService));
             Locator.CurrentMutable.RegisterConstant(new SystemInfoService());

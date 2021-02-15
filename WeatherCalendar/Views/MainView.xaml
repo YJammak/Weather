@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:rxui="http://reactiveui.net"
     xmlns:vms="clr-namespace:WeatherCalendar.ViewModels"
+    Width="450"
     d:DesignHeight="400"
     d:DesignWidth="450"
     x:TypeArguments="vms:MainViewModel"

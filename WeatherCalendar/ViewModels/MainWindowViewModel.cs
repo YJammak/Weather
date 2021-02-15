@@ -6,7 +6,7 @@ namespace WeatherCalendar.ViewModels
     public class MainWindowViewModel : ReactiveObject
     {
         [Reactive]
-        public ReactiveObject CurrentViewModel { get; set; }
+        public CalendarBaseViewModel CurrentViewModel { get; set; }
 
         public MainWindowViewModel()
         {

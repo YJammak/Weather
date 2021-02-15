@@ -11,7 +11,7 @@ using WeatherCalendar.Services;
 
 namespace WeatherCalendar.ViewModels
 {
-    public class MainViewModel : ReactiveObject
+    public class MainViewModel : CalendarBaseViewModel
     {
         /// <summary>
         /// 日历
@@ -105,6 +105,11 @@ namespace WeatherCalendar.ViewModels
         public MainViewModel()
         {
             Calendar = new CalendarViewModel();
+
+            GotoMonthCommand = Calendar.GotoMonthCommand;
+            CurrentMonthCommand = Calendar.CurrentMonthCommand;
+            LastMonthCommand = Calendar.LastMonthCommand;
+            NextMonthCommand = Calendar.NextMonthCommand;
 
             Observable
                 .Timer(

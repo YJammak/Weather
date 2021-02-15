@@ -4,8 +4,10 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:WeatherCalendar"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:rxui="http://reactiveui.net"
+    xmlns:tb="http://www.hardcodet.net/taskbar"
     xmlns:vms="clr-namespace:WeatherCalendar.ViewModels"
     Title="MainWindow"
     x:TypeArguments="vms:MainWindowViewModel"
@@ -17,6 +19,47 @@
     WindowStyle="None"
     mc:Ignorable="d">
     <Grid Background="#01000000">
+        <tb:TaskbarIcon x:Name="NotifyIcon" IconSource="Icon.ico">
+            <tb:TaskbarIcon.TrayToolTip>
+                <Border
+                    Background="White"
+                    BorderBrush="#555555"
+                    BorderThickness="1"
+                    CornerRadius="2">
+                    <TextBlock
+                        Margin="5,2"
+                        FontFamily="微软雅黑"
+                        Foreground="#555555"
+                        Text="天气日历" />
+                </Border>
+            </tb:TaskbarIcon.TrayToolTip>
+            <tb:TaskbarIcon.ContextMenu>
+                <ContextMenu FontFamily="微软雅黑">
+                    <MenuItem
+                        FontWeight="Bold"
+                        Header="日历详情"
+                        Icon="{materialDesign:PackIcon Kind=CalendarMonth}" />
+                    <Separator />
+                    <MenuItem
+                        x:Name="CurrentMonthMenuItem"
+                        Header="本月"
+                        Icon="{materialDesign:PackIcon Kind=CalendarToday}" />
+                    <MenuItem
+                        x:Name="LastMonthMenuItem"
+                        Header="上个月"
+                        Icon="{materialDesign:PackIcon Kind=CalendarArrowLeft}" />
+                    <MenuItem
+                        x:Name="NextMonthMenuItem"
+                        Header="下个月"
+                        Icon="{materialDesign:PackIcon Kind=CalendarArrowRight}" />
+                    <Separator />
+                    <MenuItem
+                        x:Name="QuitMenuItem"
+                        Header="退出"
+                        Icon="{materialDesign:PackIcon Kind=ExitToApp}" />
+                </ContextMenu>
+            </tb:TaskbarIcon.ContextMenu>
+        </tb:TaskbarIcon>
         <rxui:ViewModelViewHost
             x:Name="ViewModelViewHost"
             HorizontalContentAlignment="Stretch"

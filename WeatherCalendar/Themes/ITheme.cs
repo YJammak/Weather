@@ -38,6 +38,10 @@ namespace WeatherCalendar.Themes
 
         public Brush FestivalAnotherMonthForeground { get; }
 
+        public Brush HolidayRestDayForeground { get; }
+
+        public Brush HolidayWorkDayForeground { get; }
+
         public Brush BackgroundMonthForeground { get; }
 
         public double BackgroundMonthOpacity { get; }

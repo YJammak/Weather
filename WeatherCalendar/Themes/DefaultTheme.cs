@@ -47,6 +47,10 @@ namespace WeatherCalendar.Themes
         public Brush FestivalAnotherMonthForeground
             => new SolidColorBrush(Color.FromArgb(80, 255, 255, 255));
 
+        public Brush HolidayRestDayForeground => Brushes.LawnGreen;
+
+        public Brush HolidayWorkDayForeground => Brushes.Red;
+
         public Brush BackgroundMonthForeground => Brushes.White;
 
         public double BackgroundMonthOpacity => 0.2;

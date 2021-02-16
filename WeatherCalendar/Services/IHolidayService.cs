@@ -44,5 +44,13 @@ namespace WeatherCalendar.Services
         /// <param name="date">日期</param>
         /// <param name="isRestDay">是否为休息日</param>
         public void Remove(int year, string name, DateTime date, bool isRestDay);
+
+        /// <summary>
+        /// 删除假期
+        /// </summary>
+        /// <param name="year">年</param>
+        /// <param name="name">名称</param>
+        /// <param name="date">日期</param>
+        public void Remove(int year, string name, DateTime date);
     }
 }

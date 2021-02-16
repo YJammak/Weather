@@ -100,7 +100,8 @@ namespace WeatherCalendar.Views
                 {
                     Close();
                     interaction.SetOutput(Unit.Default);
-                });
+                })
+                .DisposeWith(disposable);
         }
     }
 }

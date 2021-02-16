@@ -3,6 +3,8 @@ using Splat;
 using System;
 using System.Globalization;
 using System.Reactive.Disposables;
+using System.Reactive.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using WeatherCalendar.Themes;
 
@@ -351,6 +353,55 @@ namespace WeatherCalendar.Views
                     model => model.NightWeatherImageViewModel,
                     view => view.TooltipNightWeatherImageViewHost.ViewModel)
                 .DisposeWith(disposable);
+
+            this.OneWayBind(
+                    ViewModel,
+                    model => model.HolidayName,
+                    view => view.RemoveHolidayMenuItem.Visibility,
+                    name => string.IsNullOrWhiteSpace(name) ? Visibility.Collapsed : Visibility.Visible)
+                .DisposeWith(disposable);
+
+            this.Border
+                .Events()
+                .ContextMenuOpening
+                .Do(x => x.Handled = ViewModel!.IsEditing)
+                .Subscribe()
+                .DisposeWith(disposable);
+
+            this.BindCommand(
+                    ViewModel!,
+                    model => model.EditHolidayCommand,
+                    view => view.EditHolidayMenuItem)
+                .DisposeWith(disposable);
+
+            this.BindCommand(
+                    ViewModel!,
+                    model => model.RemoveHolidayCommand,
+                    view => view.RemoveHolidayMenuItem)
+                .DisposeWith(disposable);
+
+            this.ViewModel
+                .GetHolidayInfoInteraction
+                .RegisterHandler(async interaction =>
+                {
+                    var (holidayName, isRestDay) = interaction.Input;
+                    
+                    var editWindow = new EditHolidayWindow();
+                    editWindow.ViewModel!.HolidayName = holidayName;
+                    editWindow.ViewModel!.IsRestDay = isRestDay;
+                    
+                    editWindow.Show();
+
+                    while (editWindow.IsVisible)
+                    {
+                        await Task.Delay(10);
+                    }
+                    
+                    if (editWindow.ViewModel!.IsConfirmed)
+                        interaction.SetOutput((editWindow.ViewModel!.HolidayName, editWindow.ViewModel!.IsRestDay));
+                    else
+                        interaction.SetOutput((string.Empty, false));
+                });
         }
 
         private static string GetLunarInfo(

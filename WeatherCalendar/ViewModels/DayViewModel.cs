@@ -2,7 +2,9 @@
 using ReactiveUI.Fody.Helpers;
 using Splat;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reactive;
 using System.Reactive.Linq;
 using Weather;
 using WeatherCalendar.Models;
@@ -109,9 +111,37 @@ namespace WeatherCalendar.ViewModels
         /// </summary>
         [ObservableAsProperty]
         public bool IsHolidayRestDay { get; }
+        
+        /// <summary>
+        /// 是否正在编辑
+        /// </summary>
+        [Reactive]
+        public bool IsEditing { get; set; }
+
+        /// <summary>
+        /// 编辑假日命令
+        /// </summary>
+        public ReactiveCommand<Unit, Unit> EditHolidayCommand;
+
+        /// <summary>
+        /// 删除假日命令
+        /// </summary>
+        public ReactiveCommand<Unit, Unit> RemoveHolidayCommand;
+
+        /// <summary>
+        /// 获取假日信息交互
+        /// </summary>
+        public Interaction<(string, bool), (string, bool)> GetHolidayInfoInteraction;
+
+        /// <summary>
+        /// 所有视图模型
+        /// </summary>
+        private static readonly List<WeakReference<DayViewModel>> AllDayViewModels = new List<WeakReference<DayViewModel>>();
 
         public DayViewModel()
         {
+            AllDayViewModels.Add(new WeakReference<DayViewModel>(this));
+
             Date = new DateInfo();
 
             this.WhenAnyValue(x => x.Date.Date)
@@ -194,7 +224,10 @@ namespace WeatherCalendar.ViewModels
 
             var holidayService = Locator.Current.GetService<IHolidayService>();
 
-            this.WhenAnyValue(x => x.Date.Date)
+            this.WhenAnyValue(
+                    x => x.Date.Date,
+                    x => x.IsValid,
+                    (date, _) => date)
                 .Select(d =>
                 {
                     var holiday = holidayService.GetHoliday(d);
@@ -202,7 +235,10 @@ namespace WeatherCalendar.ViewModels
                 })
                 .ToPropertyEx(this, model => model.HolidayName);
 
-            this.WhenAnyValue(x => x.Date.Date)
+            this.WhenAnyValue(
+                    x => x.Date.Date,
+                    x => x.IsValid,
+                    (date, _) => date)
                 .Select(d =>
                 {
                     var holiday = holidayService.GetHoliday(d);
@@ -212,6 +248,64 @@ namespace WeatherCalendar.ViewModels
                     return holiday.RestDates?.Contains(d.Date) ?? false;
                 })
                 .ToPropertyEx(this, model => model.IsHolidayRestDay);
+
+            var canEditHoliday =
+                this.WhenAnyValue(
+                    x => x.IsEditing,
+                    isEditing => !isEditing);
+
+            this.EditHolidayCommand = ReactiveCommand.CreateFromTask(async () =>
+            {
+                try
+                {
+                    SetIsEditing(true);
+
+                    var (holidayName, isRestDay) = await GetHolidayInfoInteraction.Handle((HolidayName, IsHolidayRestDay));
+
+                    if (string.IsNullOrWhiteSpace(holidayName))
+                        return;
+
+                    if (!string.IsNullOrWhiteSpace(HolidayName) && HolidayName != holidayName)
+                        holidayService.Remove(Date.Date.Year, HolidayName, Date.Date);
+
+                    holidayService.Add(Date.Date.Year, holidayName, Date.Date, isRestDay);
+                    IsValid = false;
+                    IsValid = true;
+                }
+                finally
+                {
+                    SetIsEditing(false);
+                }
+            }, canEditHoliday);
+
+            this.RemoveHolidayCommand = ReactiveCommand.Create(() =>
+            {
+                holidayService.Remove(Date.Date.Year, HolidayName, Date.Date);
+                IsValid = false;
+                IsValid = true;
+            }, canEditHoliday);
+
+            GetHolidayInfoInteraction = new Interaction<(string, bool), (string, bool)>();
+        }
+
+        ~DayViewModel()
+        {
+            AllDayViewModels.RemoveAll(d =>
+            {
+                if (d.TryGetTarget(out var day))
+                    return day == this;
+
+                return false;
+            });
+        }
+
+        private static void SetIsEditing(bool isEditing)
+        {
+            foreach (var dayViewModel in AllDayViewModels)
+            {
+                if (dayViewModel.TryGetTarget(out var day))
+                    day.IsEditing = isEditing;
+            }
         }
 
         public override string ToString()

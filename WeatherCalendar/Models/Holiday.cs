@@ -8,14 +8,14 @@ namespace WeatherCalendar.Models
     public class Holiday 
     {
         /// <summary>
-        /// 名称
-        /// </summary>
-        public string Name { get; set; }
-        
-        /// <summary>
         /// 年
         /// </summary>
         public int Year { get; set; }
+        
+        /// <summary>
+        /// 名称
+        /// </summary>
+        public string Name { get; set; }
 
         /// <summary>
         /// 休息日期

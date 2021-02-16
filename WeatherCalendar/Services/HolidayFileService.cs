@@ -90,9 +90,26 @@ namespace WeatherCalendar.Services
                 };
 
                 if (isRestDay)
-                    holiday.RestDates = new[] {date.Date};
+                {
+                    holiday.WorkDates = Array.Empty<DateTime>();
+                    holiday.RestDates = new[] { date.Date };
+                }
                 else
+                {
                     holiday.WorkDates = new[] {date.Date};
+                    holiday.RestDates = Array.Empty<DateTime>();
+                }
+
+                Holidays =
+                    Holidays == null
+                        ? new[] {holiday}
+                        : Holidays
+                            .Append(holiday)
+                            .OrderBy(h => h.Year)
+                            .ThenBy(h =>
+                                h.RestDates?.FirstOrDefault() ??
+                                h.WorkDates?.FirstOrDefault())
+                            .ToArray();
             }
             else
             {
@@ -163,7 +180,40 @@ namespace WeatherCalendar.Services
                             .Where(d => d != date.Date)
                             .ToArray();
             }
+
+            if (holiday.WorkDates.Length <= 0 && holiday.RestDates.Length <= 0)
+                Holidays = Holidays.Where(h => h != holiday).ToArray();
             
+            Save();
+        }
+
+        public void Remove(int year, string name, DateTime date)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                return;
+
+            var holiday = Holidays?.FirstOrDefault(h => h.Year == year && h.Name == name);
+
+            if (holiday == null)
+                return;
+
+            if (holiday.RestDates.Contains(date.Date))
+                holiday.RestDates =
+                    holiday
+                        .RestDates
+                        .Where(d => d != date.Date)
+                        .ToArray();
+
+            if (holiday.WorkDates.Contains(date.Date))
+                holiday.WorkDates =
+                    holiday
+                        .WorkDates
+                        .Where(d => d != date.Date)
+                        .ToArray();
+
+            if (holiday.WorkDates.Length <= 0 && holiday.RestDates.Length <= 0)
+                Holidays = Holidays.Where(h => h != holiday).ToArray();
+
             Save();
         }
     }

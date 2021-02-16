@@ -32,7 +32,7 @@ namespace Weather
         /// <summary>
         /// 地区
         /// </summary>
-        public string Area { get; set; }
+        public string District { get; set; }
 
         /// <summary>
         /// 省
@@ -53,13 +53,13 @@ namespace Weather
 
             CityKey = infos[0];
             City = infos[1];
-            Area = infos[2];
+            District = infos[2];
             Province = infos[3];
         }
 
         public override string ToString()
         {
-            return $"{City},{Area},{Province}({CityKey})";
+            return $"{City},{District},{Province}({CityKey})";
         }
     }
 

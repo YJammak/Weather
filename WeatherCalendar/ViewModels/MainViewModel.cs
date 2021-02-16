@@ -159,6 +159,7 @@ namespace WeatherCalendar.ViewModels
 
             weatherService
                 .WhenAnyValue(x => x.Forecast)
+                .ObserveOnDispatcher()
                 .ToPropertyEx(this, model => model.Forecast);
 
             var weatherImageService = Locator.Current.GetService<IWeatherImageService>();

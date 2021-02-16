@@ -46,6 +46,7 @@ namespace WeatherCalendar.Services
                     .Select(_ => DateTime.Now)
                     .Where(NeedUpdate)
                     .Do(_ => UpdateWeather())
+                    .Retry()
                     .Subscribe();
         }
 
@@ -67,9 +68,18 @@ namespace WeatherCalendar.Services
 
         public WeatherForecast UpdateWeather(CityKeyInfo city)
         {
-            LastUpdateTime = DateTime.Now;
-            Forecast = WeatherHelper.Instance.UpdateWeather(city);
             City = city;
+
+            if (city == null)
+            {
+                Forecast = null;
+            }
+            else
+            {
+                LastUpdateTime = DateTime.Now;
+                Forecast = WeatherHelper.Instance.UpdateWeather(city);
+            }
+
             return Forecast;
         }
 

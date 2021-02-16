@@ -102,11 +102,13 @@ namespace WeatherCalendar.ViewModels
                 var forecast =
                     (weatherForecast
                         ?.Forecast
-                        .FirstOrDefault(f => f.DateTime.Date == day1.Date.Date.Date) ?? weatherForecast
+                        ?.FirstOrDefault(f => f.DateTime.Date == day1.Date.Date.Date) ?? 
+                     weatherForecast
                         ?.ForecastFifteenDays
-                        .FirstOrDefault(f => f.DateTime.Date == day1.Date.Date.Date)) ?? weatherForecast
+                        ?.FirstOrDefault(f => f.DateTime.Date == day1.Date.Date.Date)) ?? 
+                    weatherForecast
                         ?.ForecastFortyDays
-                        .FirstOrDefault(f => f.DateTime.Date == day1.Date.Date.Date);
+                        ?.FirstOrDefault(f => f.DateTime.Date == day1.Date.Date.Date);
 
                 day.Forecast = forecast;
             }

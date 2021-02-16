@@ -7,9 +7,10 @@ using System.Windows.Media;
 using ReactiveUI;
 using Splat;
 using WeatherCalendar.Services;
-using WeatherCalendar.Themes;
 using WeatherCalendar.Utils;
 using WeatherCalendar.ViewModels;
+using WeatherCalendar.Views;
+using ITheme = WeatherCalendar.Themes.ITheme;
 
 namespace WeatherCalendar
 {
@@ -39,6 +40,8 @@ namespace WeatherCalendar
             this.Top = appConfigService.Config.WindowTop;
             
             this.SetWindowCanPenetrate(appConfigService.Config.IsMousePenetrate);
+            this.SetWindowToolWindow();
+            this.SetWindowBottom();
 
             this.MainGrid.Background = 
                 appConfigService.Config.IsBackgroundTransparent ?
@@ -133,6 +136,13 @@ namespace WeatherCalendar
                 .Subscribe()
                 .DisposeWith(disposable);
 
+            this.ChangeCityMenuItem
+                .Events()
+                .Click
+                .Do(_ => ChangeWeatherCity())
+                .Subscribe()
+                .DisposeWith(disposable);
+
             this.CurrentMonthMenuItem
                 .Events()
                 .Click
@@ -189,6 +199,18 @@ namespace WeatherCalendar
                 })
                 .Subscribe()
                 .DisposeWith(disposable);
+        }
+
+        private bool IsChangingCity { get; set; }
+        private void ChangeWeatherCity()
+        {
+            if (IsChangingCity)
+                return;
+            
+            IsChangingCity = true;
+            var cityWindow = new SelectCityWindow();
+            cityWindow.Closed += (_, _) => IsChangingCity = false;
+            cityWindow.Show();
         }
     }
 }

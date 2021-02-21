@@ -1,15 +1,17 @@
-﻿using System;
+﻿using ReactiveUI;
+using Splat;
+using System;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using ReactiveUI;
-using Splat;
 using WeatherCalendar.Services;
 using WeatherCalendar.Utils;
 using WeatherCalendar.ViewModels;
 using WeatherCalendar.Views;
+using EventExtensions = System.Windows.Controls.EventExtensions;
 using ITheme = WeatherCalendar.Themes.ITheme;
 
 namespace WeatherCalendar
@@ -38,20 +40,30 @@ namespace WeatherCalendar
             this.BackgroundTransparentMenuItem.IsChecked = appConfigService.Config.IsBackgroundTransparent;
             this.Left = appConfigService.Config.WindowLeft;
             this.Top = appConfigService.Config.WindowTop;
-            
+
             this.SetWindowCanPenetrate(appConfigService.Config.IsMousePenetrate);
             this.SetWindowToolWindow();
             this.SetWindowBottom();
 
-            this.MainGrid.Background = 
+            this.MainGrid.Background =
                 appConfigService.Config.IsBackgroundTransparent ?
-                    new SolidColorBrush(Color.FromArgb(1, 0, 0, 0)) : 
+                    new SolidColorBrush(Color.FromArgb(1, 0, 0, 0)) :
                     theme.MainWindowBackground;
 
             this.OneWayBind(
-                    ViewModel, 
-                    model => model.CurrentViewModel, 
+                    ViewModel,
+                    model => model.CurrentViewModel,
                     window => window.ViewModelViewHost.ViewModel)
+                .DisposeWith(disposable);
+
+            this.NotifyIcon
+                .LeftClickCommand = ReactiveCommand.Create(ShowCalendarWindow);
+
+            this.CalendarDetailMenuItem
+                .Events()
+                .Click
+                .Do(_ => ShowCalendarWindow())
+                .Subscribe()
                 .DisposeWith(disposable);
 
             this.MousePenetrationMenuItem
@@ -147,7 +159,7 @@ namespace WeatherCalendar
                 .Events()
                 .Click
                 .Select(_ => Unit.Default)
-                .InvokeCommand(this, 
+                .InvokeCommand(this,
                     window => window.ViewModel.CurrentViewModel.CurrentMonthCommand)
                 .DisposeWith(disposable);
 
@@ -173,7 +185,7 @@ namespace WeatherCalendar
                 .Do(_ => Close())
                 .Subscribe();
 
-            this.Events()
+            EventExtensions.Events(this)
                 .MouseLeftButtonDown
                 .Do(_ =>
                 {
@@ -183,12 +195,12 @@ namespace WeatherCalendar
                 .Subscribe()
                 .DisposeWith(disposable);
 
-            this.Events()
+            EventExtensions.Events(this)
                 .MouseLeftButtonUp
                 .Do(_ =>
                 {
-                    var left = (int) Left;
-                    var top = (int) Top;
+                    var left = (int)Left;
+                    var top = (int)Top;
                     if (left != appConfigService.Config.WindowLeft ||
                         top != appConfigService.Config.WindowTop)
                     {
@@ -201,12 +213,30 @@ namespace WeatherCalendar
                 .DisposeWith(disposable);
         }
 
+        private CalendarWindow CalendarWindow { get; set; }
+        private void ShowCalendarWindow()
+        {
+            if (CalendarWindow == null)
+            {
+                CalendarWindow = new CalendarWindow();
+                CalendarWindow.Closed += (_, _) => CalendarWindow = null;
+            }
+
+            if (CalendarWindow.WindowState == WindowState.Minimized)
+                CalendarWindow.WindowState = WindowState.Normal;
+
+            if (!CalendarWindow.IsVisible)
+                CalendarWindow.Show();
+
+            CalendarWindow.Activate();
+        }
+
         private bool IsChangingCity { get; set; }
         private void ChangeWeatherCity()
         {
             if (IsChangingCity)
                 return;
-            
+
             IsChangingCity = true;
             var cityWindow = new SelectCityWindow();
             cityWindow.Closed += (_, _) => IsChangingCity = false;

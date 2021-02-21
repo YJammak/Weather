@@ -35,6 +35,7 @@
             <tb:TaskbarIcon.ContextMenu>
                 <ContextMenu FontFamily="微软雅黑">
                     <MenuItem
+                        x:Name="CalendarDetailMenuItem"
                         FontWeight="Bold"
                         Header="日历详情"
                         Icon="{materialDesign:PackIcon Kind=CalendarMonth}" />

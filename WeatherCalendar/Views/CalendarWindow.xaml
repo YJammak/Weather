@@ -1,0 +1,149 @@
+﻿<rxui:ReactiveWindow
+    x:Class="WeatherCalendar.Views.CalendarWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:WeatherCalendar.Views"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:rxui="http://reactiveui.net"
+    xmlns:vms="clr-namespace:WeatherCalendar.ViewModels"
+    Title="日历详情"
+    Width="450"
+    MaxWidth="450"
+    x:TypeArguments="vms:CalendarWindowViewModel"
+    AllowsTransparency="True"
+    Background="Transparent"
+    SizeToContent="WidthAndHeight"
+    WindowStartupLocation="CenterScreen"
+    WindowStyle="None"
+    mc:Ignorable="d">
+    <Border
+        Margin="5"
+        Background="{DynamicResource MaterialDesignPaper}"
+        CornerRadius="3">
+        <Border.Effect>
+            <DropShadowEffect Opacity="0.3" ShadowDepth="0" />
+        </Border.Effect>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Border
+                x:Name="TitleBorder"
+                Grid.Row="0"
+                Background="Transparent">
+                <Grid>
+                    <StackPanel Orientation="Horizontal">
+                        <Image
+                            Width="16"
+                            Height="16"
+                            Margin="10,0,0,0"
+                            Source="../Icon.ico" />
+                        <TextBlock
+                            Margin="5,0,0,0"
+                            VerticalAlignment="Center"
+                            Foreground="{DynamicResource MaterialDesignBody}"
+                            Text="日历详情" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+            <StackPanel
+                Grid.Row="0"
+                Grid.RowSpan="2"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Orientation="Horizontal">
+                <Button
+                    x:Name="CloseButton"
+                    Width="30"
+                    Height="30"
+                    Padding="0"
+                    HorizontalAlignment="Right"
+                    materialDesign:ButtonAssist.CornerRadius="0 3 0 0"
+                    Content="{materialDesign:PackIcon Kind=Close}"
+                    Style="{DynamicResource MaterialDesignFlatButton}" />
+            </StackPanel>
+            <Grid Grid.Row="1" Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                        <StackPanel.Resources>
+                            <Style BasedOn="{StaticResource MaterialDesignComboBox}" TargetType="ComboBox">
+                                <Setter Property="FontSize" Value="20" />
+                                <Setter Property="Foreground" Value="{DynamicResource MaterialDesignBody}" />
+                            </Style>
+                        </StackPanel.Resources>
+                        <ComboBox
+                            x:Name="YearsComboBox"
+                            VerticalAlignment="Center"
+                            materialDesign:TextFieldAssist.SuffixText="年"
+                            materialDesign:TextFieldAssist.TextBoxViewMargin="2 0 5 0">
+                            <ComboBox.ItemTemplate>
+                                <HierarchicalDataTemplate>
+                                    <TextBlock Text="{Binding}" />
+                                </HierarchicalDataTemplate>
+                            </ComboBox.ItemTemplate>
+                            <ComboBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel />
+                                </ItemsPanelTemplate>
+                            </ComboBox.ItemsPanel>
+                        </ComboBox>
+                        <Button
+                            x:Name="LastMonthButton"
+                            Margin="15,0,5,0"
+                            Padding="0"
+                            Cursor="Hand"
+                            Style="{StaticResource MaterialDesignFlatButton}">
+                            <materialDesign:PackIcon
+                                Width="30"
+                                Height="30"
+                                Foreground="{DynamicResource MaterialDesignBody}"
+                                Kind="ChevronLeft" />
+                        </Button>
+                        <ComboBox
+                            x:Name="MonthsComboBox"
+                            VerticalAlignment="Center"
+                            materialDesign:TextFieldAssist.SuffixText="月"
+                            materialDesign:TextFieldAssist.TextBoxViewMargin="2 0 5 0">
+                            <ComboBox.ItemTemplate>
+                                <HierarchicalDataTemplate>
+                                    <TextBlock Text="{Binding StringFormat=D2}" />
+                                </HierarchicalDataTemplate>
+                            </ComboBox.ItemTemplate>
+                            <ComboBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel />
+                                </ItemsPanelTemplate>
+                            </ComboBox.ItemsPanel>
+                        </ComboBox>
+                        <Button
+                            x:Name="NextMonthButton"
+                            Margin="5,0,0,0"
+                            Padding="0"
+                            Style="{StaticResource MaterialDesignFlatButton}">
+                            <materialDesign:PackIcon
+                                Width="30"
+                                Height="30"
+                                Foreground="{DynamicResource MaterialDesignBody}"
+                                Kind="ChevronRight" />
+                        </Button>
+                    </StackPanel>
+                </Grid>
+                <Grid Grid.Row="1" Margin="0,20,0,0">
+                    <rxui:ViewModelViewHost
+                        x:Name="CalendarViewModelViewHost"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        HorizontalContentAlignment="Stretch"
+                        VerticalContentAlignment="Stretch" />
+                </Grid>
+            </Grid>
+        </Grid>
+    </Border>
+</rxui:ReactiveWindow>

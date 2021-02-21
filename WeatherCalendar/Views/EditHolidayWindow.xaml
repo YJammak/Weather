@@ -15,7 +15,10 @@
     WindowStartupLocation="CenterScreen"
     WindowStyle="None"
     mc:Ignorable="d">
-    <Border Margin="5" Background="{DynamicResource MaterialDesignPaper}">
+    <Border
+        Margin="5"
+        Background="{DynamicResource MaterialDesignPaper}"
+        CornerRadius="3">
         <Border.Effect>
             <DropShadowEffect Opacity="0.3" ShadowDepth="0" />
         </Border.Effect>
@@ -48,6 +51,7 @@
                             Height="30"
                             Padding="0"
                             HorizontalAlignment="Right"
+                            materialDesign:ButtonAssist.CornerRadius="0,3,0,0"
                             Content="{materialDesign:PackIcon Kind=Close}"
                             Style="{DynamicResource MaterialDesignFlatButton}" />
                     </StackPanel>

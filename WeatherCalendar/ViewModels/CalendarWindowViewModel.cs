@@ -34,8 +34,6 @@ namespace WeatherCalendar.ViewModels
         [Reactive]
         public int SelectedMonth { get; set; }
 
-
-
         public CalendarWindowViewModel()
         {
             Calendar = new CalendarViewModel();

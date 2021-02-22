@@ -1,5 +1,6 @@
 ﻿using ReactiveUI;
 using System;
+using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Windows;
@@ -53,6 +54,13 @@ namespace WeatherCalendar.Views
                     ViewModel,
                     model => model.SelectedMonth,
                     view => view.MonthsComboBox.SelectedValue)
+                .DisposeWith(disposable);
+
+            this.TodayButton
+                .Events()
+                .MouseLeftButtonUp
+                .Select(_ => Unit.Default)
+                .InvokeCommand(this, window => window.ViewModel.CurrentMonthCommand)
                 .DisposeWith(disposable);
 
             this.BindCommand(

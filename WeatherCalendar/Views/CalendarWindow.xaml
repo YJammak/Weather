@@ -55,12 +55,47 @@
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top"
                 Orientation="Horizontal">
+                <Border Width="30" Height="60">
+                    <Grid>
+                        <Polygon
+                            x:Name="TodayButton"
+                            Points="0,0 30,0, 30,60 15,50 0,60"
+                            Stroke="Transparent"
+                            StrokeThickness="0">
+                            <Polygon.Effect>
+                                <DropShadowEffect Opacity="0.5" ShadowDepth="0" />
+                            </Polygon.Effect>
+                            <Polygon.Style>
+                                <Style TargetType="Polygon">
+                                    <Setter Property="Fill" Value="{DynamicResource PrimaryHueDarkBrush}" />
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Fill" Value="{DynamicResource PrimaryHueMidBrush}" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Polygon.Style>
+                        </Polygon>
+                        <TextBlock
+                            Margin="0,0,0,10"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontSize="13"
+                            Foreground="White"
+                            IsHitTestVisible="False">
+                            <Run>今</Run>
+                            <LineBreak />
+                            <Run>天</Run>
+                        </TextBlock>
+                    </Grid>
+                </Border>
                 <Button
                     x:Name="CloseButton"
                     Width="30"
                     Height="30"
                     Padding="0"
                     HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
                     materialDesign:ButtonAssist.CornerRadius="0 3 0 0"
                     Content="{materialDesign:PackIcon Kind=Close}"
                     Style="{DynamicResource MaterialDesignFlatButton}" />

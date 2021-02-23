@@ -3,7 +3,6 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="clr-namespace:WeatherCalendar.Views"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:rxui="http://reactiveui.net"
@@ -55,40 +54,83 @@
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top"
                 Orientation="Horizontal">
-                <Border Width="30" Height="60">
-                    <Grid>
-                        <Polygon
-                            x:Name="TodayButton"
-                            Points="0,0 30,0, 30,60 15,50 0,60"
-                            Stroke="Transparent"
-                            StrokeThickness="0">
-                            <Polygon.Effect>
-                                <DropShadowEffect Opacity="0.5" ShadowDepth="0" />
-                            </Polygon.Effect>
-                            <Polygon.Style>
-                                <Style TargetType="Polygon">
-                                    <Setter Property="Fill" Value="{DynamicResource PrimaryHueDarkBrush}" />
-                                    <Style.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Fill" Value="{DynamicResource PrimaryHueMidBrush}" />
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Polygon.Style>
-                        </Polygon>
-                        <TextBlock
-                            Margin="0,0,0,10"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            FontSize="13"
-                            Foreground="White"
-                            IsHitTestVisible="False">
-                            <Run>今</Run>
-                            <LineBreak />
-                            <Run>天</Run>
-                        </TextBlock>
-                    </Grid>
-                </Border>
+                <Button
+                    x:Name="TodayButton"
+                    Width="30"
+                    Height="60">
+                    <Button.Template>
+                        <ControlTemplate>
+                            <Grid x:Name="grid">
+                                <Grid.Effect>
+                                    <DropShadowEffect
+                                        Direction="-90"
+                                        Opacity="0.3"
+                                        ShadowDepth="5" />
+                                </Grid.Effect>
+                                <Border
+                                    Padding="0"
+                                    materialDesign:RippleAssist.Feedback="White"
+                                    Background="{DynamicResource PrimaryHueMidBrush}">
+                                    <Border.Clip>
+                                        <PathGeometry>
+                                            <PathGeometry.Figures>
+                                                <PathFigure IsClosed="True" StartPoint="0,0">
+                                                    <PathFigure.Segments>
+                                                        <LineSegment Point="30,0" />
+                                                        <LineSegment Point="30,60" />
+                                                        <LineSegment Point="15,50" />
+                                                        <LineSegment Point="0,60" />
+                                                    </PathFigure.Segments>
+                                                </PathFigure>
+                                            </PathGeometry.Figures>
+                                        </PathGeometry>
+                                    </Border.Clip>
+                                </Border>
+                                <materialDesign:Ripple
+                                    Padding="0,0,0,2"
+                                    HorizontalContentAlignment="Center"
+                                    VerticalContentAlignment="Center"
+                                    SnapsToDevicePixels="True">
+                                    <materialDesign:Ripple.Clip>
+                                        <PathGeometry>
+                                            <PathGeometry.Figures>
+                                                <PathFigure IsClosed="True" StartPoint="0,0">
+                                                    <PathFigure.Segments>
+                                                        <LineSegment Point="30,0" />
+                                                        <LineSegment Point="30,60" />
+                                                        <LineSegment Point="15,50" />
+                                                        <LineSegment Point="0,60" />
+                                                    </PathFigure.Segments>
+                                                </PathFigure>
+                                            </PathGeometry.Figures>
+                                        </PathGeometry>
+                                    </materialDesign:Ripple.Clip>
+                                    <TextBlock
+                                        Margin="0,0,0,10"
+                                        FontSize="13"
+                                        Foreground="{DynamicResource MaterialDesignBody}"
+                                        IsHitTestVisible="False">
+                                        <Run>今</Run>
+                                        <LineBreak />
+                                        <Run>天</Run>
+                                    </TextBlock>
+                                </materialDesign:Ripple>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="grid" Property="Effect">
+                                        <Setter.Value>
+                                            <DropShadowEffect
+                                                Direction="-90"
+                                                Opacity="0.8"
+                                                ShadowDepth="5" />
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
                 <Button
                     x:Name="CloseButton"
                     Width="30"

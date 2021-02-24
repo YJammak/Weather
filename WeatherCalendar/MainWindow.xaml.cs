@@ -135,6 +135,20 @@ namespace WeatherCalendar
                 .Subscribe()
                 .DisposeWith(disposable);
 
+            this.AutoStartMenuItem
+                .Events()
+                .Checked
+                .Do(_ => AppHelper.SetAutoStart(true))
+                .Subscribe()
+                .DisposeWith(disposable);
+
+            this.AutoStartMenuItem
+                .Events()
+                .Checked
+                .Do(_ => AppHelper.SetAutoStart(false))
+                .Subscribe()
+                .DisposeWith(disposable);
+
             this.UpdateWeatherMenuItem
                 .Events()
                 .Click

@@ -95,7 +95,18 @@
                     materialDesign:ButtonAssist.CornerRadius="0"
                     Style="{DynamicResource MaterialDesignFlatButton}"
                     ToolTip="窗口置顶">
-                    <materialDesign:PackIcon x:Name="PinButtonPackIcon" Kind="PinOffOutline" />
+                    <materialDesign:PackIcon>
+                        <materialDesign:PackIcon.Style>
+                            <Style TargetType="materialDesign:PackIcon">
+                                <Setter Property="Kind" Value="PinOffOutline" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Topmost, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" Value="True">
+                                        <Setter Property="Kind" Value="PinOutline" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </materialDesign:PackIcon.Style>
+                    </materialDesign:PackIcon>
                 </Button>
                 <Button
                     x:Name="TodayButton"

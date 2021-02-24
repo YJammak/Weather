@@ -76,23 +76,6 @@ namespace WeatherCalendar.Views
                     forecast => forecast?.Status?.City)
                 .DisposeWith(disposable);
 
-            this.WhenAnyValue(x => x.Topmost)
-                .Do(topmost =>
-                {
-                    if (topmost)
-                    {
-                        this.PinButtonPackIcon.Kind = PackIconKind.PinOutline;
-                        this.PinButton.ToolTip = "取消置顶";
-                    }
-                    else
-                    {
-                        this.PinButtonPackIcon.Kind = PackIconKind.PinOffOutline;
-                        this.PinButton.ToolTip = "窗口置顶";
-                    }
-                })
-                .Subscribe()
-                .DisposeWith(disposable);
-
             this.UpdateButton
                 .Events()
                 .Click

@@ -52,6 +52,17 @@
                         x:Name="BackgroundTransparentMenuItem"
                         Header="背景透明"
                         IsCheckable="True" />
+                    <MenuItem x:Name="AutoStartMenuItem" IsCheckable="True">
+                        <MenuItem.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="开机启动" />
+                                <materialDesign:PackIcon
+                                    Margin="5,0,0,0"
+                                    VerticalAlignment="Center"
+                                    Kind="ShieldOutline" />
+                            </StackPanel>
+                        </MenuItem.Header>
+                    </MenuItem>
                     <Separator />
                     <MenuItem
                         x:Name="UpdateWeatherMenuItem"

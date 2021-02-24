@@ -8,11 +8,10 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using WeatherCalendar.Services;
+using WeatherCalendar.Themes;
 using WeatherCalendar.Utils;
 using WeatherCalendar.ViewModels;
 using WeatherCalendar.Views;
-using EventExtensions = System.Windows.Controls.EventExtensions;
-using ITheme = WeatherCalendar.Themes.ITheme;
 
 namespace WeatherCalendar
 {
@@ -182,10 +181,10 @@ namespace WeatherCalendar
             this.QuitMenuItem
                 .Events()
                 .Click
-                .Do(_ => Close())
+                .Do(_ => Application.Current.Shutdown())
                 .Subscribe();
 
-            EventExtensions.Events(this)
+            this.Events()
                 .MouseLeftButtonDown
                 .Do(_ =>
                 {
@@ -195,7 +194,7 @@ namespace WeatherCalendar
                 .Subscribe()
                 .DisposeWith(disposable);
 
-            EventExtensions.Events(this)
+            this.Events()
                 .MouseLeftButtonUp
                 .Do(_ =>
                 {
@@ -208,6 +207,16 @@ namespace WeatherCalendar
                         appConfigService.Config.WindowTop = top;
                         appConfigService.Save();
                     }
+                })
+                .Subscribe()
+                .DisposeWith(disposable);
+
+            this.Events()
+                .Loaded
+                .Do(_ =>
+                {
+                    this.SetWindowToolWindow();
+                    this.SetWindowBottom();
                 })
                 .Subscribe()
                 .DisposeWith(disposable);

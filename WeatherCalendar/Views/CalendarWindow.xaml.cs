@@ -1,10 +1,13 @@
-﻿using ReactiveUI;
+﻿using MaterialDesignThemes.Wpf;
+using ReactiveUI;
+using Splat;
 using System;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using WeatherCalendar.Services;
 using WeatherCalendar.ViewModels;
 
 namespace WeatherCalendar.Views
@@ -55,6 +58,66 @@ namespace WeatherCalendar.Views
                     view => view.MonthsComboBox.SelectedValue)
                 .DisposeWith(disposable);
 
+            this.OneWayBind(
+                    ViewModel,
+                    model => model.Forecast,
+                    view => view.UpdateTimeTextBlock.Text,
+                    forecast =>
+                    {
+                        var time = forecast?.Status?.UpdateTime;
+                        return string.IsNullOrWhiteSpace(time) ? "" : $"{time}更新";
+                    })
+                .DisposeWith(disposable);
+
+            this.OneWayBind(
+                    ViewModel,
+                    model => model.Forecast,
+                    view => view.CityButton.Content,
+                    forecast => forecast?.Status?.City)
+                .DisposeWith(disposable);
+
+            this.WhenAnyValue(x => x.Topmost)
+                .Do(topmost =>
+                {
+                    if (topmost)
+                    {
+                        this.PinButtonPackIcon.Kind = PackIconKind.PinOutline;
+                        this.PinButton.ToolTip = "取消置顶";
+                    }
+                    else
+                    {
+                        this.PinButtonPackIcon.Kind = PackIconKind.PinOffOutline;
+                        this.PinButton.ToolTip = "窗口置顶";
+                    }
+                })
+                .Subscribe()
+                .DisposeWith(disposable);
+
+            this.UpdateButton
+                .Events()
+                .Click
+                .Do(_ =>
+                {
+                    var weatherService = Locator.Current.GetService<WeatherService>();
+                    weatherService.UpdateWeather();
+                })
+                .Subscribe()
+                .DisposeWith(disposable);
+
+            this.CityButton
+                .Events()
+                .Click
+                .Do(_ => ChangeWeatherCity())
+                .Subscribe()
+                .DisposeWith(disposable);
+
+            this.PinButton
+                .Events()
+                .Click
+                .Do(_ => Topmost = !Topmost)
+                .Subscribe()
+                .DisposeWith(disposable);
+
             this.BindCommand(
                     ViewModel!,
                     model => model.CurrentMonthCommand,
@@ -100,6 +163,18 @@ namespace WeatherCalendar.Views
                 .Do(_ => this.MoveFocus(new TraversalRequest(FocusNavigationDirection.Next)))
                 .Subscribe()
                 .DisposeWith(disposable);
+        }
+
+        private bool IsChangingCity { get; set; }
+        private void ChangeWeatherCity()
+        {
+            if (IsChangingCity)
+                return;
+
+            IsChangingCity = true;
+            var cityWindow = new SelectCityWindow();
+            cityWindow.Closed += (_, _) => IsChangingCity = false;
+            cityWindow.Show();
         }
     }
 }

@@ -45,6 +45,14 @@
                             VerticalAlignment="Center"
                             Foreground="{DynamicResource MaterialDesignBody}"
                             Text="日历详情" />
+                        <TextBlock
+                            x:Name="UpdateTimeTextBlock"
+                            Margin="10,0,0,0"
+                            VerticalAlignment="Center"
+                            FontSize="10"
+                            Foreground="{DynamicResource PrimaryHueMidBrush}"
+                            Text="20:00更新"
+                            ToolTip="天气更新时间" />
                     </StackPanel>
                 </Grid>
             </Border>
@@ -55,9 +63,45 @@
                 VerticalAlignment="Top"
                 Orientation="Horizontal">
                 <Button
+                    x:Name="CityButton"
+                    Height="30"
+                    Padding="10,0"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    materialDesign:ButtonAssist.CornerRadius="0"
+                    Content="浦东新区"
+                    Style="{DynamicResource MaterialDesignFlatButton}"
+                    ToolTip="切换城市" />
+                <Button
+                    x:Name="UpdateButton"
+                    Width="30"
+                    Height="30"
+                    Margin="0,0,0,0"
+                    Padding="0"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    materialDesign:ButtonAssist.CornerRadius="0"
+                    Content="{materialDesign:PackIcon Kind=Refresh}"
+                    Style="{DynamicResource MaterialDesignFlatButton}"
+                    ToolTip="更新天气" />
+                <Button
+                    x:Name="PinButton"
+                    Width="30"
+                    Height="30"
+                    Margin="0,0,0,0"
+                    Padding="0"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    materialDesign:ButtonAssist.CornerRadius="0"
+                    Style="{DynamicResource MaterialDesignFlatButton}"
+                    ToolTip="窗口置顶">
+                    <materialDesign:PackIcon x:Name="PinButtonPackIcon" Kind="PinOffOutline" />
+                </Button>
+                <Button
                     x:Name="TodayButton"
                     Width="30"
-                    Height="60">
+                    Height="60"
+                    ToolTip="转到今天">
                     <Button.Template>
                         <ControlTemplate>
                             <Grid x:Name="grid">
@@ -140,7 +184,9 @@
                     VerticalAlignment="Top"
                     materialDesign:ButtonAssist.CornerRadius="0 3 0 0"
                     Content="{materialDesign:PackIcon Kind=Close}"
-                    Style="{DynamicResource MaterialDesignFlatButton}" />
+                    Cursor="Hand"
+                    Style="{DynamicResource MaterialDesignFlatButton}"
+                    ToolTip="关闭" />
             </StackPanel>
             <Grid Grid.Row="1" Margin="10">
                 <Grid.RowDefinitions>

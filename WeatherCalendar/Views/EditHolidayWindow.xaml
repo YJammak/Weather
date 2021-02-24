@@ -53,7 +53,9 @@
                             HorizontalAlignment="Right"
                             materialDesign:ButtonAssist.CornerRadius="0,3,0,0"
                             Content="{materialDesign:PackIcon Kind=Close}"
-                            Style="{DynamicResource MaterialDesignFlatButton}" />
+                            Cursor="Hand"
+                            Style="{DynamicResource MaterialDesignFlatButton}"
+                            ToolTip="关闭" />
                     </StackPanel>
                 </Grid>
             </Border>

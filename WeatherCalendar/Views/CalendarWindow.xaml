@@ -92,16 +92,28 @@
                     Padding="0"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Top"
-                    materialDesign:ButtonAssist.CornerRadius="0"
-                    Style="{DynamicResource MaterialDesignFlatButton}"
-                    ToolTip="窗口置顶">
-                    <materialDesign:PackIcon>
+                    materialDesign:ButtonAssist.CornerRadius="0">
+                    <Button.Style>
+                        <Style BasedOn="{StaticResource MaterialDesignFlatButton}" TargetType="Button">
+                            <Setter Property="ToolTip" Value="取消置顶" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Topmost, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" Value="False">
+                                    <Setter Property="ToolTip" Value="窗口置顶" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                    <materialDesign:PackIcon RenderTransformOrigin=".5,.5">
                         <materialDesign:PackIcon.Style>
                             <Style TargetType="materialDesign:PackIcon">
-                                <Setter Property="Kind" Value="PinOffOutline" />
+                                <Setter Property="Kind" Value="PinOutline" />
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Topmost, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" Value="True">
-                                        <Setter Property="Kind" Value="PinOutline" />
+                                    <DataTrigger Binding="{Binding Topmost, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" Value="False">
+                                        <Setter Property="RenderTransform">
+                                            <Setter.Value>
+                                                <RotateTransform Angle="45" />
+                                            </Setter.Value>
+                                        </Setter>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>

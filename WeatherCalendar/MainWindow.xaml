@@ -57,6 +57,7 @@
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="开机启动" />
                                 <materialDesign:PackIcon
+                                    x:Name="AutoStartPackIcon"
                                     Margin="5,0,0,0"
                                     VerticalAlignment="Center"
                                     Kind="ShieldOutline" />

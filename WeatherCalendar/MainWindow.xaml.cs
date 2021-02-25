@@ -40,6 +40,8 @@ namespace WeatherCalendar
             this.Left = appConfigService.Config.WindowLeft;
             this.Top = appConfigService.Config.WindowTop;
 
+            this.AutoStartPackIcon.Visibility = AppHelper.IsAdministrator() ? Visibility.Collapsed : Visibility.Visible;
+
             this.SetWindowCanPenetrate(appConfigService.Config.IsMousePenetrate);
             this.SetWindowToolWindow();
             this.SetWindowBottom();
@@ -53,6 +55,12 @@ namespace WeatherCalendar
                     ViewModel,
                     model => model.CurrentViewModel,
                     window => window.ViewModelViewHost.ViewModel)
+                .DisposeWith(disposable);
+
+            this.OneWayBind(
+                    ViewModel,
+                    model => model.IsAutoStart,
+                    view => view.AutoStartMenuItem.IsChecked)
                 .DisposeWith(disposable);
 
             this.NotifyIcon
@@ -135,18 +143,10 @@ namespace WeatherCalendar
                 .Subscribe()
                 .DisposeWith(disposable);
 
-            this.AutoStartMenuItem
-                .Events()
-                .Checked
-                .Do(_ => AppHelper.SetAutoStart(true))
-                .Subscribe()
-                .DisposeWith(disposable);
-
-            this.AutoStartMenuItem
-                .Events()
-                .Checked
-                .Do(_ => AppHelper.SetAutoStart(false))
-                .Subscribe()
+            this.BindCommand(
+                    ViewModel!,
+                    model => model.SwitchAutoStartCommand,
+                    view => view.AutoStartMenuItem)
                 .DisposeWith(disposable);
 
             this.UpdateWeatherMenuItem

@@ -1,4 +1,6 @@
-﻿namespace WeatherCalendar.Models
+﻿using System;
+
+namespace WeatherCalendar.Models
 {
     public class AppConfig
     {
@@ -36,5 +38,20 @@
         /// 窗口上边缘
         /// </summary>
         public int WindowTop { get; set; }
+
+        /// <summary>
+        /// 是否显示工作倒计时
+        /// </summary>
+        public bool IsShowWorkTimer { get; set; }
+
+        /// <summary>
+        /// 开始工作时间
+        /// </summary>
+        public TimeSpan WorkStartTime { get; set; }
+
+        /// <summary>
+        /// 结束工作时间
+        /// </summary>
+        public TimeSpan WorkEndTime { get; set; }
     }
 }

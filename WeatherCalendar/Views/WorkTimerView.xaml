@@ -1,0 +1,52 @@
+﻿<rxui:ReactiveUserControl
+    x:Class="WeatherCalendar.Views.WorkTimerView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:WeatherCalendar.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:rxui="http://reactiveui.net"
+    xmlns:vms="clr-namespace:WeatherCalendar.ViewModels"
+    x:TypeArguments="vms:WorkTimerViewModel"
+    mc:Ignorable="d">
+    <StackPanel Orientation="Horizontal">
+        <TextBlock
+            x:Name="Const1TextBlock"
+            VerticalAlignment="Center"
+            FontSize="18"
+            Text="距" />
+        <TextBlock
+            x:Name="TimerTypeTextBlock"
+            Margin="5,0"
+            VerticalAlignment="Center"
+            FontSize="22"
+            Text="上班" />
+        <TextBlock
+            x:Name="Const2TextBlock"
+            VerticalAlignment="Center"
+            FontSize="18"
+            Text="还有" />
+        <TextBlock
+            x:Name="HourTextBlock"
+            Margin="5,0"
+            VerticalAlignment="Center"
+            FontSize="22"
+            Text="10" />
+        <TextBlock
+            x:Name="Const3TextBlock"
+            VerticalAlignment="Center"
+            FontSize="18"
+            Text="小时" />
+        <TextBlock
+            x:Name="MinuteTextBlock"
+            Margin="5,0"
+            VerticalAlignment="Center"
+            FontSize="22"
+            Text="20" />
+        <TextBlock
+            x:Name="Const4TextBlock"
+            VerticalAlignment="Center"
+            FontSize="18"
+            Text="分钟" />
+    </StackPanel>
+</rxui:ReactiveUserControl>

@@ -46,6 +46,14 @@ namespace WeatherCalendar
             Locator.CurrentMutable.RegisterConstant(new ChineseZodiacFontService(), typeof(IChineseZodiacService));
             Locator.CurrentMutable.RegisterConstant(new SystemInfoService());
 
+            var workTimerService = new WorkTimerService
+            {
+                StartTime = appConfig.Config.WorkStartTime,
+                EndTime = appConfig.Config.WorkEndTime
+            };
+
+            Locator.CurrentMutable.RegisterConstant(workTimerService);
+
             Locator.CurrentMutable.RegisterConstant<ITheme>(new DefaultTheme());
 
             Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetCallingAssembly());

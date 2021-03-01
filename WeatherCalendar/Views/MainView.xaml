@@ -17,6 +17,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.Effect>
             <DropShadowEffect Opacity="0.3" ShadowDepth="2" />
@@ -287,6 +288,13 @@
                 x:Name="CalendarViewHost"
                 HorizontalContentAlignment="Center"
                 VerticalContentAlignment="Center" />
+        </Grid>
+        <Grid Grid.Row="3">
+            <rxui:ViewModelViewHost
+                x:Name="WorkTimerViewHost"
+                Margin="30,0,0,10"
+                HorizontalContentAlignment="Stretch"
+                VerticalContentAlignment="Stretch" />
         </Grid>
     </Grid>
 </rxui:ReactiveUserControl>

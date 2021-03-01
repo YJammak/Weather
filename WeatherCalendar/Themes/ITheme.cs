@@ -5,7 +5,7 @@ namespace WeatherCalendar.Themes
     public interface ITheme
     {
         public Brush MainWindowBackground { get; }
-        
+
         public Brush DayNameNormalForeground { get; }
 
         public Brush DayNameWeekendForeground { get; }
@@ -47,5 +47,9 @@ namespace WeatherCalendar.Themes
         public Brush BackgroundMonthForeground { get; }
 
         public double BackgroundMonthOpacity { get; }
+
+        public Brush WorkTimerNormalForeground { get; }
+
+        public Brush WorkTimerTimeForeground { get; }
     }
 }

@@ -4,7 +4,7 @@ namespace WeatherCalendar.Themes
 {
     public sealed class DefaultTheme : ITheme
     {
-        public Brush MainWindowBackground => 
+        public Brush MainWindowBackground =>
             new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
 
         public Brush DayNameNormalForeground => Brushes.White;
@@ -57,5 +57,9 @@ namespace WeatherCalendar.Themes
         public Brush BackgroundMonthForeground => Brushes.White;
 
         public double BackgroundMonthOpacity => 0.2;
+
+        public Brush WorkTimerNormalForeground => Brushes.White;
+
+        public Brush WorkTimerTimeForeground => Brushes.OrangeRed;
     }
 }

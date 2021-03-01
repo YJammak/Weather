@@ -19,6 +19,11 @@ namespace WeatherCalendar.ViewModels
         public CalendarViewModel Calendar { get; }
 
         /// <summary>
+        /// 上下班倒计时
+        /// </summary>
+        public WorkTimerViewModel WorkTimer { get; }
+
+        /// <summary>
         /// 当前时间
         /// </summary>
         [ObservableAsProperty]
@@ -105,6 +110,7 @@ namespace WeatherCalendar.ViewModels
         public MainViewModel()
         {
             Calendar = new CalendarViewModel();
+            WorkTimer = new WorkTimerViewModel();
 
             GotoMonthCommand = Calendar.GotoMonthCommand;
             CurrentMonthCommand = Calendar.CurrentMonthCommand;

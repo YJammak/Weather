@@ -145,6 +145,12 @@ namespace WeatherCalendar.Views
 
             this.OneWayBind(
                     ViewModel,
+                    model => model.WorkTimer,
+                    view => view.WorkTimerViewHost.ViewModel)
+                .DisposeWith(disposable);
+
+            this.OneWayBind(
+                    ViewModel,
                     model => model.CpuLoad,
                     view => view.CpuLoadTextBlock.Text,
                     cpuLoad => $"{cpuLoad:F0} %")

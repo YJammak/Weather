@@ -1,10 +1,17 @@
 # Weather
 用WPF写的日历天气桌面小程序
 
-使用ReactiveUI的MVVM，作为一个模板示例
+- .NET 5.0
+- Visual Studio 2019
+- MVVM（ReactiveUI）
 
-[![](ReadMe/MainWindow.png)](ReadMe/MainWindow.png)
+### 软件截图
 
-[![](ReadMe/Tooltip.png)](ReadMe/Tooltip.png)
+#### 主界面
+[![](doc/MainWindow.png)](doc/MainWindow.png)
 
-[![](ReadMe/NotifyIcon.png)](ReadMe/NotifyIcon.png)
+#### 提示
+[![](doc/Tooltip.png)](doc/Tooltip.png)
+
+#### 菜单
+[![](doc/NotifyIcon.png)](doc/NotifyIcon.png)

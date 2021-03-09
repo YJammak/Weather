@@ -6,12 +6,14 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Forms;
 using System.Windows.Media;
 using WeatherCalendar.Services;
 using WeatherCalendar.Themes;
 using WeatherCalendar.Utils;
 using WeatherCalendar.ViewModels;
 using WeatherCalendar.Views;
+using Application = System.Windows.Application;
 
 namespace WeatherCalendar
 {
@@ -44,7 +46,10 @@ namespace WeatherCalendar
 
             this.SetWindowCanPenetrate(appConfigService.Config.IsMousePenetrate);
             this.SetWindowToolWindow();
-            this.SetWindowBottom();
+
+            // 当有多个显示器时置底主界面会消失（目前没有解决方案）
+            if (Screen.AllScreens.Length == 1)
+                this.SetWindowBottom();
 
             this.MainGrid.Background =
                 appConfigService.Config.IsBackgroundTransparent ?

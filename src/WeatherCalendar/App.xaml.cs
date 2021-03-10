@@ -50,6 +50,7 @@ namespace WeatherCalendar
 
             var workTimerService = new WorkTimerService
             {
+                IsVisible = appConfig.Config.IsShowWorkTimer,
                 StartTime = appConfig.Config.WorkStartTime,
                 EndTime = appConfig.Config.WorkEndTime
             };

@@ -37,6 +37,12 @@ namespace WeatherCalendar.Services
     public class WorkTimerService : ReactiveObject
     {
         /// <summary>
+        /// 是否显示
+        /// </summary>
+        [Reactive]
+        public bool IsVisible { get; set; }
+
+        /// <summary>
         /// 开始时间
         /// </summary>
         [Reactive]
@@ -70,6 +76,9 @@ namespace WeatherCalendar.Services
                     .TimerPerSecond
                     .Select(time =>
                     {
+                        if (!IsVisible)
+                            return (WorkCountdownType.None, TimeSpan.Zero);
+
                         var holiday = holidayService.GetHoliday(time);
 
                         // 假期休息日

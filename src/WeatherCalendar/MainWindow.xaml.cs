@@ -166,10 +166,10 @@ namespace WeatherCalendar
                 .Subscribe()
                 .DisposeWith(disposable);
 
-            this.ChangeCityMenuItem
+            this.SettingsMenuItem
                 .Events()
                 .Click
-                .Do(_ => ChangeWeatherCity())
+                .Do(_ => ShowSettingWindow())
                 .Subscribe()
                 .DisposeWith(disposable);
 
@@ -259,16 +259,16 @@ namespace WeatherCalendar
             CalendarWindow.Activate();
         }
 
-        private bool IsChangingCity { get; set; }
-        private void ChangeWeatherCity()
+        private bool IsSettingsWindowVisible { get; set; }
+        private void ShowSettingWindow()
         {
-            if (IsChangingCity)
+            if (IsSettingsWindowVisible)
                 return;
 
-            IsChangingCity = true;
-            var cityWindow = new SelectCityWindow();
-            cityWindow.Closed += (_, _) => IsChangingCity = false;
-            cityWindow.Show();
+            IsSettingsWindowVisible = true;
+            var window = new SettingsWindow();
+            window.Closed += (_, _) => IsSettingsWindowVisible = false;
+            window.Show();
         }
     }
 }

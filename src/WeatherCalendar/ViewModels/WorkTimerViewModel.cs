@@ -26,15 +26,17 @@ namespace WeatherCalendar.ViewModels
         /// <summary>
         /// 是否显示
         /// </summary>
-        [Reactive]
-        public bool IsVisible { get; set; }
+        [ObservableAsProperty]
+        public bool IsVisible { get; }
 
         public WorkTimerViewModel()
         {
-            var appConfigService = Locator.Current.GetService<AppConfigService>();
-            IsVisible = appConfigService.Config.IsShowWorkTimer;
-
             var workTimerService = Locator.Current.GetService<WorkTimerService>();
+
+            workTimerService
+                .WhenAnyValue(x => x.IsVisible)
+                .ObserveOnDispatcher()
+                .ToPropertyEx(this, model => model.IsVisible);
 
             workTimerService
                 .WhenAnyValue(x => x.CountdownType)

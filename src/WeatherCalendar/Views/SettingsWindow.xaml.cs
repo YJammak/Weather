@@ -1,6 +1,6 @@
 ﻿using ReactiveUI;
 using System;
-using System.Reactive;
+using System.Globalization;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Windows;
@@ -10,15 +10,15 @@ using WeatherCalendar.ViewModels;
 namespace WeatherCalendar.Views
 {
     /// <summary>
-    /// SelectCityWindow.xaml 的交互逻辑
+    /// SettingsWindow.xaml 的交互逻辑
     /// </summary>
-    public partial class SelectCityWindow
+    public partial class SettingsWindow
     {
-        public SelectCityWindow()
+        public SettingsWindow()
         {
             InitializeComponent();
 
-            ViewModel = new SelectCityWindowViewModel();
+            ViewModel = new SettingsViewModel();
 
             this.WhenActivated(WhenActivated);
         }
@@ -68,6 +68,52 @@ namespace WeatherCalendar.Views
                     city => city == null ? Visibility.Visible : Visibility.Hidden)
                 .DisposeWith(disposable);
 
+            this.Bind(
+                    ViewModel,
+                    model => model.IsWorkTimerVisible,
+                    view => view.IsWorkTimerVisibleCheckBox.IsChecked)
+                .DisposeWith(disposable);
+
+            this.Bind(
+                    ViewModel,
+                    model => model.WorkTimerStartTime,
+                    view => view.WorkTimerStartTimePicker.Text,
+                    time => time.ToString("h\\:mm"),
+                    text => TimeSpan.TryParseExact(
+                        text,
+                        "h\\:mm",
+                        CultureInfo.CurrentUICulture,
+                        out var result)
+                        ? result
+                        : TimeSpan.Zero)
+                .DisposeWith(disposable);
+
+            this.Bind(
+                    ViewModel,
+                    model => model.WorkTimerEndTime,
+                    view => view.WorkTimerEndTimePicker.Text,
+                    time => time.ToString("h\\:mm"),
+                    text => TimeSpan.TryParseExact(
+                        text,
+                        "h\\:mm",
+                        CultureInfo.CurrentUICulture,
+                        out var result)
+                        ? result
+                        : TimeSpan.Zero)
+                .DisposeWith(disposable);
+
+            this.OneWayBind(
+                    ViewModel,
+                    model => model.IsWorkTimerVisible,
+                    view => view.WorkTimerStartTimePicker.IsEnabled)
+                .DisposeWith(disposable);
+
+            this.OneWayBind(
+                    ViewModel,
+                    model => model.IsWorkTimerVisible,
+                    view => view.WorkTimerEndTimePicker.IsEnabled)
+                .DisposeWith(disposable);
+
             this.TitleBorder
                 .Events()
                 .MouseLeftButtonDown
@@ -80,27 +126,6 @@ namespace WeatherCalendar.Views
                 .Click
                 .Do(_ => Close())
                 .Subscribe()
-                .DisposeWith(disposable);
-
-            this.CancelButton
-                .Events()
-                .Click
-                .Do(_ => Close())
-                .Subscribe()
-                .DisposeWith(disposable);
-
-            this.BindCommand(
-                ViewModel!,
-                mode => mode.UpdateWeatherCommand,
-                view => view.OkButton);
-
-            this.ViewModel
-                .UpdateSuccessInteraction
-                .RegisterHandler(interaction =>
-                {
-                    Close();
-                    interaction.SetOutput(Unit.Default);
-                })
                 .DisposeWith(disposable);
         }
     }

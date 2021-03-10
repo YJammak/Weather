@@ -69,10 +69,6 @@
                         x:Name="UpdateWeatherMenuItem"
                         Header="更新天气"
                         Icon="{materialDesign:PackIcon Kind=CloudRefresh}" />
-                    <MenuItem
-                        x:Name="ChangeCityMenuItem"
-                        Header="切换城市"
-                        Icon="{materialDesign:PackIcon Kind=City}" />
                     <Separator />
                     <MenuItem
                         x:Name="CurrentMonthMenuItem"
@@ -98,6 +94,11 @@
                             IsChecked="True"
                             IsEnabled="False" />
                     </MenuItem>
+                    <Separator />
+                    <MenuItem
+                        x:Name="SettingsMenuItem"
+                        Header="设置"
+                        Icon="{materialDesign:PackIcon Kind=Cog}" />
                     <Separator />
                     <MenuItem
                         x:Name="QuitMenuItem"

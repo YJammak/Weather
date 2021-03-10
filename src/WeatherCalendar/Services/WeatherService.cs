@@ -1,5 +1,6 @@
 ﻿using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using Splat;
 using System;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
@@ -40,9 +41,14 @@ namespace WeatherCalendar.Services
 
         public void StartUpdate()
         {
+            if (Disposable != null)
+                return;
+
+            var appService = Locator.Current.GetService<AppService>();
+
             Disposable =
-                Observable
-                    .Timer(DateTimeOffset.Now, TimeSpan.FromMilliseconds(100))
+                appService
+                    .TimerPerSecond
                     .Select(_ => DateTime.Now)
                     .Where(NeedUpdate)
                     .Do(_ => UpdateWeather())
@@ -52,7 +58,8 @@ namespace WeatherCalendar.Services
 
         public void StopUpdate()
         {
-            Disposable.Dispose();
+            Disposable?.Dispose();
+            Disposable = null;
         }
 
         public WeatherForecast UpdateWeather()

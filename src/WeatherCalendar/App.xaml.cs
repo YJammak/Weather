@@ -18,6 +18,8 @@ namespace WeatherCalendar
         {
             base.OnStartup(e);
 
+            Locator.CurrentMutable.RegisterConstant(new AppService());
+
             var weatherService = new WeatherService();
 
             var appConfig = new AppConfigService();

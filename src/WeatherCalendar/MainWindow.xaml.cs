@@ -36,6 +36,13 @@ namespace WeatherCalendar
             var appConfigService = Locator.Current.GetService<AppConfigService>();
             var theme = Locator.Current.GetService<ITheme>();
 
+            this.SetWindowCanPenetrate(appConfigService.Config.IsMousePenetrate);
+            this.SetWindowToolWindow();
+
+            // 当有多个显示器时置底主界面会消失（目前没有解决方案）
+            if (Screen.AllScreens.Length == 1)
+                this.SetWindowBottom();
+
             this.MousePenetrationMenuItem.IsChecked = appConfigService.Config.IsMousePenetrate;
             this.LockedPositionMenuItem.IsChecked = appConfigService.Config.IsLockedPosition;
             this.BackgroundTransparentMenuItem.IsChecked = appConfigService.Config.IsBackgroundTransparent;
@@ -43,13 +50,6 @@ namespace WeatherCalendar
             this.Top = appConfigService.Config.WindowTop;
 
             this.AutoStartPackIcon.Visibility = AppHelper.IsAdministrator() ? Visibility.Collapsed : Visibility.Visible;
-
-            this.SetWindowCanPenetrate(appConfigService.Config.IsMousePenetrate);
-            this.SetWindowToolWindow();
-
-            // 当有多个显示器时置底主界面会消失（目前没有解决方案）
-            if (Screen.AllScreens.Length == 1)
-                this.SetWindowBottom();
 
             this.MainGrid.Background =
                 appConfigService.Config.IsBackgroundTransparent ?

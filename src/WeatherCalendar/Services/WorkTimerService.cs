@@ -1,5 +1,6 @@
 ﻿using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using Splat;
 using System;
 using System.Reactive.Linq;
 
@@ -60,21 +61,23 @@ namespace WeatherCalendar.Services
 
         public WorkTimerService()
         {
+            var appService = Locator.Current.GetService<AppService>();
+
             var timer =
-                Observable
-                .Timer(DateTimeOffset.Now, TimeSpan.FromSeconds(1))
-                .Select(_ =>
-                {
-                    var currentTime = DateTime.Now.TimeOfDay;
+                appService
+                    .TimerPerSecond
+                    .Select(time =>
+                    {
+                        var currentTime = time.TimeOfDay;
 
-                    if (currentTime <= StartTime)
-                        return (WorkCountdownType.BeforeWork, StartTime - currentTime);
+                        if (currentTime <= StartTime)
+                            return (WorkCountdownType.BeforeWork, StartTime - currentTime);
 
-                    if (currentTime <= EndTime)
-                        return (WorkCountdownType.BeforeOffWork, EndTime - currentTime);
+                        if (currentTime <= EndTime)
+                            return (WorkCountdownType.BeforeOffWork, EndTime - currentTime);
 
-                    return (WorkCountdownType.None, TimeSpan.Zero);
-                });
+                        return (WorkCountdownType.None, TimeSpan.Zero);
+                    });
 
             timer.Select(d => d.Item1)
                 .ToPropertyEx(this, service => service.CountdownType);

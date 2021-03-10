@@ -117,12 +117,11 @@ namespace WeatherCalendar.ViewModels
             LastMonthCommand = Calendar.LastMonthCommand;
             NextMonthCommand = Calendar.NextMonthCommand;
 
-            Observable
-                .Timer(
-                    TimeSpan.FromSeconds(0),
-                    TimeSpan.FromSeconds(1),
-                    RxApp.MainThreadScheduler)
-                .Select(_ => DateTime.Now)
+            var appService = Locator.Current.GetService<AppService>();
+
+            appService
+                .TimerPerSecond
+                .ObserveOnDispatcher()
                 .ToPropertyEx(this, model => model.CurrentDateTime);
 
             var calendarService = Locator.Current.GetService<CalendarService>();

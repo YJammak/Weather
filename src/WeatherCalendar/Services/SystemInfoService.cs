@@ -1,6 +1,6 @@
 ﻿using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
-using System;
+using Splat;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Management;
@@ -55,6 +55,8 @@ namespace WeatherCalendar.Services
 
         public SystemInfoService()
         {
+            var appService = Locator.Current.GetService<AppService>();
+
             var mc = new ManagementClass("Win32_ComputerSystem");
             var moc = mc.GetInstances();
             foreach (var mo in moc)
@@ -65,19 +67,18 @@ namespace WeatherCalendar.Services
                 }
             }
 
-            var timer =
-                Observable
-                    .Timer(DateTimeOffset.Now, TimeSpan.FromSeconds(1));
-
-            timer
+            appService
+                .TimerPerSecond
                 .Select(_ => Update())
                 .ToPropertyEx(this, monitor => monitor.NetWorkInfo);
 
-            timer
+            appService
+                .TimerPerSecond
                 .Select(_ => CpuLoadCounter.NextValue())
                 .ToPropertyEx(this, service => service.CpuLoad);
 
-            timer
+            appService
+                .TimerPerSecond
                 .Select(_ =>
                 {
                     long availableBytes = 0;

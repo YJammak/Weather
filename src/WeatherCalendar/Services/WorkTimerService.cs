@@ -2,6 +2,7 @@
 using ReactiveUI.Fody.Helpers;
 using Splat;
 using System;
+using System.Linq;
 using System.Reactive.Linq;
 
 // ReSharper disable UnassignedGetOnlyAutoProperty
@@ -62,21 +63,38 @@ namespace WeatherCalendar.Services
         public WorkTimerService()
         {
             var appService = Locator.Current.GetService<AppService>();
+            var holidayService = Locator.Current.GetService<IHolidayService>();
 
             var timer =
                 appService
                     .TimerPerSecond
                     .Select(time =>
                     {
-                        var currentTime = time.TimeOfDay;
+                        var holiday = holidayService.GetHoliday(time);
 
-                        if (currentTime <= StartTime)
-                            return (WorkCountdownType.BeforeWork, StartTime - currentTime);
+                        // 假期休息日
+                        if (holiday?.RestDates != null
+                            && holiday.RestDates.Any(d => d.Date == time.Date))
+                        {
+                            return (WorkCountdownType.None, TimeSpan.Zero);
+                        }
 
-                        if (currentTime <= EndTime)
-                            return (WorkCountdownType.BeforeOffWork, EndTime - currentTime);
+                        // 假期工作日
+                        if (holiday?.WorkDates != null
+                            && holiday.WorkDates.Any(d => d.Date == time.Date))
+                        {
+                            return GetCountdownInfo(time.TimeOfDay);
+                        }
 
-                        return (WorkCountdownType.None, TimeSpan.Zero);
+                        // 周末
+                        if (time.DayOfWeek == DayOfWeek.Saturday
+                            || time.DayOfWeek == DayOfWeek.Sunday)
+                        {
+                            return (WorkCountdownType.None, TimeSpan.Zero);
+                        }
+
+                        // 工作日
+                        return GetCountdownInfo(time.TimeOfDay);
                     });
 
             timer.Select(d => d.Item1)
@@ -84,6 +102,17 @@ namespace WeatherCalendar.Services
 
             timer.Select(d => d.Item2)
                 .ToPropertyEx(this, service => service.CountdownTime);
+        }
+
+        private (WorkCountdownType, TimeSpan) GetCountdownInfo(TimeSpan currentTime)
+        {
+            if (currentTime <= StartTime)
+                return (WorkCountdownType.BeforeWork, StartTime - currentTime);
+
+            if (currentTime <= EndTime)
+                return (WorkCountdownType.BeforeOffWork, EndTime - currentTime);
+
+            return (WorkCountdownType.None, TimeSpan.Zero);
         }
     }
 }

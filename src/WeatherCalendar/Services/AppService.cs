@@ -1,10 +1,10 @@
 ﻿using ReactiveUI;
+using Splat;
 using System;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using Splat;
 using WeatherCalendar.Themes;
 
 namespace WeatherCalendar.Services
@@ -101,9 +101,11 @@ namespace WeatherCalendar.Services
 
             if (isCustomIcon)
             {
-                if (currentService is WeatherImageService image && image.WeatherImagePath == iconPath)
+                if (string.IsNullOrWhiteSpace(iconPath))
                     return;
 
+                if (currentService is WeatherImageService image && image.WeatherImagePath == iconPath)
+                    return;
 
                 Locator.CurrentMutable.UnregisterAll(typeof(IWeatherImageService));
                 Locator.CurrentMutable.RegisterConstant(new WeatherImageService(iconPath), typeof(IWeatherImageService));

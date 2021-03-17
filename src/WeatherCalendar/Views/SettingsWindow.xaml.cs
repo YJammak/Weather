@@ -1,10 +1,12 @@
 ﻿using ReactiveUI;
 using System;
 using System.Globalization;
+using System.IO;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Controls.Primitives;
+using System.Windows.Forms;
 using WeatherCalendar.ViewModels;
 
 namespace WeatherCalendar.Views
@@ -114,6 +116,30 @@ namespace WeatherCalendar.Views
                     view => view.WorkTimerEndTimePicker.IsEnabled)
                 .DisposeWith(disposable);
 
+            this.Bind(
+                    ViewModel,
+                    model => model.IsCustomWeatherIcon,
+                    view => view.IsCustomWeatherIconCheckBox.IsChecked)
+                .DisposeWith(disposable);
+
+            this.OneWayBind(
+                    ViewModel,
+                    model => model.CustomWeatherIconPath,
+                    view => view.WeatherIconPathTextBox.Text)
+                .DisposeWith(disposable);
+
+            this.OneWayBind(
+                    ViewModel,
+                    model => model.IsCustomWeatherIcon,
+                    view => view.WeatherIconPathTextBox.IsEnabled)
+                .DisposeWith(disposable);
+
+            this.OneWayBind(
+                    ViewModel,
+                    model => model.IsCustomWeatherIcon,
+                    view => view.SelectWeatherIconPathButton.IsEnabled)
+                .DisposeWith(disposable);
+
             this.TitleBorder
                 .Events()
                 .MouseLeftButtonDown
@@ -126,6 +152,24 @@ namespace WeatherCalendar.Views
                 .Click
                 .Do(_ => Close())
                 .Subscribe()
+                .DisposeWith(disposable);
+
+            this.SelectWeatherIconPathButton
+                .Events()
+                .Click
+                .Select(_ =>
+                {
+                    var dialog = new FolderBrowserDialog();
+                    dialog.UseDescriptionForTitle = true;
+                    dialog.Description = @"选择天气图标路径";
+
+                    if (dialog.ShowDialog() != System.Windows.Forms.DialogResult.OK)
+                        return null;
+
+                    return dialog.SelectedPath;
+                })
+                .Where(path => !string.IsNullOrWhiteSpace(path) && Directory.Exists(path))
+                .BindTo(this, window => window.ViewModel.CustomWeatherIconPath)
                 .DisposeWith(disposable);
         }
     }

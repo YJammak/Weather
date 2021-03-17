@@ -63,6 +63,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0" HorizontalAlignment="Center">
                     <Grid.RowDefinitions>
@@ -138,7 +139,7 @@
                             Width="100"
                             Margin="0,0,10,0"
                             VerticalAlignment="Center"
-                            Content="显示倒计时"
+                            Content="上下班倒计时"
                             Foreground="{DynamicResource MaterialDesignBody}" />
                         <materialDesign:TimePicker
                             x:Name="WorkTimerStartTimePicker"
@@ -154,6 +155,41 @@
                             VerticalAlignment="Center"
                             materialDesign:HintAssist.Hint="下班时间"
                             Is24Hours="True" />
+                    </StackPanel>
+                </Grid>
+                <Grid Grid.Row="2" Margin="0,25,0,0">
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel.Resources>
+                            <Style BasedOn="{StaticResource MaterialDesignFloatingHintTimePicker}" TargetType="materialDesign:TimePicker">
+                                <Setter Property="Foreground" Value="{DynamicResource MaterialDesignBody}" />
+                            </Style>
+                        </StackPanel.Resources>
+                        <CheckBox
+                            x:Name="IsCustomWeatherIconCheckBox"
+                            Width="110"
+                            Margin="0,0,0,0"
+                            VerticalAlignment="Center"
+                            Content="自定义天气图标"
+                            Foreground="{DynamicResource MaterialDesignBody}" />
+                        <TextBox
+                            x:Name="WeatherIconPathTextBox"
+                            Margin="10 0 0 0" Width="180" IsReadOnly="True"
+                            materialDesign:HintAssist.Hint="天气图标路径"
+                            Style="{DynamicResource MaterialDesignFloatingHintTextBox}"
+                            Foreground="White"
+                            ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}"/>
+                        <Button
+                            x:Name="SelectWeatherIconPathButton"
+                            Margin="10 0 0 0"
+                            Width="30"
+                            Height="25"
+                            VerticalAlignment="Center"
+                            Padding="10 0"
+                            HorizontalAlignment="Right"
+                            Content="..."
+                            Cursor="Hand"
+                            Foreground="White"
+                            ToolTip="选择文件夹" />
                     </StackPanel>
                 </Grid>
             </Grid>

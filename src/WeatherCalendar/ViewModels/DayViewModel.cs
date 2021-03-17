@@ -210,16 +210,14 @@ namespace WeatherCalendar.ViewModels
                 .Select(chineseZodiacService.GetChineseZodiacViewModel)
                 .ToPropertyEx(this, model => model.ChineseZodiacViewModel);
 
-            var weatherImageService = Locator.Current.GetService<IWeatherImageService>();
-
             this.WhenAnyValue(x => x.Forecast)
                 .Select(f => f?.DayWeather?.Weather)
-                .Select(w => weatherImageService.GetWeatherImageViewModel(w))
+                .Select(w => Locator.Current.GetService<IWeatherImageService>()?.GetWeatherImageViewModel(w))
                 .ToPropertyEx(this, model => model.DayWeatherImageViewModel);
 
             this.WhenAnyValue(x => x.Forecast)
                 .Select(f => f?.NightWeather?.Weather)
-                .Select(w => weatherImageService.GetWeatherImageViewModel(w))
+                .Select(w => Locator.Current.GetService<IWeatherImageService>()?.GetWeatherImageViewModel(w))
                 .ToPropertyEx(this, model => model.NightWeatherImageViewModel);
 
             var holidayService = Locator.Current.GetService<IHolidayService>();

@@ -167,11 +167,9 @@ namespace WeatherCalendar.ViewModels
                 .ObserveOnDispatcher()
                 .ToPropertyEx(this, model => model.Forecast);
 
-            var weatherImageService = Locator.Current.GetService<IWeatherImageService>();
-
             this.WhenAnyValue(x => x.Forecast)
                 .Select(w => w?.GetCurrentWeather()?.Weather)
-                .Select(w => weatherImageService.GetWeatherImageViewModel(w))
+                .Select(w => Locator.Current.GetService<IWeatherImageService>()?.GetWeatherImageViewModel(w))
                 .ToPropertyEx(this, model => model.WeatherImageViewModel);
 
             var systemInfoService = Locator.Current.GetService<SystemInfoService>();

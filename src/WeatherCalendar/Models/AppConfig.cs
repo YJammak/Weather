@@ -53,5 +53,15 @@ namespace WeatherCalendar.Models
         /// 结束工作时间
         /// </summary>
         public TimeSpan WorkEndTime { get; set; }
+
+        /// <summary>
+        /// 是否为自定义天气图标
+        /// </summary>
+        public bool IsCustomWeatherIcon { get; set; }
+
+        /// <summary>
+        /// 自定义天气图标路径
+        /// </summary>
+        public string CustomWeatherIconPath { get; set; }
     }
 }

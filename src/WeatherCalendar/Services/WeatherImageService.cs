@@ -7,16 +7,16 @@ namespace WeatherCalendar.Services
 {
     public class WeatherImageService : IWeatherImageService
     {
-        private readonly string _weatherImagePath;
+        public string WeatherImagePath { get; }
 
-        public WeatherImageService()
+        public WeatherImageService(string imagePath)
         {
-            _weatherImagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "weathers");
+            WeatherImagePath = imagePath;
         }
 
         public ReactiveObject GetWeatherImageViewModel(string weather)
         {
-            var imageFile = Path.Combine(_weatherImagePath, $"{weather}.png");
+            var imageFile = Path.Combine(WeatherImagePath, $"{weather}.png");
             if (!File.Exists(imageFile))
                 return null;
 

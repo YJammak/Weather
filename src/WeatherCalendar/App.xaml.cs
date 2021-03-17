@@ -18,49 +18,10 @@ namespace WeatherCalendar
         {
             base.OnStartup(e);
 
-            Locator.CurrentMutable.RegisterConstant(new AppService());
+            var appService = new AppService();
+            Locator.CurrentMutable.RegisterConstant(appService);
 
-            var weatherService = new WeatherService();
-
-            var appConfig = new AppConfigService();
-            appConfig.Load("config.json");
-
-            Task.Run(() =>
-            {
-                var city = weatherService.GetCities().FirstOrDefault(c => c.CityKey == appConfig.Config.CityKey);
-                weatherService.UpdateWeather(city);
-                weatherService.StartUpdate();
-            });
-
-            Locator.CurrentMutable.RegisterConstant(weatherService);
-            Locator.CurrentMutable.RegisterLazySingleton(() => new CalendarService());
-
-            var festivalService = new FestivalService();
-            festivalService.Load("festivals.json");
-
-            var holidayService = new HolidayFileService();
-            holidayService.Load("holidays.json");
-
-            Locator.CurrentMutable.RegisterConstant(appConfig);
-            Locator.CurrentMutable.RegisterConstant(festivalService);
-            Locator.CurrentMutable.RegisterConstant(holidayService, typeof(IHolidayService));
-            Locator.CurrentMutable.RegisterConstant(new WeatherFontService(), typeof(IWeatherImageService));
-            Locator.CurrentMutable.RegisterConstant(new ChineseZodiacFontService(), typeof(IChineseZodiacService));
-            Locator.CurrentMutable.RegisterConstant(new SystemInfoService());
-
-            var workTimerService = new WorkTimerService
-            {
-                IsVisible = appConfig.Config.IsShowWorkTimer,
-                StartTime = appConfig.Config.WorkStartTime,
-                EndTime = appConfig.Config.WorkEndTime
-            };
-
-            Locator.CurrentMutable.RegisterConstant(workTimerService);
-
-            Locator.CurrentMutable.RegisterConstant<ITheme>(new DefaultTheme());
-
-            Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetCallingAssembly());
-            Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetExecutingAssembly());
+            appService.Initial();
         }
     }
 }

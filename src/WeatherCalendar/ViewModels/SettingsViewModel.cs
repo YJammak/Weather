@@ -76,6 +76,18 @@ namespace WeatherCalendar.ViewModels
         [Reactive]
         public TimeSpan WorkTimerEndTime { get; set; }
 
+        /// <summary>
+        /// 是否为自定义天气图标
+        /// </summary>
+        [Reactive]
+        public bool IsCustomWeatherIcon { get; set; }
+
+        /// <summary>
+        /// 自定义天气图标路径
+        /// </summary>
+        [Reactive]
+        public string CustomWeatherIconPath { get; set; }
+
         public SettingsViewModel()
         {
             var weatherService = Locator.Current.GetService<WeatherService>();
@@ -142,12 +154,15 @@ namespace WeatherCalendar.ViewModels
                 })
                 .Subscribe();
 
+            var appService = Locator.Current.GetService<AppService>();
             var appConfigService = Locator.Current.GetService<AppConfigService>();
             var workTimerService = Locator.Current.GetService<WorkTimerService>();
 
             IsWorkTimerVisible = appConfigService.Config.IsShowWorkTimer;
             WorkTimerStartTime = appConfigService.Config.WorkStartTime;
             WorkTimerEndTime = appConfigService.Config.WorkEndTime;
+            IsCustomWeatherIcon = appConfigService.Config.IsCustomWeatherIcon;
+            CustomWeatherIconPath = appConfigService.Config.CustomWeatherIconPath;
 
             this.WhenAnyValue(x => x.IsWorkTimerVisible)
                 .Do(isVisible =>
@@ -177,6 +192,26 @@ namespace WeatherCalendar.ViewModels
                     workTimerService.EndTime = time;
 
                     appConfigService.Config.WorkEndTime = time;
+                    appConfigService.Save();
+                })
+                .Subscribe();
+
+            this.WhenAnyValue(x => x.IsCustomWeatherIcon)
+                .Do(isCustom =>
+                {
+                    appService.LoadWeatherIcon(isCustom, CustomWeatherIconPath);
+
+                    appConfigService.Config.IsCustomWeatherIcon = isCustom;
+                    appConfigService.Save();
+                })
+                .Subscribe();
+
+            this.WhenAnyValue(x => x.CustomWeatherIconPath)
+                .Do(path =>
+                {
+                    appService.LoadWeatherIcon(IsCustomWeatherIcon, path);
+
+                    appConfigService.Config.CustomWeatherIconPath = path;
                     appConfigService.Save();
                 })
                 .Subscribe();

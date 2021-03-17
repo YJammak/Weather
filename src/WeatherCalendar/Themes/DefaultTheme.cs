@@ -61,5 +61,8 @@ namespace WeatherCalendar.Themes
         public Brush WorkTimerNormalForeground => Brushes.White;
 
         public Brush WorkTimerTimeForeground => Brushes.OrangeRed;
+
+        public Brush WeatherIconForeground
+            => new SolidColorBrush(Color.FromRgb(0, 0xDD, 0xAA));
     }
 }

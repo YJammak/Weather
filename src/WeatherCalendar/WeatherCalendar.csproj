@@ -17,6 +17,7 @@
   <ItemGroup>
     <None Remove="Icon.ico" />
     <None Remove="Resources\Fonts\ChineseZodiac.ttf" />
+    <None Remove="Resources\Fonts\Weather.ttf" />
   </ItemGroup>
 
   <ItemGroup>
@@ -46,6 +47,7 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\Fonts\ChineseZodiac.ttf" />
+    <Resource Include="Resources\Fonts\Weather.ttf" />
   </ItemGroup>
 
   <ItemGroup>

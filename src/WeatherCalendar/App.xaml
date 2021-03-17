@@ -15,6 +15,7 @@
             </ResourceDictionary.MergedDictionaries>
 
             <FontFamily x:Key="ChineseZodiacFontFamily">pack://application:,,,/WeatherCalendar;component/Resources/Fonts/#ChineseZodiac</FontFamily>
+            <FontFamily x:Key="WeatherFontFamily">pack://application:,,,/WeatherCalendar;component/Resources/Fonts/#Weather</FontFamily>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

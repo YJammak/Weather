@@ -51,5 +51,7 @@ namespace WeatherCalendar.Themes
         public Brush WorkTimerNormalForeground { get; }
 
         public Brush WorkTimerTimeForeground { get; }
+
+        public Brush WeatherIconForeground { get; }
     }
 }

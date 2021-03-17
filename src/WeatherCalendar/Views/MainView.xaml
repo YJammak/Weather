@@ -168,7 +168,8 @@
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             HorizontalContentAlignment="Stretch"
-                            VerticalContentAlignment="Stretch" />
+                            VerticalContentAlignment="Stretch"
+                            FontSize="40" />
                     </StackPanel>
                     <StackPanel
                         Grid.Column="1"

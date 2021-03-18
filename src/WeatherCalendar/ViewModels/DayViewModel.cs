@@ -45,7 +45,7 @@ namespace WeatherCalendar.ViewModels
         /// </summary>
         [Reactive]
         public ForecastInfo Forecast { get; set; }
-        
+
         /// <summary>
         /// 生肖视图模型
         /// </summary>
@@ -99,7 +99,7 @@ namespace WeatherCalendar.ViewModels
         /// </summary>
         [ObservableAsProperty]
         public bool IsWeekend { get; }
-        
+
         /// <summary>
         /// 假日名城
         /// </summary>
@@ -111,7 +111,7 @@ namespace WeatherCalendar.ViewModels
         /// </summary>
         [ObservableAsProperty]
         public bool IsHolidayRestDay { get; }
-        
+
         /// <summary>
         /// 是否正在编辑
         /// </summary>
@@ -212,12 +212,12 @@ namespace WeatherCalendar.ViewModels
 
             this.WhenAnyValue(x => x.Forecast)
                 .Select(f => f?.DayWeather?.Weather)
-                .Select(w => Locator.Current.GetService<IWeatherImageService>()?.GetWeatherImageViewModel(w))
+                .Select(w => Locator.Current.GetService<IWeatherImageService>()?.GetWeatherImageViewModel(w, false))
                 .ToPropertyEx(this, model => model.DayWeatherImageViewModel);
 
             this.WhenAnyValue(x => x.Forecast)
                 .Select(f => f?.NightWeather?.Weather)
-                .Select(w => Locator.Current.GetService<IWeatherImageService>()?.GetWeatherImageViewModel(w))
+                .Select(w => Locator.Current.GetService<IWeatherImageService>()?.GetWeatherImageViewModel(w, true))
                 .ToPropertyEx(this, model => model.NightWeatherImageViewModel);
 
             var holidayService = Locator.Current.GetService<IHolidayService>();

@@ -1,5 +1,4 @@
 ﻿using ReactiveUI;
-using System;
 using System.IO;
 using WeatherCalendar.ViewModels;
 
@@ -14,13 +13,28 @@ namespace WeatherCalendar.Services
             WeatherImagePath = imagePath;
         }
 
-        public ReactiveObject GetWeatherImageViewModel(string weather)
+        public ReactiveObject GetWeatherImageViewModel(string weather, bool isNight)
         {
             var imageFile = Path.Combine(WeatherImagePath, $"{weather}.png");
-            if (!File.Exists(imageFile))
-                return null;
 
-            return new WeatherImageViewModel { ImageFile = imageFile };
+            if (isNight)
+            {
+                var imageFileOfNight = Path.Combine(WeatherImagePath, $"{weather}_夜.png");
+
+                if (!File.Exists(imageFileOfNight))
+                    return File.Exists(imageFile)
+                        ? new WeatherImageViewModel { ImageFile = imageFile }
+                        : null;
+
+                return new WeatherImageViewModel { ImageFile = imageFileOfNight };
+            }
+            else
+            {
+                if (!File.Exists(imageFile))
+                    return null;
+
+                return new WeatherImageViewModel { ImageFile = imageFile };
+            }
         }
     }
 }

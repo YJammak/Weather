@@ -168,8 +168,18 @@ namespace WeatherCalendar.ViewModels
                 .ToPropertyEx(this, model => model.Forecast);
 
             this.WhenAnyValue(x => x.Forecast)
-                .Select(w => w?.GetCurrentWeather()?.Weather)
-                .Select(w => Locator.Current.GetService<IWeatherImageService>()?.GetWeatherImageViewModel(w))
+                .Select(w => w?.GetCurrentWeather())
+                .Select(w =>
+                {
+                    if (w == null)
+                        return null;
+
+                    var (weather, isNight) = w.Value;
+                    if (weather == null)
+                        return null;
+
+                    return Locator.Current.GetService<IWeatherImageService>()?.GetWeatherImageViewModel(weather.Weather, isNight);
+                })
                 .ToPropertyEx(this, model => model.WeatherImageViewModel);
 
             var systemInfoService = Locator.Current.GetService<SystemInfoService>();

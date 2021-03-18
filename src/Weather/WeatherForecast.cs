@@ -50,7 +50,7 @@ namespace Weather
         /// 获取当前天气
         /// </summary>
         /// <returns></returns>
-        public WeatherInfo GetCurrentWeather()
+        public (WeatherInfo Weather, bool IsNight) GetCurrentWeather()
         {
             if (DateTime.Now.TimeOfDay < new TimeSpan(8, 0, 0))
             {
@@ -60,7 +60,7 @@ namespace Weather
                             f =>
                                 f.DateTime.Date == DateTime.Today.AddDays(-1));
 
-                return forecastYesterday?.NightWeather;
+                return (forecastYesterday?.NightWeather, true);
             }
 
             var forecastToday =
@@ -70,12 +70,12 @@ namespace Weather
                             f.DateTime.Date == DateTime.Today);
 
             if (forecastToday == null)
-                return null;
+                return (null, false);
 
             if (DateTime.Now.TimeOfDay >= new TimeSpan(20, 0, 0))
-                return forecastToday.NightWeather;
+                return (forecastToday.NightWeather, true);
 
-            return forecastToday.DayWeather;
+            return (forecastToday.DayWeather, false);
         }
     }
 }

@@ -49,7 +49,7 @@ namespace WeatherCalendar.Views
                     ViewModel,
                     model => model.Forecast,
                     view => view.WeatherTextBlock.Text,
-                    forecast => forecast?.GetCurrentWeather().Weather)
+                    forecast => forecast?.GetCurrentWeather().Weather?.Weather)
                 .DisposeWith(disposable);
 
             this.OneWayBind(

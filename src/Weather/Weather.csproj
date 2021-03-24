@@ -2,6 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Copyright>Copyright © 2021 Y.J.K. All rights reserved.</Copyright>
+    <AssemblyVersion>0.2.1.0</AssemblyVersion>
+    <FileVersion>0.2.1.0</FileVersion>
+    <Version>0.2.1.0</Version>
+    <Authors>Y.J.K</Authors>
+    <Product>天气日历</Product>
+    <PackageProjectUrl>https://github.com/yjk282/Weather</PackageProjectUrl>
   </PropertyGroup>
 
   <ItemGroup>
@@ -24,5 +31,5 @@
       <LastGenOutput>Resource.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-  
+
 </Project>

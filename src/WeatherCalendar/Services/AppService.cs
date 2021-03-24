@@ -1,6 +1,7 @@
 ﻿using ReactiveUI;
 using Splat;
 using System;
+using System.IO;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Reflection;
@@ -50,16 +51,20 @@ namespace WeatherCalendar.Services
 
             InitialTimer();
 
+            var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            var appConfigFile = Path.Combine(baseDirectory, "config.json");
             var appConfig = new AppConfigService();
-            appConfig.Load("config.json");
+            appConfig.Load(appConfigFile);
 
             Locator.CurrentMutable.RegisterLazySingleton(() => new CalendarService());
 
+            var festivalFile = Path.Combine(baseDirectory, "festivals.json");
             var festivalService = new FestivalService();
-            festivalService.Load("festivals.json");
+            festivalService.Load(festivalFile);
 
+            var holidaysFile = Path.Combine(baseDirectory, "holidays.json");
             var holidayService = new HolidayFileService();
-            holidayService.Load("holidays.json");
+            holidayService.Load(holidaysFile);
 
             Locator.CurrentMutable.RegisterConstant(appConfig);
             Locator.CurrentMutable.RegisterConstant(festivalService);

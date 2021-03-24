@@ -64,30 +64,29 @@ namespace WeatherCalendar.Services
 
         public WeatherForecast UpdateWeather()
         {
-            Forecast = City == null ? null : UpdateWeather(City);
-            return Forecast;
+            return UpdateWeather(City);
         }
 
         public async Task<WeatherForecast> UpdateWeatherAsync()
         {
-            return await Task.Run(() => Forecast = City == null ? null : UpdateWeather(City));
+            return await Task.Run(() => UpdateWeather(City));
         }
 
         public WeatherForecast UpdateWeather(CityKeyInfo city)
         {
             City = city;
 
-            if (city == null)
-            {
-                Forecast = null;
-            }
-            else
+            WeatherForecast result = null;
+            if (city != null)
             {
                 LastUpdateTime = DateTime.Now;
-                Forecast = WeatherHelper.Instance.UpdateWeather(city);
+                result = WeatherHelper.Instance.UpdateWeather(city);
             }
 
-            return Forecast;
+            if (result != null)
+                Forecast = result;
+
+            return result;
         }
 
         private bool NeedUpdate(DateTime time)

@@ -67,8 +67,9 @@
                                 Text="今天" />
                             <TextBlock
                                 x:Name="DutyTextBlock"
+                                Margin="0,3,0,0"
                                 HorizontalAlignment="Center"
-                                FontSize="15"
+                                FontSize="14"
                                 Text="上班" />
                         </StackPanel>
                         <Grid

@@ -210,13 +210,13 @@ namespace WeatherCalendar.Views
                     (date, holidayName, isRestDay) =>
                     {
                         if (!string.IsNullOrWhiteSpace(holidayName))
-                            return isRestDay ? "休息" : "上班";
+                            return isRestDay ? $"休息({holidayName})" : $"上班({holidayName})";
 
                         if (date.DayOfWeek == DayOfWeek.Saturday ||
                             date.DayOfWeek == DayOfWeek.Sunday)
-                            return "休息";
+                            return "休息(周末)";
 
-                        return "上班";
+                        return "上班(工作日)";
                     })
                 .BindTo(this, view => view.DutyTextBlock.Text)
                 .DisposeWith(disposable);
@@ -330,7 +330,7 @@ namespace WeatherCalendar.Views
                     view => view.HolidayTextBlock.Text,
                     isRestDay => isRestDay ? "休" : "班")
                 .DisposeWith(disposable);
-            
+
             this.OneWayBind(
                     ViewModel,
                     model => model.IsHolidayRestDay,
@@ -385,18 +385,18 @@ namespace WeatherCalendar.Views
                 .RegisterHandler(async interaction =>
                 {
                     var (holidayName, isRestDay) = interaction.Input;
-                    
+
                     var editWindow = new EditHolidayWindow();
                     editWindow.ViewModel!.HolidayName = holidayName;
                     editWindow.ViewModel!.IsRestDay = isRestDay;
-                    
+
                     editWindow.Show();
 
                     while (editWindow.IsVisible)
                     {
                         await Task.Delay(10);
                     }
-                    
+
                     if (editWindow.ViewModel!.IsConfirmed)
                         interaction.SetOutput((editWindow.ViewModel!.HolidayName, editWindow.ViewModel!.IsRestDay));
                     else
@@ -419,8 +419,8 @@ namespace WeatherCalendar.Views
         }
 
         private static string GetYearInfo(
-            DateTime date, 
-            string solarTerm, 
+            DateTime date,
+            string solarTerm,
             string dogDaysDetail,
             string shuJiuDetail,
             string festival,

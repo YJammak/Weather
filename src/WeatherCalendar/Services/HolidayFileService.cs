@@ -19,30 +19,7 @@ namespace WeatherCalendar.Services
             }
             catch
             {
-                //Holidays = Array.Empty<Holiday>();
-                Holidays = new[]
-                {
-                    new Holiday
-                    {
-                        Name = "春节",
-                        Year = 2021,
-                        RestDates = new[]
-                        {
-                            new DateTime(2021, 2, 11),
-                            new DateTime(2021, 2, 12),
-                            new DateTime(2021, 2, 13),
-                            new DateTime(2021, 2, 14),
-                            new DateTime(2021, 2, 15),
-                            new DateTime(2021, 2, 16),
-                            new DateTime(2021, 2, 17)
-                        },
-                        WorkDates = new[]
-                        {
-                            new DateTime(2021, 2, 7),
-                            new DateTime(2021, 2, 20)
-                        }
-                    }
-                };
+                Holidays = Array.Empty<Holiday>();
             }
 
             File = file;
@@ -52,8 +29,8 @@ namespace WeatherCalendar.Services
 
         public Holiday GetHoliday(DateTime date)
         {
-            return Holidays?.FirstOrDefault(h => 
-                h.Year == date.Year && 
+            return Holidays?.FirstOrDefault(h =>
+                h.Year == date.Year &&
                 ((h.RestDates?.Contains(date.Date) ?? false) ||
                  (h.WorkDates?.Contains(date.Date) ?? false)));
         }
@@ -78,7 +55,7 @@ namespace WeatherCalendar.Services
         {
             if (string.IsNullOrWhiteSpace(name))
                 return;
-            
+
             var holiday = Holidays?.FirstOrDefault(h => h.Year == year && h.Name == name);
 
             if (holiday == null)
@@ -96,13 +73,13 @@ namespace WeatherCalendar.Services
                 }
                 else
                 {
-                    holiday.WorkDates = new[] {date.Date};
+                    holiday.WorkDates = new[] { date.Date };
                     holiday.RestDates = Array.Empty<DateTime>();
                 }
 
                 Holidays =
                     Holidays == null
-                        ? new[] {holiday}
+                        ? new[] { holiday }
                         : Holidays
                             .Append(holiday)
                             .OrderBy(h => h.Year)
@@ -115,7 +92,7 @@ namespace WeatherCalendar.Services
             {
                 if (isRestDay)
                 {
-                    holiday.RestDates = 
+                    holiday.RestDates =
                         holiday
                             .RestDates
                             .Append(date.Date)
@@ -124,7 +101,7 @@ namespace WeatherCalendar.Services
                             .ToArray();
 
                     if (holiday.WorkDates.Contains(date.Date))
-                        holiday.WorkDates = 
+                        holiday.WorkDates =
                             holiday
                                 .WorkDates
                                 .Where(d => d != date.Date)
@@ -148,7 +125,7 @@ namespace WeatherCalendar.Services
                                 .ToArray();
                 }
             }
-            
+
             Save();
         }
 
@@ -158,7 +135,7 @@ namespace WeatherCalendar.Services
                 return;
 
             var holiday = Holidays?.FirstOrDefault(h => h.Year == year && h.Name == name);
-            
+
             if (holiday == null)
                 return;
 
@@ -183,7 +160,7 @@ namespace WeatherCalendar.Services
 
             if (holiday.WorkDates.Length <= 0 && holiday.RestDates.Length <= 0)
                 Holidays = Holidays.Where(h => h != holiday).ToArray();
-            
+
             Save();
         }
 

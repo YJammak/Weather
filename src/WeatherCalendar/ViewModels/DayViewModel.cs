@@ -31,8 +31,8 @@ namespace WeatherCalendar.ViewModels
         /// <summary>
         /// 是否为当日
         /// </summary>
-        [ObservableAsProperty]
-        public bool IsCurrentDay { get; }
+        [Reactive]
+        public bool IsCurrentDay { get; private set; }
 
         /// <summary>
         /// 是否为当前月
@@ -140,13 +140,22 @@ namespace WeatherCalendar.ViewModels
 
         public DayViewModel()
         {
+            var appService = Locator.Current.GetService<AppService>();
+
             AllDayViewModels.Add(new WeakReference<DayViewModel>(this));
 
             Date = new DateInfo();
 
+            appService
+                .TimerPerMinute
+                .Select(_ => Date.Date == DateTime.Today)
+                .Do(isToday => IsCurrentDay = isToday)
+                .Subscribe();
+
             this.WhenAnyValue(x => x.Date.Date)
                 .Select(d => d.Date == DateTime.Today)
-                .ToPropertyEx(this, model => model.IsCurrentDay);
+                .Do(isToday => IsCurrentDay = isToday)
+                .Subscribe();
 
             this.WhenAnyValue(x => x.Date.Date)
                 .Select(d => d.Day.ToString())

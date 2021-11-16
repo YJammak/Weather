@@ -1,59 +1,59 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
-    <UseWPF>true</UseWPF>
-    <ApplicationIcon>Icon.ico</ApplicationIcon>
-    <Copyright>Copyright © 2021 Y.J.K. All rights reserved.</Copyright>
-    <AssemblyVersion>0.2.1.0</AssemblyVersion>
-    <FileVersion>0.2.1.0</FileVersion>
-    <Version>0.2.1.0</Version>
-    <Authors>Y.J.K</Authors>
-    <Product>天气日历</Product>
-    <PackageProjectUrl>https://github.com/yjk282/Weather</PackageProjectUrl>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net6.0-windows</TargetFramework>
+		<UseWPF>true</UseWPF>
+		<ApplicationIcon>Icon.ico</ApplicationIcon>
+		<Copyright>Copyright © 2021 Y.J.K. All rights reserved.</Copyright>
+		<AssemblyVersion>0.3.0.0</AssemblyVersion>
+		<FileVersion>0.3.0.0</FileVersion>
+		<Version>0.3.0.0</Version>
+		<Authors>Y.J.K</Authors>
+		<Product>天气日历</Product>
+		<PackageProjectUrl>https://github.com/yjk282/Weather</PackageProjectUrl>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="Icon.ico" />
-    <None Remove="Resources\Fonts\ChineseZodiac.ttf" />
-    <None Remove="Resources\Fonts\Weather.ttf" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Remove="Icon.ico" />
+		<None Remove="Resources\Fonts\ChineseZodiac.ttf" />
+		<None Remove="Resources\Fonts\Weather.ttf" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="DynamicData" Version="7.4.3" />
-    <PackageReference Include="Enums.NET" Version="4.0.0" />
-    <PackageReference Include="Hardcodet.NotifyIcon.Wpf.NetCore" Version="1.0.18" />
-    <PackageReference Include="MaterialDesignThemes" Version="4.2.1" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="NPinyin.Core" Version="3.0.0" />
-    <PackageReference Include="ReactiveUI.Events.WPF" Version="15.1.1" />
-    <PackageReference Include="ReactiveUI.Fody" Version="16.3.10" />
-    <PackageReference Include="ReactiveUI.Validation" Version="2.2.1" />
-    <PackageReference Include="ReactiveUI.WPF" Version="16.3.10" />
-    <PackageReference Include="System.Management" Version="5.0.0" />
-    <PackageReference Include="System.Reactive.Linq" Version="5.0.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="DynamicData" Version="7.4.3" />
+		<PackageReference Include="Enums.NET" Version="4.0.0" />
+		<PackageReference Include="Hardcodet.NotifyIcon.Wpf.NetCore" Version="1.0.18" />
+		<PackageReference Include="MaterialDesignThemes" Version="4.2.1" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+		<PackageReference Include="NPinyin.Core" Version="3.0.0" />
+		<PackageReference Include="ReactiveUI.Events.WPF" Version="15.1.1" />
+		<PackageReference Include="ReactiveUI.Fody" Version="16.3.10" />
+		<PackageReference Include="ReactiveUI.Validation" Version="2.2.1" />
+		<PackageReference Include="ReactiveUI.WPF" Version="16.3.10" />
+		<PackageReference Include="System.Management" Version="6.0.0" />
+		<PackageReference Include="System.Reactive.Linq" Version="5.0.0" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\SharpSxwnl\SharpSxwnl.csproj" />
-    <ProjectReference Include="..\Weather\Weather.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\SharpSxwnl\SharpSxwnl.csproj" />
+		<ProjectReference Include="..\Weather\Weather.csproj" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Resource Include="Icon.ico">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Fonts\ChineseZodiac.ttf" />
-    <Resource Include="Resources\Fonts\Weather.ttf" />
-  </ItemGroup>
+	<ItemGroup>
+		<Resource Include="Icon.ico">
+			<Pack>True</Pack>
+			<PackagePath></PackagePath>
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Resource>
+		<Resource Include="Resources\Fonts\ChineseZodiac.ttf" />
+		<Resource Include="Resources\Fonts\Weather.ttf" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Update="festivals.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
+	<ItemGroup>
+		<None Update="festivals.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
 
 </Project>

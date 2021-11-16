@@ -16,6 +16,8 @@ namespace WeatherCalendar.Services
 
         public IObservable<DateTime> TimerPerMinute { get; private set; }
 
+        public IObservable<DateTime> TimerPerDay { get; private set; }
+
         public bool IsInitialed { get; private set; }
 
         private void InitialTimer()
@@ -39,6 +41,14 @@ namespace WeatherCalendar.Services
                     .Where(buffer =>
                         buffer.Count == 2 &&
                         buffer[0].Minute != buffer[1].Minute)
+                    .Select(buffer => buffer[1]);
+
+            TimerPerDay =
+                TimerPerSecond
+                    .Buffer(2, 1)
+                    .Where(buffer =>
+                        buffer.Count == 2 &&
+                        buffer[0].Day != buffer[1].Day)
                     .Select(buffer => buffer[1]);
         }
 

@@ -124,6 +124,11 @@ namespace WeatherCalendar.ViewModels
                 .ObserveOnDispatcher()
                 .ToPropertyEx(this, model => model.CurrentDateTime);
 
+            appService
+                .TimerPerDay
+                .ObserveOnDispatcher()
+                .InvokeCommand(this, vm => vm.CurrentMonthCommand);
+
             var calendarService = Locator.Current.GetService<CalendarService>();
 
             this.WhenAnyValue(x => x.CurrentDateTime)

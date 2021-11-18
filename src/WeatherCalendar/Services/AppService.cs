@@ -31,24 +31,35 @@ namespace WeatherCalendar.Services
             TimerPerSecond =
                 timer.Buffer(2, 1)
                     .Where(buffer =>
-                        buffer.Count == 2 &&
-                        buffer[0].Second != buffer[1].Second)
+                        buffer.Count == 2 && (
+                        buffer[0].Year != buffer[1].Year ||
+                        buffer[0].Month != buffer[1].Month ||
+                        buffer[0].Day != buffer[1].Day ||
+                        buffer[0].Hour != buffer[1].Hour ||
+                        buffer[0].Minute != buffer[1].Minute ||
+                        buffer[0].Second != buffer[1].Second))
                     .Select(buffer => buffer[1]);
 
             TimerPerMinute =
                 TimerPerSecond
                     .Buffer(2, 1)
                     .Where(buffer =>
-                        buffer.Count == 2 &&
-                        buffer[0].Minute != buffer[1].Minute)
+                        buffer.Count == 2 && (
+                        buffer[0].Year != buffer[1].Year ||
+                        buffer[0].Month != buffer[1].Month ||
+                        buffer[0].Day != buffer[1].Day ||
+                        buffer[0].Hour != buffer[1].Hour ||
+                        buffer[0].Minute != buffer[1].Minute))
                     .Select(buffer => buffer[1]);
 
             TimerPerDay =
                 TimerPerSecond
                     .Buffer(2, 1)
                     .Where(buffer =>
-                        buffer.Count == 2 &&
-                        buffer[0].Day != buffer[1].Day)
+                        buffer.Count == 2 && (
+                        buffer[0].Year != buffer[1].Year ||
+                        buffer[0].Month != buffer[1].Month ||
+                        buffer[0].Day != buffer[1].Day))
                     .Select(buffer => buffer[1]);
         }
 

@@ -149,6 +149,7 @@ namespace WeatherCalendar.ViewModels
             appService
                 .TimerPerMinute
                 .Select(_ => Date.Date == DateTime.Today)
+                .ObserveOnDispatcher()
                 .Do(isToday => IsCurrentDay = isToday)
                 .Subscribe();
 

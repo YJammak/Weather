@@ -60,6 +60,7 @@ namespace WeatherCalendar.Services
         {
             return weather switch
             {
+                "霾" => "\ue64e",
                 "暴雪" => "\ue61e",
                 "暴雨" => "\ue611",
                 "暴雨转大暴雨" => "\ue621",

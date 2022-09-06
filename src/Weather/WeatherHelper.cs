@@ -1,8 +1,8 @@
-﻿using System;
+﻿using RestSharp;
+using RestSharp.Serializers.NewtonsoftJson;
+using System;
 using System.Collections.Generic;
 using System.IO;
-using RestSharp;
-using RestSharp.Serializers.NewtonsoftJson;
 
 namespace Weather
 {
@@ -123,12 +123,12 @@ namespace Weather
                 request.AddParameter("app_key", "99817882");
                 request.AddParameter("citykey", city.CityKey);
 
-                var response = client.Get<WeatherForecast>(request);
+                var forecast = client.Get<WeatherForecast>(request);
 
-                if (!response.IsSuccessful)
+                if (forecast == null)
                     return null;
 
-                WeatherForecast = response.Data;
+                WeatherForecast = forecast;
 
                 WeatherInfoUpdated?.Invoke();
 

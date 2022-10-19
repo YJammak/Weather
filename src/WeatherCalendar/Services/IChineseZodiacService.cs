@@ -1,9 +1,8 @@
 ﻿using ReactiveUI;
 
-namespace WeatherCalendar.Services
+namespace WeatherCalendar.Services;
+
+public interface IChineseZodiacService
 {
-    public interface IChineseZodiacService
-    {
-        public ReactiveObject GetChineseZodiacViewModel(string chineseZodiac);
-    }
+    public ReactiveObject GetChineseZodiacViewModel(string chineseZodiac);
 }

@@ -125,7 +125,7 @@ namespace SharpSxwnl
         /// 2000年1月1日 12:00:00 的儒略日数
         /// </summary>
         public const double J2000 = 2451545;               // 2000年1月1日 12:00:00 的儒略日数
-        
+
         #endregion 常量定义
 
 
@@ -204,9 +204,9 @@ namespace SharpSxwnl
             string gn = "";
             if (v < 0) { v = -v; gn = "-"; }
             double f = LunarHelper.int2(v / 60), m = v - f * 60;
-            if (fs != 0) 
+            if (fs != 0)
                 return gn + f + "分" + m.ToString("F" + fx) + "秒";
-            else  
+            else
                 return gn + f + "'" + m.ToString("F" + fx) + "\"";
         }
 
@@ -220,7 +220,7 @@ namespace SharpSxwnl
         public static double rad2mrad(double v)
         {
             v = v % (2 * Math.PI);
-            if (v < 0) 
+            if (v < 0)
                 v += 2 * Math.PI;
             return v;
         }
@@ -326,7 +326,7 @@ namespace SharpSxwnl
 
             return y;
         }
-        
+
 
 
         /// <summary>
@@ -354,7 +354,8 @@ namespace SharpSxwnl
             Regex regexToReplace = new Regex(@"[^0-9:]");    // C#: 匹配字符: 数字0-9, :
             int a, b, c;
             string[] timeStr = regexToReplace.Replace(s, "").Split(':');    // C#: 去除无效字符后, 按 : 分隔字符串
-            for (int i = 0; i < timeStr.Length; i++) {                      // C#: 即使参数 s 为空串, 也会产生一个数组元素
+            for (int i = 0; i < timeStr.Length; i++)
+            {                      // C#: 即使参数 s 为空串, 也会产生一个数组元素
                 if (timeStr[i].Length == 0)      // C#: 把空串设置为 "0"
                     timeStr[i] = "0";
             }
@@ -385,7 +386,7 @@ namespace SharpSxwnl
             }
             return a + b / 60d + c / 3600d;
         }
-        
+
         #endregion
 
         #region 从 Index.htm 中提取出来的独立方法
@@ -420,7 +421,7 @@ namespace SharpSxwnl
             else
                 longitude = LunarHelper.str2rad(longitudeStr);    // 解析经度为弧度
 
-            double jd = JD.JD__(y, LunarHelper.VAL(month.ToString()), 
+            double jd = JD.JD__(y, LunarHelper.VAL(month.ToString()),
                                 LunarHelper.VAL(day.ToString()) + t / 24);
 
             if (type == BaZiType.ZtyBaZi)
@@ -440,14 +441,14 @@ namespace SharpSxwnl
             double monthAjusted = JD.M;
             double dayAjusted = JD.D;
 
-            return "[日标]：" + "公历 " + yearAjusted + "-" + monthAjusted + "-" + dayAjusted + " 儒略日数 " + LunarHelper.int2(jd + 0.5) + 
+            return "[日标]：" + "公历 " + yearAjusted + "-" + monthAjusted + "-" + dayAjusted + " 儒略日数 " + LunarHelper.int2(jd + 0.5) +
                                 " 距2000年首" + LunarHelper.int2(jd + 0.5 - LunarHelper.J2000) + "日"
                    + "\r\n[八字]：" + ob.bz_jn + "年 " + ob.bz_jy + "月 " + ob.bz_jr + "日 " + ob.bz_js + "时 " + timeName
                    + "\r\n[纪时]：" + ob.bz_JS
                    + "\r\n[时标]：" + "23　 01　 03　 05　 07　 09　 11　 13　 15　 17　 19　 21　 23";
 
         }
-        
+
         #endregion
 
         #region 转换时新增加的方法
@@ -506,7 +507,7 @@ namespace SharpSxwnl
             return ((nDegrees * Math.PI) / 180);
         }
 
-        
+
         /// <summary>
         /// 返回指定时间(缺省则为现在时刻)的 UTC 时间, 从 1970-1-1午夜开始所经过的毫秒数
         /// </summary>
@@ -605,7 +606,7 @@ namespace SharpSxwnl
         {
             return (long)LunarHelper.VAL(strExpression);
         }
-        
+
 
 
         /// <summary>
@@ -717,7 +718,7 @@ namespace SharpSxwnl
         /// <summary>
         /// 仅计算气
         /// </summary>
-        CalcQi, 
+        CalcQi,
 
         /// <summary>
         /// 计算节和气
@@ -729,5 +730,3 @@ namespace SharpSxwnl
 
     #endregion
 }
-
-

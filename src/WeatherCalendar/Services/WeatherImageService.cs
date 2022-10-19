@@ -2,39 +2,38 @@
 using System.IO;
 using WeatherCalendar.ViewModels;
 
-namespace WeatherCalendar.Services
+namespace WeatherCalendar.Services;
+
+public class WeatherImageService : IWeatherImageService
 {
-    public class WeatherImageService : IWeatherImageService
+    public string WeatherImagePath { get; }
+
+    public WeatherImageService(string imagePath)
     {
-        public string WeatherImagePath { get; }
+        WeatherImagePath = imagePath;
+    }
 
-        public WeatherImageService(string imagePath)
+    public ReactiveObject GetWeatherImageViewModel(string weather, bool isNight)
+    {
+        var imageFile = Path.Combine(WeatherImagePath, $"{weather}.png");
+
+        if (isNight)
         {
-            WeatherImagePath = imagePath;
+            var imageFileOfNight = Path.Combine(WeatherImagePath, $"{weather}_夜.png");
+
+            if (!File.Exists(imageFileOfNight))
+                return File.Exists(imageFile)
+                    ? new WeatherImageViewModel { ImageFile = imageFile }
+                    : null;
+
+            return new WeatherImageViewModel { ImageFile = imageFileOfNight };
         }
-
-        public ReactiveObject GetWeatherImageViewModel(string weather, bool isNight)
+        else
         {
-            var imageFile = Path.Combine(WeatherImagePath, $"{weather}.png");
+            if (!File.Exists(imageFile))
+                return null;
 
-            if (isNight)
-            {
-                var imageFileOfNight = Path.Combine(WeatherImagePath, $"{weather}_夜.png");
-
-                if (!File.Exists(imageFileOfNight))
-                    return File.Exists(imageFile)
-                        ? new WeatherImageViewModel { ImageFile = imageFile }
-                        : null;
-
-                return new WeatherImageViewModel { ImageFile = imageFileOfNight };
-            }
-            else
-            {
-                if (!File.Exists(imageFile))
-                    return null;
-
-                return new WeatherImageViewModel { ImageFile = imageFile };
-            }
+            return new WeatherImageViewModel { ImageFile = imageFile };
         }
     }
 }

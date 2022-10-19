@@ -5,34 +5,42 @@ using System.Reactive;
 using WeatherCalendar.Services;
 using WeatherCalendar.Utils;
 
-namespace WeatherCalendar.ViewModels
+namespace WeatherCalendar.ViewModels;
+
+public class MainWindowViewModel : ReactiveObject
 {
-    public class MainWindowViewModel : ReactiveObject
+    [Reactive]
+    public CalendarBaseViewModel CurrentViewModel { get; set; }
+
+    [Reactive]
+    public bool IsAutoStart { get; set; }
+
+    public ReactiveCommand<Unit, Unit> SwitchAutoStartCommand;
+
+    public ReactiveCommand<Unit, Unit> SwitchTopmostCommand;
+
+    public MainWindowViewModel()
     {
-        [Reactive]
-        public CalendarBaseViewModel CurrentViewModel { get; set; }
+        CurrentViewModel = new MainViewModel();
 
-        [Reactive]
-        public bool IsAutoStart { get; set; }
+        var appConfigService = Locator.Current.GetService<AppConfigService>();
+        IsAutoStart = appConfigService!.Config.IsAutoStart;
 
-        public ReactiveCommand<Unit, Unit> SwitchAutoStartCommand;
-
-        public MainWindowViewModel()
+        SwitchAutoStartCommand = ReactiveCommand.Create(() =>
         {
-            CurrentViewModel = new MainViewModel();
+            if (!AppHelper.SetAutoStart(!IsAutoStart))
+                return;
 
-            var appConfigService = Locator.Current.GetService<AppConfigService>();
-            IsAutoStart = appConfigService.Config.IsAutoStart;
+            IsAutoStart = !IsAutoStart;
+            appConfigService.Config.IsAutoStart = IsAutoStart;
+            appConfigService.Save();
+        });
 
-            SwitchAutoStartCommand = ReactiveCommand.Create(() =>
-            {
-                if (!AppHelper.SetAutoStart(!IsAutoStart))
-                    return;
-
-                IsAutoStart = !IsAutoStart;
-                appConfigService.Config.IsAutoStart = IsAutoStart;
-                appConfigService.Save();
-            });
-        }
+        SwitchTopmostCommand = ReactiveCommand.Create(() =>
+        {
+            appConfigService.Config.IsTopmost = !appConfigService.Config.IsTopmost;
+            appConfigService.Save();
+            AppHelper.Restart();
+        });
     }
 }

@@ -21,10 +21,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="DynamicData" Version="7.9.14" />
+		<PackageReference Include="DynamicData" Version="7.12.1" />
 		<PackageReference Include="Enums.NET" Version="4.0.0" />
-		<PackageReference Include="H.NotifyIcon.Wpf" Version="2.0.64" />
-		<PackageReference Include="MaterialDesignThemes" Version="4.5.0" />
+		<PackageReference Include="H.NotifyIcon.Wpf" Version="2.0.73" />
+		<PackageReference Include="MaterialDesignThemes" Version="4.6.1" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
 		<PackageReference Include="NPinyin.Core" Version="3.0.0" />
 		<PackageReference Include="ReactiveUI.Events.WPF" Version="15.1.1" />

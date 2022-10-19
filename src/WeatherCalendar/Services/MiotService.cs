@@ -2,5 +2,5 @@
 
 public class MiotService
 {
-    public void 
+
 }

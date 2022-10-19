@@ -1,11 +1,10 @@
 ﻿using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
-namespace WeatherCalendar.ViewModels
+namespace WeatherCalendar.ViewModels;
+
+public class WeatherFontViewModel : ReactiveObject
 {
-    public class WeatherFontViewModel : ReactiveObject
-    {
-        [Reactive]
-        public string WeatherText { get; set; }
-    }
+    [Reactive]
+    public string WeatherText { get; set; }
 }

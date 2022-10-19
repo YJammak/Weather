@@ -7,46 +7,45 @@ using WeatherCalendar.Services;
 
 // ReSharper disable UnassignedGetOnlyAutoProperty
 
-namespace WeatherCalendar.ViewModels
+namespace WeatherCalendar.ViewModels;
+
+public class WorkTimerViewModel : ReactiveObject
 {
-    public class WorkTimerViewModel : ReactiveObject
+    /// <summary>
+    /// 倒计时类型
+    /// </summary>
+    [ObservableAsProperty]
+    public WorkCountdownType CountdownType { get; }
+
+    /// <summary>
+    /// 倒计时
+    /// </summary>
+    [ObservableAsProperty]
+    public TimeSpan CountdownTime { get; }
+
+    /// <summary>
+    /// 是否显示
+    /// </summary>
+    [ObservableAsProperty]
+    public bool IsVisible { get; }
+
+    public WorkTimerViewModel()
     {
-        /// <summary>
-        /// 倒计时类型
-        /// </summary>
-        [ObservableAsProperty]
-        public WorkCountdownType CountdownType { get; }
+        var workTimerService = Locator.Current.GetService<WorkTimerService>();
 
-        /// <summary>
-        /// 倒计时
-        /// </summary>
-        [ObservableAsProperty]
-        public TimeSpan CountdownTime { get; }
+        workTimerService
+            .WhenAnyValue(x => x.IsVisible)
+            .ObserveOnDispatcher()
+            .ToPropertyEx(this, model => model.IsVisible);
 
-        /// <summary>
-        /// 是否显示
-        /// </summary>
-        [ObservableAsProperty]
-        public bool IsVisible { get; }
+        workTimerService
+            .WhenAnyValue(x => x.CountdownType)
+            .ObserveOnDispatcher()
+            .ToPropertyEx(this, model => model.CountdownType);
 
-        public WorkTimerViewModel()
-        {
-            var workTimerService = Locator.Current.GetService<WorkTimerService>();
-
-            workTimerService
-                .WhenAnyValue(x => x.IsVisible)
-                .ObserveOnDispatcher()
-                .ToPropertyEx(this, model => model.IsVisible);
-
-            workTimerService
-                .WhenAnyValue(x => x.CountdownType)
-                .ObserveOnDispatcher()
-                .ToPropertyEx(this, model => model.CountdownType);
-
-            workTimerService
-                .WhenAnyValue(x => x.CountdownTime)
-                .ObserveOnDispatcher()
-                .ToPropertyEx(this, model => model.CountdownTime);
-        }
+        workTimerService
+            .WhenAnyValue(x => x.CountdownTime)
+            .ObserveOnDispatcher()
+            .ToPropertyEx(this, model => model.CountdownTime);
     }
 }

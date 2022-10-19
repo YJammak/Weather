@@ -1,5 +1,5 @@
 ﻿<rxui:ReactiveWindow
-    x:Class="WeatherCalendar.MainWindow"
+    x:Class="WeatherCalendar.Views.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -18,7 +18,7 @@
     WindowStyle="None"
     mc:Ignorable="d">
     <Grid x:Name="MainGrid" Background="#01000000">
-        <tb:TaskbarIcon x:Name="NotifyIcon" IconSource="Icon.ico">
+        <tb:TaskbarIcon x:Name="NotifyIcon" IconSource="../Icon.ico">
             <tb:TaskbarIcon.TrayToolTip>
                 <Border
                     Background="White"
@@ -51,6 +51,10 @@
                     <MenuItem
                         x:Name="BackgroundTransparentMenuItem"
                         Header="背景透明"
+                        IsCheckable="True" />
+                    <MenuItem
+                        x:Name="TopmostMenuItem"
+                        Header="置顶"
                         IsCheckable="True" />
                     <MenuItem x:Name="AutoStartMenuItem" IsCheckable="True">
                         <MenuItem.Header>

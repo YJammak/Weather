@@ -1,9 +1,8 @@
 ﻿using ReactiveUI;
 
-namespace WeatherCalendar.Services
+namespace WeatherCalendar.Services;
+
+public interface IWeatherImageService
 {
-    public interface IWeatherImageService
-    {
-        public ReactiveObject GetWeatherImageViewModel(string weather, bool isNight);
-    }
+    public ReactiveObject GetWeatherImageViewModel(string weather, bool isNight);
 }

@@ -2,49 +2,48 @@
 using WeatherCalendar.Models;
 using WeatherCalendar.Utils;
 
-namespace WeatherCalendar.Services
+namespace WeatherCalendar.Services;
+
+public class NoticeService
 {
-    public class NoticeService
+    private string File { get; set; }
+
+    public Notice[] Notices { get; private set; }
+
+    public NoticeService()
     {
-        private string File { get; set; }
 
-        public Notice[] Notices { get; private set; }
+    }
 
-        public NoticeService()
+    public Notice[] Load(string file)
+    {
+        try
         {
-
+            Notices = JsonHelper.LoadFromFileToList<Notice>(file).ToArray();
+        }
+        catch
+        {
+            Notices = Array.Empty<Notice>();
         }
 
-        public Notice[] Load(string file)
+        File = file;
+
+        return Notices;
+    }
+
+    private void Save()
+    {
+        try
         {
-            try
-            {
-                Notices = JsonHelper.LoadFromFileToList<Notice>(file).ToArray();
-            }
-            catch
-            {
-                Notices = Array.Empty<Notice>();
-            }
+            if (Notices == null)
+                return;
 
-            File = file;
-
-            return Notices;
+            var json = JsonHelper.SerializeObjectToFormatJson(Notices);
+            System.IO.File.WriteAllText(File, json);
         }
-
-        private void Save()
+        catch
         {
-            try
-            {
-                if (Notices == null)
-                    return;
-
-                var json = JsonHelper.SerializeObjectToFormatJson(Notices);
-                System.IO.File.WriteAllText(File, json);
-            }
-            catch
-            {
-                //
-            }
+            //
         }
     }
 }

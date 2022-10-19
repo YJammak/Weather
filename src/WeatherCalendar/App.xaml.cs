@@ -1,27 +1,21 @@
-﻿using ReactiveUI;
-using Splat;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
+﻿using Splat;
 using System.Windows;
 using WeatherCalendar.Services;
-using WeatherCalendar.Themes;
 
-namespace WeatherCalendar
+namespace WeatherCalendar;
+
+/// <summary>
+/// Interaction logic for App.xaml
+/// </summary>
+public partial class App
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
-    public partial class App
+    protected override void OnStartup(StartupEventArgs e)
     {
-        protected override void OnStartup(StartupEventArgs e)
-        {
-            base.OnStartup(e);
+        base.OnStartup(e);
 
-            var appService = new AppService();
-            Locator.CurrentMutable.RegisterConstant(appService);
+        var appService = new AppService();
+        Locator.CurrentMutable.RegisterConstant(appService);
 
-            appService.Initial();
-        }
+        appService.Initial();
     }
 }

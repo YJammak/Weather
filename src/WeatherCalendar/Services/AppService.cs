@@ -146,7 +146,7 @@ namespace WeatherCalendar.Services
             }
 
             var weatherService = Locator.Current.GetService<WeatherService>();
-            weatherService.UpdateWeather();
+            weatherService!.UpdateWeather();
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using Anotar.NLog;
+using Microsoft.Win32;
 using System;
 using System.Diagnostics;
 using System.Linq;
@@ -11,7 +12,7 @@ public static class AppHelper
 {
     private static string AppName => "WeatherCalendar";
 
-    private static string AppFullName => Application.Current.GetType().Assembly.Location.Replace(".dll", ".exe");
+    private static string AppFullName => Process.GetCurrentProcess()!.MainModule!.FileName;
 
     public static bool IsAutoStart()
     {
@@ -43,9 +44,9 @@ public static class AppHelper
             Process.Start(process);
             Application.Current.Shutdown();
         }
-        catch
+        catch (Exception ex)
         {
-            //
+            LogTo.ErrorException("重启失败", ex);
         }
     }
 
@@ -66,9 +67,9 @@ public static class AppHelper
             Process.Start(process);
             Application.Current.Shutdown();
         }
-        catch
+        catch (Exception ex)
         {
-            //
+            LogTo.ErrorException("请求管理员权限失败", ex);
         }
     }
 
@@ -139,8 +140,9 @@ public static class AppHelper
                 }
             }
         }
-        catch
+        catch (Exception ex)
         {
+            LogTo.ErrorException("修改开启自启注册表失败", ex);
             return false;
         }
 

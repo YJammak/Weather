@@ -2,16 +2,16 @@
 
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
-        <TargetFramework>net6.0-windows</TargetFramework>
+        <TargetFramework>net7.0-windows</TargetFramework>
         <UseWPF>true</UseWPF>
         <ApplicationIcon>Icon.ico</ApplicationIcon>
         <Copyright>Copyright © 2021-2022 Y.J.K. All rights reserved.</Copyright>
-        <AssemblyVersion>0.3.0.0</AssemblyVersion>
-        <FileVersion>0.4.0.0</FileVersion>
-        <Version>0.4.0.0</Version>
+        <AssemblyVersion>0.4.2.0</AssemblyVersion>
+        <FileVersion>0.4.2.0</FileVersion>
+        <Version>0.4.2.0</Version>
         <Authors>Y.J.K</Authors>
         <Product>天气日历</Product>
-        <PackageProjectUrl>https://github.com/yjk282/Weather</PackageProjectUrl>
+        <PackageProjectUrl>https://github.com/YJammak/Weather</PackageProjectUrl>
     </PropertyGroup>
 
     <ItemGroup>
@@ -30,7 +30,7 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="H.NotifyIcon.Wpf" Version="2.0.73" />
+        <PackageReference Include="H.NotifyIcon.Wpf" Version="2.0.74" />
         <PackageReference Include="MaterialDesignThemes" Version="4.6.1" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
         <PackageReference Include="NLog" Version="5.0.5" />
@@ -39,7 +39,7 @@
         <PackageReference Include="ReactiveUI.Fody" Version="18.3.1" />
         <PackageReference Include="ReactiveUI.Validation" Version="3.0.1" />
         <PackageReference Include="ReactiveUI.WPF" Version="18.3.1" />
-        <PackageReference Include="System.Management" Version="6.0.0" />
+        <PackageReference Include="System.Management" Version="7.0.0" />
         <PackageReference Include="System.Reactive.Linq" Version="5.0.0" />
         <PackageReference Include="Ymiot.Core" Version="0.1.0" />
     </ItemGroup>

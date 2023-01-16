@@ -30,7 +30,7 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="H.NotifyIcon.Wpf" Version="2.0.74" />
+        <PackageReference Include="H.NotifyIcon.Wpf" Version="2.0.77" />
         <PackageReference Include="MaterialDesignThemes" Version="4.6.1" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
         <PackageReference Include="NLog" Version="5.1.1" />

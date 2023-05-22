@@ -1,23 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
-namespace SharpSxwnl
+namespace SharpSxwnl;
+
+/// <summary>
+/// List&lt;T&gt; 的派生类
+/// </summary>
+/// <typeparam name="T"></typeparam>
+public class xList<T> : List<T>
 {
+    #region 公共属性
+
     /// <summary>
-    /// List&lt;T&gt; 的派生类
+    /// 值等于 Count 属性(只读)
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    public class xList<T> : List<T>
-    {
-        #region 公共属性
+    public int Length => this.Count;
 
-        /// <summary>
-        /// 值等于 Count 属性(只读)
-        /// </summary>
-        public int Length => this.Count;
+    #endregion
 
-        #endregion
-       
-    }
 }

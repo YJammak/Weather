@@ -1,0 +1,77 @@
+name: .NET Desktop
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+    
+env:
+  VERSION: "v0.4.3.${{github.run_number}}"
+  
+jobs:
+  build:
+
+    runs-on: windows-latest 
+
+    steps:
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v1.9.0
+      with:
+        dotnet-version: '7.0.x'
+          
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Install dependencies
+      run: dotnet restore src/Weather.sln
+
+    # Build applications
+    - name: Build win-x86
+      run: dotnet publish src/WeatherCalendar/WeatherCalendar.csproj -r win-x86 -p:Configuration=Release -p:PublishSingleFile=true -p:PublishReadyToRun=true -p:IncludeNativeLibrariesForSelfExtract=true --self-contained true -property:Version=${{ env.VERSION }}
+
+    - name: Zip win-x86 build
+      uses: vimtor/action-zip@v1
+      with:
+        files: src/WeatherCalendar/bin/Release/win-x86/publish/
+        dest: WeatherCalendar-Windows-x86.zip
+
+    - name: Collect win-x86 artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: WeatherCalendar-Windows-x86
+        path: ${{ github.workspace }}/WeatherCalendar-Windows-x86.zip
+
+    - name: Build win-x64
+      run: dotnet publish src/WeatherCalendar/WeatherCalendar.csproj -r win-x64 -p:Configuration=Release -p:PublishSingleFile=true -p:PublishReadyToRun=true -p:IncludeNativeLibrariesForSelfExtract=true --self-contained true -property:Version=${{ env.VERSION }}
+
+    - name: Zip win-x64 build
+      uses: vimtor/action-zip@v1
+      with:
+        files: src/WeatherCalendar/bin/Release/win-x64/publish/
+        dest: WeatherCalendar-Windows-x64.zip
+
+    - name: Collect win-x64 artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: WeatherCalendar-Windows-x64
+        path: ${{ github.workspace }}/WeatherCalendar-Windows-x64.zip
+        
+    # Release Management
+    - name: Delete release drafts
+      uses: hugo19941994/delete-draft-releases@v1.0.0
+      with:
+        threshold: 1s
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      #if: startsWith(github.ref, 'refs/tags/')
+      with:
+        draft: true
+        tag_name: v${{ env.VERSION }}
+        generate_release_notes: true
+        files: |
+          ${{ github.workspace }}/WeatherCalendar-Windows-x86.zip
+          ${{ github.workspace }}/WeatherCalendar-Windows-x64.zip

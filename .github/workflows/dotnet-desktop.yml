@@ -33,7 +33,7 @@ jobs:
     - name: Zip win-x86 build
       uses: vimtor/action-zip@v1
       with:
-        files: src/WeatherCalendar/bin/Release/win-x86/publish/
+        files: src/WeatherCalendar/bin/Release/net7.0-windows/win-x86/publish/
         dest: WeatherCalendar-Windows-x86.zip
 
     - name: Collect win-x86 artifacts
@@ -48,7 +48,7 @@ jobs:
     - name: Zip win-x64 build
       uses: vimtor/action-zip@v1
       with:
-        files: src/WeatherCalendar/bin/Release/win-x64/publish/
+        files: src/WeatherCalendar/bin/Release/net7.0-windows/win-x64/publish/
         dest: WeatherCalendar-Windows-x64.zip
 
     - name: Collect win-x64 artifacts

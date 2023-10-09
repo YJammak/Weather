@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
@@ -36,7 +36,7 @@
         <PackageReference Include="NLog" Version="5.1.4" />
         <PackageReference Include="NPinyin.Core" Version="3.0.0" />
         <PackageReference Include="ReactiveUI.Events.WPF" Version="15.1.1" />
-        <PackageReference Include="ReactiveUI.Fody" Version="18.4.44" />
+        <PackageReference Include="ReactiveUI.Fody" Version="19.5.1" />
         <PackageReference Include="ReactiveUI.Validation" Version="3.1.7" />
         <PackageReference Include="ReactiveUI.WPF" Version="18.4.44" />
         <PackageReference Include="System.Management" Version="7.0.1" />

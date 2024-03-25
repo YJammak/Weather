@@ -11,7 +11,10 @@
                     BaseTheme="Dark"
                     PrimaryColor="DeepOrange"
                     SecondaryColor="Red" />
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/materialdesigntheme.defaults.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign3.defaults.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ObsoleteBrushes.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <FontFamily x:Key="ChineseZodiacFontFamily">pack://application:,,,/WeatherCalendar;component/Resources/Fonts/#ChineseZodiac</FontFamily>

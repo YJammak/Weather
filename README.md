@@ -1,7 +1,7 @@
 # Weather
 用WPF写的日历天气桌面小程序
 
-- .NET 7.0
+- .NET 8.0
 - Visual Studio 2022
 - MVVM（ReactiveUI）
 

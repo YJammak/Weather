@@ -5,11 +5,11 @@
         <TargetFramework>net8.0-windows</TargetFramework>
         <UseWPF>true</UseWPF>
         <ApplicationIcon>Icon.ico</ApplicationIcon>
-        <Copyright>Copyright © 2021-2024 Y.J.K. All rights reserved.</Copyright>
-        <AssemblyVersion>0.4.4.0</AssemblyVersion>
-        <FileVersion>0.4.4.0</FileVersion>
-        <Version>0.4.4.0</Version>
-        <Authors>Y.J.K</Authors>
+        <Copyright>Copyright © 2021-2024 YJammak All rights reserved.</Copyright>
+        <AssemblyVersion>0.4.4.1</AssemblyVersion>
+        <FileVersion>0.4.4.1</FileVersion>
+        <Version>0.4.4.1</Version>
+        <Authors>YJammak</Authors>
         <Product>天气日历</Product>
         <PackageProjectUrl>https://github.com/YJammak/Weather</PackageProjectUrl>
     </PropertyGroup>
@@ -25,20 +25,20 @@
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
         <PackageReference Include="DynamicData" Version="8.4.1" />
-        <PackageReference Include="Enums.NET" Version="4.0.2" />
+        <PackageReference Include="Enums.NET" Version="5.0.0" />
         <PackageReference Include="Fody" Version="6.8.0">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="H.NotifyIcon.Wpf" Version="2.0.124" />
+        <PackageReference Include="H.NotifyIcon.Wpf" Version="2.0.131" />
         <PackageReference Include="MaterialDesignThemes" Version="5.0.0" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-        <PackageReference Include="NLog" Version="5.2.8" />
+        <PackageReference Include="NLog" Version="5.3.2" />
         <PackageReference Include="NPinyin.Core" Version="3.0.0" />
         <PackageReference Include="ReactiveUI.Events.WPF" Version="15.1.1" />
         <PackageReference Include="ReactiveUI.Fody" Version="19.5.41" />
         <PackageReference Include="ReactiveUI.Validation" Version="3.1.7" />
-        <PackageReference Include="ReactiveUI.WPF" Version="19.6.1" />
+        <PackageReference Include="ReactiveUI.WPF" Version="20.0.1" />
         <PackageReference Include="System.Management" Version="8.0.0" />
         <PackageReference Include="System.Reactive.Linq" Version="6.0.0" />
         <PackageReference Include="Ymiot.Core" Version="0.1.0" />

@@ -24,23 +24,23 @@
         <PackageReference Include="Anotar.NLog.Fody" Version="6.0.0">
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
-        <PackageReference Include="DynamicData" Version="8.4.1" />
+        <PackageReference Include="DynamicData" Version="9.0.1" />
         <PackageReference Include="Enums.NET" Version="5.0.0" />
-        <PackageReference Include="Fody" Version="6.8.0">
+        <PackageReference Include="Fody" Version="6.8.1">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="H.NotifyIcon.Wpf" Version="2.0.131" />
-        <PackageReference Include="MaterialDesignThemes" Version="5.0.0" />
+        <PackageReference Include="H.NotifyIcon.Wpf" Version="2.1.0" />
+        <PackageReference Include="MaterialDesignThemes" Version="5.1.0" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
         <PackageReference Include="NLog" Version="5.3.2" />
         <PackageReference Include="NPinyin.Core" Version="3.0.0" />
         <PackageReference Include="ReactiveUI.Events.WPF" Version="15.1.1" />
         <PackageReference Include="ReactiveUI.Fody" Version="19.5.41" />
-        <PackageReference Include="ReactiveUI.Validation" Version="3.1.7" />
-        <PackageReference Include="ReactiveUI.WPF" Version="20.0.1" />
+        <PackageReference Include="ReactiveUI.Validation" Version="4.0.9" />
+        <PackageReference Include="ReactiveUI.WPF" Version="20.1.1" />
         <PackageReference Include="System.Management" Version="8.0.0" />
-        <PackageReference Include="System.Reactive.Linq" Version="6.0.0" />
+        <PackageReference Include="System.Reactive.Linq" Version="6.0.1" />
         <PackageReference Include="Ymiot.Core" Version="0.1.0" />
     </ItemGroup>
 

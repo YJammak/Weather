@@ -30,7 +30,7 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="H.NotifyIcon.Wpf" Version="2.1.0" />
+        <PackageReference Include="H.NotifyIcon.Wpf" Version="2.1.4" />
         <PackageReference Include="MaterialDesignThemes" Version="5.1.0" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
         <PackageReference Include="NLog" Version="5.3.4" />
@@ -41,6 +41,7 @@
         <PackageReference Include="ReactiveUI.WPF" Version="20.1.63" />
         <PackageReference Include="System.Management" Version="9.0.0" />
         <PackageReference Include="System.Reactive.Linq" Version="6.0.1" />
+        <PackageReference Include="System.Text.Json" Version="9.0.0" />
         <PackageReference Include="Ymiot.Core" Version="0.1.0" />
     </ItemGroup>
 

@@ -37,7 +37,7 @@ jobs:
         dest: WeatherCalendar-Windows-x64.zip
 
     - name: Collect win-x64 artifacts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: WeatherCalendar-Windows-x64
         path: ${{ github.workspace }}\WeatherCalendar-Windows-x64.zip

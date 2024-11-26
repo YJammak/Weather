@@ -7,7 +7,7 @@ on:
     branches: [ "master" ]
     
 env:
-  VERSION: "0.4.4.${{github.run_number}}"
+  VERSION: "0.4.5.${{github.run_number}}"
   
 jobs:
   build:
@@ -18,7 +18,7 @@ jobs:
     - name: Setup .NET SDK
       uses: actions/setup-dotnet@v1.9.0
       with:
-        dotnet-version: '8.0.x'
+        dotnet-version: '9.0.x'
           
     - name: Checkout
       uses: actions/checkout@v3

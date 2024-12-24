@@ -1,12 +1,12 @@
-﻿using ReactiveUI;
-using System;
+﻿using System;
 using System.Globalization;
 using System.IO;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Windows;
-using System.Windows.Controls.Primitives;
-using System.Windows.Forms;
+using Microsoft.Win32;
+using ReactiveMarbles.ObservableEvents;
+using ReactiveUI;
 using WeatherCalendar.ViewModels;
 
 namespace WeatherCalendar.Views;
@@ -159,14 +159,15 @@ public partial class SettingsWindow
             .Click
             .Select(_ =>
             {
-                var dialog = new FolderBrowserDialog();
-                dialog.UseDescriptionForTitle = true;
-                dialog.Description = @"选择天气图标路径";
+                var dialog = new OpenFolderDialog
+                {
+                    Title = "选择天气图标路径"
+                };
 
-                if (dialog.ShowDialog() != System.Windows.Forms.DialogResult.OK)
+                if (dialog.ShowDialog() != true)
                     return null;
 
-                return dialog.SelectedPath;
+                return dialog.FolderName;
             })
             .Where(path => !string.IsNullOrWhiteSpace(path) && Directory.Exists(path))
             .BindTo(this, window => window.ViewModel.CustomWeatherIconPath)

@@ -1,11 +1,10 @@
-﻿using ReactiveUI;
-using Splat;
-using System;
+﻿using System;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using System.Windows;
-using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using ReactiveMarbles.ObservableEvents;
+using ReactiveUI;
+using Splat;
 using WeatherCalendar.Services;
 using WeatherCalendar.ViewModels;
 

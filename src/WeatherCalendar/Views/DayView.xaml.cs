@@ -1,11 +1,12 @@
-﻿using ReactiveUI;
-using Splat;
-using System;
+﻿using System;
 using System.Globalization;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using ReactiveMarbles.ObservableEvents;
+using ReactiveUI;
+using Splat;
 using WeatherCalendar.Themes;
 
 namespace WeatherCalendar.Views;
@@ -380,7 +381,7 @@ public partial class DayView
                 view => view.RemoveHolidayMenuItem)
             .DisposeWith(disposable);
 
-        this.ViewModel
+        ViewModel!
             .GetHolidayInfoInteraction
             .RegisterHandler(async interaction =>
             {
@@ -392,10 +393,7 @@ public partial class DayView
 
                 editWindow.Show();
 
-                while (editWindow.IsVisible)
-                {
-                    await Task.Delay(10);
-                }
+                while (editWindow.IsVisible) await Task.Delay(10);
 
                 if (editWindow.ViewModel!.IsConfirmed)
                     interaction.SetOutput((editWindow.ViewModel!.HolidayName, editWindow.ViewModel!.IsRestDay));

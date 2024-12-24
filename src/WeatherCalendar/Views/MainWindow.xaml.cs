@@ -1,13 +1,13 @@
-﻿using ReactiveUI;
-using Splat;
-using System;
+﻿using System;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Media;
+using ReactiveMarbles.ObservableEvents;
+using ReactiveUI;
+using Splat;
 using WeatherCalendar.Services;
 using WeatherCalendar.Themes;
 using WeatherCalendar.Utils;

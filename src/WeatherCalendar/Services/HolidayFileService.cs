@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using RestSharp;
+using RestSharp.Serializers.NewtonsoftJson;
 using WeatherCalendar.Models;
 using WeatherCalendar.Utils;
 
@@ -13,16 +16,59 @@ public sealed class HolidayFileService : IHolidayService
 
     public Holiday[] Load(string file)
     {
+        List<Holiday> fileHolidays;
         try
         {
-            Holidays = JsonHelper.LoadFromFileToList<Holiday>(file, "yyyy-MM-dd").ToArray();
+            fileHolidays = JsonHelper.LoadFromFileToList<Holiday>(file, "yyyy-MM-dd");
         }
         catch
         {
-            Holidays = Array.Empty<Holiday>();
+            fileHolidays = [];
+        }
+
+        List<Holiday> apiHolidays;
+        try
+        {
+            var client = new RestClient("http://yjammak.site",
+                configureSerialization: cfg => cfg.UseNewtonsoftJson());
+            var request = new RestRequest("api/weatherCalender/holidays");
+            apiHolidays = client.Get<List<Holiday>>(request);
+        }
+        catch
+        {
+            apiHolidays = [];
         }
 
         File = file;
+
+        var fileMaxYear = fileHolidays.Count > 0 ? fileHolidays.Max(f => f.Year) : -1;
+        var apiMaxYear = apiHolidays.Count > 0 ? apiHolidays.Max(a => a.Year) : -1;
+        if (apiMaxYear > fileMaxYear)
+        {
+            foreach (var fileHoliday in fileHolidays)
+            {
+                var holiday = apiHolidays.FirstOrDefault(h => h.Year == fileHoliday.Year && h.Name == fileHoliday.Name);
+                if (holiday == null)
+                {
+                    apiHolidays.Add(fileHoliday);
+                }
+                else
+                {
+                    if (!Holiday.Equals(holiday, fileHoliday))
+                    {
+                        apiHolidays.Remove(holiday);
+                        apiHolidays.Add(Holiday.Combine(holiday, fileHoliday));
+                    }
+                }
+            }
+
+            Holidays = apiHolidays.ToArray();
+            Save();
+        }
+        else
+        {
+            Holidays = fileHolidays.ToArray();
+        }
 
         return Holidays;
     }
@@ -68,18 +114,18 @@ public sealed class HolidayFileService : IHolidayService
 
             if (isRestDay)
             {
-                holiday.WorkDates = Array.Empty<DateTime>();
-                holiday.RestDates = new[] { date.Date };
+                holiday.WorkDates = [];
+                holiday.RestDates = [date.Date];
             }
             else
             {
-                holiday.WorkDates = new[] { date.Date };
-                holiday.RestDates = Array.Empty<DateTime>();
+                holiday.WorkDates = [date.Date];
+                holiday.RestDates = [];
             }
 
             Holidays =
                 Holidays == null
-                    ? new[] { holiday }
+                    ? [holiday]
                     : Holidays
                         .Append(holiday)
                         .OrderBy(h => h.Year)

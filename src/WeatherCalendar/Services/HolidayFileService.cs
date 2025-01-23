@@ -29,7 +29,7 @@ public sealed class HolidayFileService : IHolidayService
         List<Holiday> apiHolidays;
         try
         {
-            var client = new RestClient("http://yjammak.site",
+            var client = new RestClient("http://yjammak.net",
                 configureSerialization: cfg => cfg.UseNewtonsoftJson());
             var request = new RestRequest("api/weatherCalender/holidays");
             apiHolidays = client.Get<List<Holiday>>(request);

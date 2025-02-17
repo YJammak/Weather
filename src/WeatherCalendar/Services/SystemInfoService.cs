@@ -1,11 +1,12 @@
-﻿using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
-using Splat;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Management;
 using System.Net.NetworkInformation;
 using System.Reactive.Linq;
+using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
+using Splat;
 using WeatherCalendar.Models;
 
 // ReSharper disable UnassignedGetOnlyAutoProperty
@@ -46,12 +47,15 @@ public class SystemInfoService : ReactiveObject
 
     private static readonly PerformanceCounter CpuLoadCounter = new("Processor", "% Processor Time", "_Total");
 
-    private static IEnumerable<NetworkInterface> NetworkInterfaces => NetworkInterface.GetAllNetworkInterfaces();
+    private static IEnumerable<NetworkInterface> NetworkInterfaces =>
+        NetworkInterface.GetAllNetworkInterfaces()
+            .Where(n => n.OperationalStatus == OperationalStatus.Up)
+            .DistinctBy(n => n.GetPhysicalAddress())
+            .ToList();
 
     private long LastTotalSend { get; set; }
 
     private long LastTotalReceived { get; set; }
-
 
     public SystemInfoService()
     {
